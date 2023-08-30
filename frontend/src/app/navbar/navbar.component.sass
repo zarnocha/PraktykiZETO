@@ -1,0 +1,55 @@
+// nav
+//   background-color: #333
+//   ul
+//     list-style: none
+//     padding: 0
+//     display: flex
+//     li
+//       margin-right: 20px
+//       a
+//         color: white
+//         text-decoration: none
+//         &:hover
+//           text-decoration: underline
+//       a .active
+//           text-decoration: underline
+
+.logo
+  margin: 1rem auto
+  display: flex
+  align-items: center
+  justify-content: center
+  flex-direction: column
+  transition: transform .2s ease-in-out
+  -webkit-transition: -webkit-transform .2s ease-in-out
+
+  &:hover
+    cursor: pointer
+    transform: scale(1.1)
+
+.logo__image
+  width: 10rem
+
+@import url('https://fonts.googleapis.com/css2?family=Genos:wght@700&display=swap')
+
+.logo__text
+  display: block
+  text-transform: uppercase
+  font-family: 'Genos'
+  font-size: 2rem
+
+.logo__text__letter--o
+  content: ""
+  display: inline-block
+  width: 1.5rem
+  height: 1.5rem
+  background-image: url('../../assets/tire/car-tire-wheel-icon.svg')
+  background-size: contain
+  background-repeat: no-repeat
+  vertical-align: middle
+  margin: 0 0.125rem
+
+.login__button
+  margin-left: 0.5rem
+  margin-right: 0.5rem
+  align-self: center
