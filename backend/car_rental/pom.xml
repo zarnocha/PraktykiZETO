@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>zeto.praktyki</groupId>
-	<artifactId>demo</artifactId>
+	<artifactId>car_rental</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>carLend</name>
 	<description>Demo project for Spring Boot</description>
