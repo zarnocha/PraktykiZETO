@@ -2,9 +2,12 @@ package zeto.praktyki.User;
 
 import jakarta.persistence.*;
 import lombok.Data;
+import zeto.praktyki.Car.Car;
+import zeto.praktyki.Rent.Rent;
 
 import java.time.LocalDate;
 import java.util.Date;
+import java.util.Set;
 
 @Data
 @Entity
@@ -21,4 +24,11 @@ public class User {
     private LocalDate creditCardExpDate;
     private String cvv;
     private Boolean isAdmin;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Rent> rents;
+
+    @OneToMany(mappedBy = "added_by")
+    private Set<Car> cars;
+
 }
