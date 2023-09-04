@@ -14,7 +14,7 @@ import { MatCardModule } from '@angular/material/card';
 })
 export class CarCardComponent {
   @Input()
-  carData!: endpoint.Car;
+  carData!: api.CarEntity;
   // imageSource: SafeResourceUrl | undefined;
   // constructor(private sanitizer: DomSanitizer) {}
 

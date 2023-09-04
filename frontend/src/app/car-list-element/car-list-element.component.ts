@@ -12,5 +12,6 @@ import { MatIconModule } from '@angular/material/icon';
   styleUrls: ['./car-list-element.component.sass'],
 })
 export class CarListElementComponent {
-  @Input() carData: any;
+  @Input()
+  carData!: api.CarEntity;
 }

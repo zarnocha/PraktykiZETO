@@ -27,7 +27,7 @@ import {
   styleUrls: ['./home.component.sass'],
 })
 export class HomeComponent implements OnInit {
-  cars: endpoint.Car[] = [];
+  cars: api.CarEntity[] = [];
   showLoader: boolean = false;
   errorMessage: string = '';
   public viewMode: 'list' | 'grid' = 'grid';
@@ -36,7 +36,7 @@ export class HomeComponent implements OnInit {
   fetchCarData(): void {
     this.showLoader = true;
     this.homeService.getCars().subscribe({
-      next: (v: Array<endpoint.Car>) => {
+      next: (v: Array<api.CarEntity>) => {
         this.cars = v;
         this.showLoader = false;
       },
