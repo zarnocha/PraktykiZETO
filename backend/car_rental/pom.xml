@@ -56,6 +56,11 @@
 			<artifactId>jakarta.persistence-api</artifactId>
 			<version>3.1.0</version>
 		</dependency>
+				<dependency>
+			<groupId>cz.habarta.typescript-generator</groupId>
+			<artifactId>typescript-generator-core</artifactId>
+			<version>3.2.1263</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -70,6 +75,31 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>cz.habarta.typescript-generator</groupId>
+				<artifactId>typescript-generator-maven-plugin</artifactId>
+				<version>3.2.1263</version>
+				<executions>
+					<execution>
+						<id>generate</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<jsonLibrary>jackson2</jsonLibrary>
+					<classes>
+            <class>zeto.praktyki.Car.CarEntity</class>
+            <class>zeto.praktyki.Rent.RentEntity</class>
+            <class>zeto.praktyki.User.UserEntity</class>
+          </classes>
+
+					<outputFile>../../frontend/src/types/api.d.ts</outputFile>
+					<outputKind>global</outputKind>
+					<namespace>endpoint</namespace>
 				</configuration>
 			</plugin>
 		</plugins>

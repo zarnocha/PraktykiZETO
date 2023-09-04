@@ -6,48 +6,69 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEnums.Drive;
 import zeto.praktyki.Car.CarEnums.Gearbox;
-import zeto.praktyki.Rent.Rent;
-import zeto.praktyki.User.User;
+import zeto.praktyki.Rent.RentEntity;
+import zeto.praktyki.User.UserEntity;
 
 import java.util.HashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "car")
-public class Car {
+public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(nullable = false)
     private String brand;
+    @Column(nullable = false)
     private String model;
+    @Column(nullable = false)
     private Integer productionYear;
+    @Column(nullable = false)
     private float fuelConsumption;
+    @Column(nullable = false)
     private float engineCapacity;
-    private Integer horsepower;
+    @Column(nullable = false)
+    private Integer horsePower;
+    @Column(nullable = false)
     private Drive drive;
-    private long price; // TODO: zmienić na double
+    @Column(nullable = false)
+    private double price;
+    @Column(nullable = false)
     private String licensePlate;
+    @Column(nullable = false)
     private int seats;
+    @Column(nullable = true)
     private String description;
+    @Column(nullable = false)
     private double value;
+    @Column(nullable = false)
     private long mileage;
+    @Column(nullable = false)
     private boolean available;
+    @Column(nullable = false)
     private Gearbox gearbox;
+    // @JsonIgnore
     @Lob
+    @Column(nullable = true)
     String picture;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "car")
-    private Set<Rent> rents;
+    private Set<RentEntity> rents;
 
     @ManyToOne
     @JoinColumn
-    private User added_by;
+    // @Column(nullable = false) TODO: zmienić na nullable true
+    private UserEntity added_by;
 
-    protected Car(long id, String brand, String model, Integer productionYear, float fuelConsumption,
-            float engineCapacity, Integer horsepower, Drive drive, long price, String licensePlate, int seats,
+    protected CarEntity(long id, String brand, String model, Integer productionYear, float fuelConsumption,
+            float engineCapacity, Integer horsePower, Drive drive, long price, String licensePlate, int seats,
             String description, double value, long mileage, Gearbox gearbox, String picture) {
         this.id = id;
         this.brand = brand;
@@ -55,7 +76,7 @@ public class Car {
         this.productionYear = productionYear;
         this.fuelConsumption = fuelConsumption;
         this.engineCapacity = engineCapacity;
-        this.horsepower = horsepower;
+        this.horsePower = horsePower;
         this.drive = drive;
         this.price = price;
         this.licensePlate = licensePlate;
