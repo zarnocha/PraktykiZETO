@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { filter } from 'rxjs/operators';
@@ -27,6 +27,7 @@ import { SearchbarComponent } from '../searchbar/searchbar.component';
     SearchbarComponent,
   ],
   styleUrls: ['./navbar.component.sass'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class NavbarComponent {
   activeRouteTitle: string = '';

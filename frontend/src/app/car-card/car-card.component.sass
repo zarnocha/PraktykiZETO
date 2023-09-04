@@ -1,0 +1,82 @@
+*
+  transition: all 0.3s ease-in-out
+
+.card
+  // background-color: #252425 !important
+  background: rgba(255, 255, 255, 0.06) !important
+  border: 1px solid #ccc !important
+  // background-color: rgb(255, 255, 255) !important
+  padding: 0.5rem
+  max-width: 25dvw
+  min-width: 300px
+  min-height: 350px
+  -webkit-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.74)
+  -moz-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
+  box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
+  // min-width: 30dvh
+  // height: 25dvh
+  // border: 1px red solid
+
+.card__image
+  display: block
+  margin: 0 auto
+  pointer-events: none
+  max-width: 100%
+  height: auto
+  min-width: 265px
+
+.car__title
+  display: block
+  text-shadow: 4px 4px 6px #31323d
+  text-align: center
+  overflow: hidden
+  pointer-events: auto
+  cursor: pointer
+  padding: 0
+
+.car__name
+  font-size: x-large
+  text-align: center
+  padding: 0.125rem
+  margin: 0.5rem 0
+  width: fit-content
+  display: inline
+  // word-break: break-all
+  word-break: keep-all
+  white-space: nowrap
+
+.car__title:hover
+  white-space: wrap
+  word-break: break-all
+  // overflow: visible
+  .car__name
+    word-break: break-word
+    white-space: wrap
+  .car__year
+    word-break: break-all
+    white-space: nowrap
+
+.car__year
+  width: fit-content
+  display: inline
+  font-size: medium
+  margin-left: 0.5rem
+  white-space: nowrap
+  color: #bbbbbb
+
+.card__specs
+  display: flex
+  flex-direction: row
+  gap: 0.5rem
+  justify-content: center
+
+.card__specs__single-info
+  // margin: 0 0.2rem
+  display: flex
+  align-items: center
+  gap: 0.125rem
+
+.card__buttons
+  display: flex
+  margin-top: 1rem
+  justify-content: space-between

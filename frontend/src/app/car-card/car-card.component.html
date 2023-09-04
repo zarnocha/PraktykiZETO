@@ -1,0 +1,39 @@
+<mat-card class="card">
+  <img class="card__image" [src]="'data:image/png;base64,' + carData.picture" />
+
+  <span class="car__title">
+    <h1 class="car__name">{{ carData.brand }} {{ carData.model }}</h1>
+    <h4 class="car__year">({{ carData.productionYear }})</h4>
+  </span>
+
+  <div class="card__specs">
+    <span class="card__specs__single-info">
+      <mat-icon>airline_seat_recline_normal</mat-icon>
+      {{ carData.seats
+      }}<!-- Liczba osób (int) -->
+    </span>
+    <span class="card__specs__single-info">
+      <mat-icon>settings</mat-icon>
+      <ng-container *ngIf="carData.gearbox === 'MANUAL'">
+        Manual.
+      </ng-container>
+      <ng-container *ngIf="carData.gearbox === 'AUTOMATIC'">
+        Automat.
+      </ng-container>
+      <ng-container *ngIf="carData.gearbox === 'SEMI_AUTOMATIC'">
+        Półautomat.
+      </ng-container>
+      <!-- Rodzaj skrzyni (AUTOMAT/ MANUAL) -->
+    </span>
+
+    <span class="card__specs__single-info">
+      <mat-icon>oil_barrel</mat-icon>
+      {{ carData.fuelConsumption }}L/100KM<!-- Spalanie paliwa INT/KM -->
+    </span>
+  </div>
+
+  <div class="card__buttons">
+    <button mat-stroked-button>Więcej o aucie</button>
+    <button mat-raised-button>Wypożycz</button>
+  </div>
+</mat-card>

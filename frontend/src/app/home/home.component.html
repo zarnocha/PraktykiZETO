@@ -1,0 +1,47 @@
+<div class="container">
+  <h1 class="container__title">Nasze pojazdy:</h1>
+
+  <div class="button-container">
+    <mat-button-toggle-group
+      class="container__switch-views"
+      value="grid"
+      [(ngModel)]="viewMode"
+      #group="matButtonToggleGroup"
+    >
+      <mat-button-toggle value="grid" aria-label="Auta pokazane w siatce">
+        <mat-icon>grid_on</mat-icon>
+      </mat-button-toggle>
+      <mat-button-toggle value="list" aria-label="Auta pokazane w liście">
+        <mat-icon>view_headline</mat-icon>
+        <!-- zamienniki ikon: view_stream/ view_agenda -->
+      </mat-button-toggle>
+    </mat-button-toggle-group>
+  </div>
+
+  <div *ngIf="showLoader" class="loading">
+    <mat-spinner></mat-spinner>
+  </div>
+
+  <div *ngIf="errorMessage" class="loading">
+    <p>{{ errorMessage }}</p>
+    <button (click)="fetchCarData()">Spróbuj ponownie</button>
+  </div>
+
+  <ng-container *ngIf="!showLoader">
+    <ng-container *ngIf="viewMode === 'grid'">
+      <div class="cars__grid">
+        <ng-container *ngFor="let car of cars">
+          <car-card [carData]="car"></car-card>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="viewMode === 'list'">
+      <div class="cars__list">
+        <ng-container *ngFor="let car of cars">
+          <car-list-element [carData]="car"></car-list-element>
+        </ng-container>
+      </div>
+    </ng-container>
+  </ng-container>
+</div>

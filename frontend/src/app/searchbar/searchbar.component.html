@@ -1,25 +1,26 @@
-<form class="searchbar">
+<form [formGroup]="stateForm" class="searchbar">
   <mat-form-field>
-    <mat-label>
-      <span>Wyszukaj...</span>
-    </mat-label>
-    <mat-icon style="color: white" matSuffix>search</mat-icon>
-
+    <mat-label>Wyszukaj...</mat-label>
     <input
       type="text"
-      placeholder="opcje:"
-      aria-label="Wyszukiwarka"
       matInput
-      [formControl]="myControl"
-      [matAutocomplete]="auto"
+      placeholder="Szukaj"
+      formControlName="stateGroup"
+      [matAutocomplete]="autoGroup"
     />
-    <mat-autocomplete #auto="matAutocomplete">
-      <mat-option
-        *ngFor="let option of filteredOptions | async"
-        [value]="option"
-      >
-        {{ option }}
-      </mat-option>
+    <mat-autocomplete #autoGroup="matAutocomplete">
+      <ng-container *ngFor="let mainGroup of groupOptions | async">
+        <mat-optgroup [label]="mainGroup.name">
+          <mat-optgroup
+            [label]="subgroup.letter"
+            *ngFor="let subgroup of mainGroup.subgroups"
+          >
+            <mat-option [value]="name" *ngFor="let name of subgroup.names">
+              {{ name }}
+            </mat-option>
+          </mat-optgroup>
+        </mat-optgroup>
+      </ng-container>
     </mat-autocomplete>
   </mat-form-field>
 </form>

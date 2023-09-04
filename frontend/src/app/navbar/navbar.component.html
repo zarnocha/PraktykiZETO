@@ -1,22 +1,24 @@
-<div routerLink="/" class="logo">
-  <img
-    class="logo__image"
-    src="../assets/logo/logo-black.png"
-    alt="Logo strony"
-  />
-  <h3 class="logo__text">
-    Wyp<span class="logo__text__letter--o"></span>życzalnia aut
-  </h3>
+<div>
+  <div routerLink="/" class="logo">
+    <img
+      class="logo__image"
+      src="../assets/logo/logo-white.png"
+      alt="Logo strony"
+    />
+    <h3 class="logo__text">
+      Wyp<span class="logo__text__letter--o"></span>życzalnia aut
+    </h3>
+  </div>
 </div>
-
-<nav mat-tab-nav-bar [backgroundColor]="'accent'" [tabPanel]="tabPanel">
+<nav mat-tab-nav-bar [tabPanel]="tabPanel" color="primary">
   <ng-container *ngFor="let link of routes; let i = index">
-    <searchbar *ngIf="i === 3"></searchbar>
+    <searchbar *ngIf="i === 6"></searchbar>
     <a
       *ngIf="link.data"
       mat-tab-link
       [routerLink]="link.path"
       [active]="'/' + link.path == activeLink"
+      class="navigation__label--color"
     >
       {{ link.data["title"] }}
     </a>
