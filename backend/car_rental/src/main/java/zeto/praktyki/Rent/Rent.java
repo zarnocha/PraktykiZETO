@@ -18,8 +18,9 @@ public class Rent {
 
     private LocalDateTime startTime;
     private LocalDateTime endTime;
+    private Boolean actualStartTime;
     private LocalDateTime actualEndTime;
-    private Boolean returnedOnTime;
+    private double price;
 
     @ManyToOne
     @JoinColumn
