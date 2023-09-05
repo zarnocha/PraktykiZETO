@@ -1,13 +1,13 @@
 package zeto.praktyki.Car;
 
 public class CarEnums {
-    static enum Gearbox {
+    public static enum Gearbox {
         MANUAL,
         AUTOMATIC,
         SEMI_AUTOMATIC
     }
 
-    static enum Drive {
+    public static enum Drive {
         FWD,
         RWD,
         AWD

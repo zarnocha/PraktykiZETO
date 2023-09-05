@@ -9,6 +9,9 @@ import zeto.praktyki.Car.CarEnums.Gearbox;
 import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.User.UserEntity;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -50,10 +53,7 @@ public class CarEntity {
     @Column(nullable = false)
     private long mileage;
     @Column(nullable = false)
-    private boolean available;
-    @Column(nullable = false)
     private Gearbox gearbox;
-    // @JsonIgnore
     @Lob
     @Column(nullable = true)
     String picture;
@@ -84,10 +84,24 @@ public class CarEntity {
         this.description = description;
         this.value = value;
         this.mileage = mileage;
-        this.available = true;
         this.rents = new HashSet<>();
         this.added_by = null; // TODO jak bedzie token to zmienić
         this.gearbox = gearbox;
         this.picture = picture;
+    }
+
+    public double calculatePrice(LocalDateTime from, LocalDateTime to) {
+        Long hours = from.until(to, ChronoUnit.HOURS);
+        System.out.println(hours);
+        Integer carYears = LocalDate.now().getYear() - this.getProductionYear();
+        if (carYears < 30) {
+            carYears = 30;
+        }
+        Double a = Math.pow(0.999, hours);
+        Double b = this.price * 0.0003;
+        Double c = (105 - carYears) / 100.0;
+        return a * b * c * hours;
+        // return Math.pow(0.999, hours) * this.price * 0.0003 * ((105 - carYears) /
+        // 100.0) * hours;
     }
 }
