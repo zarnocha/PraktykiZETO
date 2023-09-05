@@ -8,6 +8,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatTabsModule } from '@angular/material/tabs';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
+import { MatMomentDateModule } from '@angular/material-moment-adapter';
 
 @NgModule({
   declarations: [AppComponent],
@@ -18,7 +19,9 @@ import { HttpClientModule } from '@angular/common/http';
     MatTabsModule,
     NavbarComponent,
     HttpClientModule,
+    MatMomentDateModule,
   ],
+
   providers: [],
   bootstrap: [AppComponent],
 })

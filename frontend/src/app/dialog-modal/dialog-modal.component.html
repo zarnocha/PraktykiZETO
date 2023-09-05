@@ -1,0 +1,87 @@
+<h1 mat-dialog-title class="!font-bold">Filtrowanie:</h1>
+<div mat-dialog-content>
+  <p class="mb-2">Uzupełnij pola, aby przefiltrować auta:</p>
+  <div class="flex flex-col">
+    <mat-form-field>
+      <mat-label>Brand</mat-label>
+      <input matInput type="text" [(ngModel)]="data.brand" />
+      <button
+        *ngIf="data.brand"
+        matSuffix
+        mat-icon-button
+        matTooltip="Wyczyść filter"
+        aria-label="Clear"
+        (click)="data.brand = ''"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Model</mat-label>
+      <input matInput type="text" min="0" [(ngModel)]="data.model" />
+      <button
+        *ngIf="data.model"
+        matSuffix
+        mat-icon-button
+        matTooltip="Wyczyść filter"
+        aria-label="Clear"
+        (click)="data.model = null"
+      >
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="data.available">
+      Aktualnie zajęte auta</mat-checkbox
+    >
+
+    <mat-slider min="0" max="500" thumbLabel tickInterval="auto">
+      <input
+        [(ngModel)]="data.horsePowerFrom"
+        value="{{ data.horsePowerFrom }}"
+        matSliderStartThumb
+      />
+      <input
+        [(ngModel)]="data.horsePowerTo"
+        value="{{ data.horsePowerTo }}"
+        matSliderEndThumb
+      />
+    </mat-slider>
+    <p>{{ data.horsePowerFrom }} - {{ data.horsePowerTo }}</p>
+
+    <mat-form-field appearance="fill">
+      <mat-label>Enter a date range</mat-label>
+      <mat-date-range-input [rangePicker]="rangePicker">
+        <input matStartDate placeholder="Start date" />
+        <input matEndDate placeholder="End date" />
+      </mat-date-range-input>
+      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="rangePicker"
+      ></mat-datepicker-toggle>
+      <mat-date-range-picker #rangePicker>
+        <mat-date-range-picker-actions>
+          <button mat-button matDateRangePickerCancel>Cancel</button>
+          <button mat-raised-button color="primary" matDateRangePickerApply>
+            Apply
+          </button>
+        </mat-date-range-picker-actions>
+      </mat-date-range-picker>
+    </mat-form-field>
+  </div>
+</div>
+<div mat-dialog-actions class="flex !justify-around">
+  <button mat-stroked-button color="accent" (click)="onNoClick()">
+    Zamknij
+  </button>
+  <button
+    mat-raised-button
+    color="primary"
+    [mat-dialog-close]="data"
+    cdkFocusInitial
+  >
+    Zatwierdź
+  </button>
+</div>

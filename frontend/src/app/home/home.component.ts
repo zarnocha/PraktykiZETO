@@ -14,6 +14,12 @@ import {
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import {
+  DialogData,
+  DialogModalComponent,
+} from '../dialog-modal/dialog-modal.component';
+import { MatDialogModule } from '@angular/material/dialog';
 
 @Component({
   selector: 'app-home',
@@ -22,6 +28,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
     CarCardComponent,
     CarListElementComponent,
     CommonModule,
+    DialogModalComponent,
     MatButtonModule,
     MatTooltipModule,
     MatIconModule,
@@ -30,16 +37,44 @@ import { MatGridListModule } from '@angular/material/grid-list';
     FormsModule,
     MatProgressSpinnerModule,
     MatGridListModule,
+    MatDialogModule,
   ],
+
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass'],
 })
 export class HomeComponent implements OnInit {
+  constructor(public homeService: HomeService, public dialog: MatDialog) {}
   cars: api.CarEntity[] = [];
   showLoader: boolean = false;
   errorMessage: string = '';
   public viewMode: 'list' | 'grid' = 'grid';
-  constructor(private homeService: HomeService) {}
+
+  dialogData: DialogData = { horsePowerFrom: 50, horsePowerTo: 150 };
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(DialogModalComponent, {
+      data: {
+        horsePowerFrom: this.dialogData.horsePowerFrom,
+        horsePowerTo: this.dialogData.horsePowerTo,
+        model: this.dialogData.model,
+        brand: this.dialogData.brand,
+        available: this.dialogData.available,
+      },
+    });
+
+    dialogRef.afterClosed().subscribe((result: DialogData) => {
+      console.log('The dialog was closed');
+      if (result) {
+        this.dialogData.brand = result.brand;
+        this.dialogData.model = result.model;
+        this.dialogData.available = result.available;
+        this.dialogData.horsePowerFrom = result.horsePowerFrom;
+        this.dialogData.horsePowerTo = result.horsePowerTo;
+        console.log(result);
+      }
+    });
+  }
 
   fetchCarData(): void {
     this.showLoader = true;
@@ -61,5 +96,6 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.showLoader = true;
     this.fetchCarData();
+    this.openDialog();
   }
 }

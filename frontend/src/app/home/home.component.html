@@ -1,9 +1,11 @@
 <div class="container">
-  <h1 class="container__title">Nasze pojazdy:</h1>
+  <div class="container__title">
+    <h1 class="container__title__text">Nasze pojazdy:</h1>
+  </div>
 
   <div class="button-container">
     <button
-      (click)="fetchCarData()"
+      (click)="openDialog()"
       mat-raised-button
       extended
       class="button-container__filter"
