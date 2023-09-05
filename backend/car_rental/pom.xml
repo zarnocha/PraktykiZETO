@@ -91,11 +91,9 @@
 				</executions>
 				<configuration>
 					<jsonLibrary>jackson2</jsonLibrary>
-					<classes>
-            <class>zeto.praktyki.Car.CarEntity</class>
-            <class>zeto.praktyki.Rent.RentEntity</class>
-            <class>zeto.praktyki.User.UserEntity</class>
-          </classes>
+					<classPatterns>
+            <pattern>zeto.praktyki.**DTO</pattern>
+          </classPatterns>
 
 					<outputFile>../../frontend/src/types/api.d.ts</outputFile>
 					<outputKind>global</outputKind>

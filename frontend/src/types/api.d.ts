@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-09-04 16:02:20.
+// Generated using typescript-generator version 3.2.1263 on 2023-09-05 09:21:25.
 
 declare namespace api {
   interface CarEntity {
@@ -38,7 +38,6 @@ declare namespace api {
   interface UserEntity {
     id: number;
     login: string;
-    password: string;
     firstName: string;
     lastName: string;
     creditCardNuber: string;
