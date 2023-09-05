@@ -13,6 +13,9 @@
   -webkit-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.74)
   -moz-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
   box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
+  width: 360px
+  max-width: 640px
+
   // min-width: 30dvh
   // height: 25dvh
   // border: 1px red solid
@@ -23,10 +26,28 @@
   pointer-events: none
   max-width: 100%
   height: auto
-  min-width: 265px
+  min-width: 10vw
+  max-width: 100%
+  object-fit: contain
+
+.card__image__container
+  position: relative
+  text-align: center
+  width: 100%
+  min-height: 160px
+  max-width: 320px
+  margin: 0 auto
+  height: 220px
+  display: -webkit-box
+  display: -ms-flexbox
+  display: flex
+  -webkit-box-align: center
+  -ms-flex-align: center
+  align-items: center
 
 .car__title
   display: block
+  color: #ebeb5e !important
   text-shadow: 4px 4px 6px #31323d
   text-align: center
   overflow: hidden
@@ -34,8 +55,17 @@
   cursor: pointer
   padding: 0
 
+.car__engineCapacity
+  width: fit-content
+  display: inline
+  font-size: medium
+  margin-left: 0.5rem
+  white-space: nowrap
+  color: #bbbbbb
+
 .car__name
   font-size: x-large
+  font-weight: bold
   text-align: center
   padding: 0.125rem
   margin: 0.5rem 0
@@ -48,6 +78,7 @@
 .car__title:hover
   white-space: wrap
   word-break: break-all
+
   // overflow: visible
   .car__name
     word-break: break-word
@@ -80,3 +111,14 @@
   display: flex
   margin-top: 1rem
   justify-content: space-between
+
+.card__buttons__primary
+  border: 1px solid #ebeb5e
+  border-color: #ebeb5e !important
+  // color: #ebeb5e !important
+  font-weight: bold
+  text-shadow: 0 0 10px #ebeb5e
+
+.card__buttons__secondary
+  border-color: #ebeb5e !important
+  color: whitesmoke !important

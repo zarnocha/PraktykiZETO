@@ -4,17 +4,46 @@
   width: 80dvw
 
 .button-container
-  display: flex
-  justify-content: flex-end
+  display: grid
+  grid-template-rows: 1fr
+  grid-template-columns: 1fr 1fr 1fr
+  grid-column-gap: 5px
+  justify-items: center
+  margin-top: 1rem
+  // justify-content: flex-end
 
-.container__switch-views
-  top: -7%
+.button-container__filter
+  grid-row-start: 1
+  grid-column-start: 2
+
+  grid-row-end: 2
+  grid-column-end: 3
+  background-color: #fff
+  color: black
+  height: 100%
+
+.button-container__switch-views
+  // top: -7%
+  margin-left: auto
+  grid-row-start: 1
+  grid-column-start: 3
+
+  grid-row-end: 2
+  grid-column-end: 4
 
 .container__title
   text-align: center
+  font-size: xx-large
   margin-top: 3rem
 
 .cars__grid
+  margin-top: 2rem
+  display: grid
+  gap: 1.5rem
+  grid-template-columns: repeat(auto-fit, minmax(360px, 1fr))
+  justify-content: space-between
+
+.cars__list
   margin-top: 2rem
   display: flex
   flex-wrap: wrap
@@ -25,4 +54,18 @@
   margin: 0 auto
   display: flex
   justify-content: center
+  align-items: center
   margin-top: 2rem
+  flex-direction: column
+
+.loading__tire
+  animation: rotation 1s infinite linear
+
+@keyframes rotation
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+.loading__fetchDataButton
+  margin-top: 1rem
