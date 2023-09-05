@@ -96,6 +96,5 @@ export class HomeComponent implements OnInit {
   ngOnInit(): void {
     this.showLoader = true;
     this.fetchCarData();
-    this.openDialog();
   }
 }
