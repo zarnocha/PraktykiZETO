@@ -1,12 +1,6 @@
 package zeto.praktyki.Car;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.PagingAndSortingRepository;
-import org.springframework.data.util.Predicates;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -16,11 +10,14 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Join;
+import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-import zeto.praktyki.Car.CarEnums.Drive;
-import zeto.praktyki.Car.CarEnums.Gearbox;
+import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
+import zeto.praktyki.Rent.RentEntity;
+import zeto.praktyki.Rent.RentEntity_;
 
 @Repository
 public class CarRepositoryCQ {
@@ -29,8 +26,8 @@ public class CarRepositoryCQ {
     EntityManager em;
 
     @Transactional
-    public List<CarEntity> findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(String brand, String model,
-            Integer horsePowerFrom, Integer horsePowerTo, Gearbox gearbox, Drive drive) {
+    public List<CarEntity> findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(
+            CarListQueryParamsDTO carListQueryParams) {
         CriteriaBuilder cb = em.getCriteriaBuilder();
         CriteriaQuery<CarEntity> cq = cb.createQuery(CarEntity.class);
 
@@ -38,33 +35,61 @@ public class CarRepositoryCQ {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        if (brand != null) {
-            predicates.add(cb.equal(car.get("brand"), brand));
+        if (carListQueryParams.getBrand() != null) {
+            predicates.add(cb.equal(car.get(CarEntity_.brand), carListQueryParams.getBrand()));
         }
 
-        if (model != null) {
-            predicates.add(cb.equal(car.get("model"), model));
+        if (carListQueryParams.getModel() != null) {
+            predicates.add(cb.equal(car.get(CarEntity_.model), carListQueryParams.getModel()));
         }
 
-        if (gearbox != null) {
-            predicates.add(cb.equal(car.get("gearbox"), gearbox));
+        if (carListQueryParams.getGearbox() != null) {
+            predicates.add(cb.equal(car.get(CarEntity_.gearbox), carListQueryParams.getGearbox()));
         }
 
-        if (drive != null) {
-            predicates.add(cb.equal(car.get("drive"), drive));
+        if (carListQueryParams.getDrive() != null) {
+            predicates.add(cb.equal(car.get(CarEntity_.drive), carListQueryParams.getDrive()));
         }
 
-        if (horsePowerFrom != null) {
-            predicates.add(cb.greaterThanOrEqualTo(car.get("horsePower"), horsePowerFrom));
+        if (carListQueryParams.getHorsePowerFrom() != null) {
+            predicates.add(
+                    cb.greaterThanOrEqualTo(car.get(CarEntity_.horsePower), carListQueryParams.getHorsePowerFrom()));
         }
 
-        if (horsePowerTo != null) {
-            predicates.add(cb.lessThanOrEqualTo(car.get("horsePower"), horsePowerTo));
+        if (carListQueryParams.getHorsePowerTo() != null) {
+            predicates.add(cb.lessThanOrEqualTo(car.get(CarEntity_.horsePower), carListQueryParams.getHorsePowerTo()));
         }
 
-        cq.where(predicates.toArray(new Predicate[0]));
+        Join<CarEntity, RentEntity> rentsJoin = car.join(CarEntity_.rents, JoinType.LEFT);
+
+        Predicate doesntHaveRentsPredicate = cb.isEmpty(car.get(CarEntity_.rents));
+
+        Predicate fromBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.startTime), carListQueryParams.getFrom(),
+                carListQueryParams.getTo());
+        Predicate toBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.endTime),
+                carListQueryParams.getFrom(), carListQueryParams.getTo());
+        Predicate outerBeforePredicate = cb.lessThan(rentsJoin.get(RentEntity_.startTime),
+                carListQueryParams.getFrom());
+        Predicate outerAfterPredicate = cb.greaterThan(rentsJoin.get(RentEntity_.endTime), carListQueryParams.getTo());
+
+        Predicate outerPredicate = cb.and(outerBeforePredicate, outerAfterPredicate);
+        Predicate innerPredicate = cb.or(fromBetweenPredicate, toBetweenPredicate);
+
+        Predicate preFinalPredicate = cb.or(innerPredicate, outerPredicate).not();
+        Predicate finalPredicate = cb.or(preFinalPredicate, doesntHaveRentsPredicate);
+
+        if (carListQueryParams.getAvailable()) {
+            predicates.add(finalPredicate);
+        } else {
+            predicates.add(finalPredicate.not());
+        }
+
+        Predicate all = cb.and(predicates.toArray(new Predicate[0]));
+
+        cq.where(all);
 
         TypedQuery<CarEntity> query = em.createQuery(cq);
         return query.getResultList();
     }
 }
+// TODO: aktywny nieaktywny, DTO, budowanie maven, metamodel CarEntity_

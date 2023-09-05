@@ -1,18 +1,14 @@
 package zeto.praktyki.Car;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cglib.core.Local;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import zeto.praktyki.Car.CarEnums.Drive;
-import zeto.praktyki.Car.CarEnums.Gearbox;
-import zeto.praktyki.Rent.RentEntity;
-import zeto.praktyki.Rent.RentRepository;
+import zeto.praktyki.Car.CarDTO.CarListDTO;
+import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
 import zeto.praktyki.Rent.RentService;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,36 +37,27 @@ public class CarService {
         return carRepository.save(car);
     }
 
-    public List<CarEntity> getCarByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(String brand, String model,
-            Integer horsePowerFrom, Integer horsePowerTo, Gearbox gearbox, Drive drive, LocalDateTime rentFrom,
-            LocalDateTime rentTo) {
-        List<CarEntity> cars = carRepositoryCQ.findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(brand, model,
-                horsePowerFrom,
-                horsePowerTo, gearbox, drive);
+    public List<CarListDTO> getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(
+            CarListQueryParamsDTO carListQueryParams) {
+        List<CarEntity> cars = carRepositoryCQ
+                .findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(carListQueryParams);
 
-        System.out.println("from: " + rentFrom + "\nto: " + rentTo);
+        List<CarListDTO> carsDTO = new ArrayList<CarListDTO>();
 
-        List<CarEntity> carsCopy = new ArrayList<CarEntity>(cars);
-
-        for (CarEntity car : carsCopy) {
-            System.out.println("weszlo w petle");
-            if (!rentService.isCarAvailableAtTime(car, rentFrom, rentTo)) {
-                cars.remove(car);
-            }
+        for (CarEntity car : cars) {
+            carsDTO.add(new CarListDTO(car, carListQueryParams.getFrom(), carListQueryParams.getTo()));
         }
 
-        return cars;
+        return carsDTO;
     }
 
-    // https://www.logicbig.com/tutorials/java-ee-tutorial/jpa/criteria-api-between-operator.html
-
-    // public boolean isCarAvailableAtTime(CarEntity car, LocalDateTime from,
-    // LocalDateTime to) {
-    // List<RentEntity> rents = rentService.getByCar(car);
-    // for (RentEntity rent : rents) {
-    // Boolean isStartTimeInBetween = rent.getStartTime().isAfter(from) &&
-    // rent.getStartTime().isBefore(to);
-    // }
-    // }
+    public void deleteCarById(Long id) {
+        if (carRepository.findById(id).isPresent()) {
+            CarEntity carToDelete = carRepository.findById(id).get();
+            carRepository.delete(carToDelete);
+        } else {
+            throw new ResponseStatusException(HttpStatus.OK, "Nie znaleziono samochodu o takim id!");
+        }
+    }
 
 }
