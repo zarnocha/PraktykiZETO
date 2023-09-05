@@ -11,6 +11,10 @@ import {
   MatProgressSpinnerModule,
   MatProgressSpinner,
 } from '@angular/material/progress-spinner';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
+
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -18,10 +22,14 @@ import {
     CarCardComponent,
     CarListElementComponent,
     CommonModule,
+    MatButtonModule,
+    MatTooltipModule,
+    MatIconModule,
     MatButtonToggleModule,
     MatIconModule,
     FormsModule,
     MatProgressSpinnerModule,
+    MatGridListModule,
   ],
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.sass'],
@@ -35,9 +43,11 @@ export class HomeComponent implements OnInit {
 
   fetchCarData(): void {
     this.showLoader = true;
+    this.errorMessage = '';
     this.homeService.getCars().subscribe({
       next: (v: Array<api.CarEntity>) => {
         this.cars = v;
+        console.log(v);
         this.showLoader = false;
       },
       error: (e) => {

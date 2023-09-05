@@ -2,8 +2,17 @@
   <h1 class="container__title">Nasze pojazdy:</h1>
 
   <div class="button-container">
+    <button
+      (click)="fetchCarData()"
+      mat-raised-button
+      extended
+      class="button-container__filter"
+    >
+      Filtrowanie
+      <mat-icon>filter_list</mat-icon>
+    </button>
     <mat-button-toggle-group
-      class="container__switch-views"
+      class="button-container__switch-views"
       value="grid"
       [(ngModel)]="viewMode"
       #group="matButtonToggleGroup"
@@ -19,12 +28,26 @@
   </div>
 
   <div *ngIf="showLoader" class="loading">
-    <mat-spinner></mat-spinner>
+    <!-- <mat-spinner></mat-spinner> -->
+    <h3 class="mb-4 text-xl">Pobieranie danych...</h3>
+    <img
+      src="../../assets/tire/car-tire-wheel-icon-white.png"
+      class="loading__tire"
+    />
   </div>
 
   <div *ngIf="errorMessage" class="loading">
-    <p>{{ errorMessage }}</p>
-    <button (click)="fetchCarData()">Spróbuj ponownie</button>
+    <h3>{{ errorMessage }}</h3>
+    <button
+      (click)="fetchCarData()"
+      mat-fab
+      extended
+      color="accent"
+      class="loading__fetchDataButton"
+    >
+      <mat-icon color="primary">cached</mat-icon>
+      Spróbuj ponownie
+    </button>
   </div>
 
   <ng-container *ngIf="!showLoader">

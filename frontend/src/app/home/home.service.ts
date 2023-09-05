@@ -17,9 +17,7 @@ export class HomeService {
       })
       .pipe(
         catchError((error) => {
-          return throwError(
-            () => new Error('Wystąpił błąd z połączeniem. Spróbuj ponownie.')
-          );
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
         })
       );
   }
