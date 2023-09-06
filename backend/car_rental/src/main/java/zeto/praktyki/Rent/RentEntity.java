@@ -5,7 +5,9 @@ import lombok.Data;
 import zeto.praktyki.Car.CarEntity;
 import zeto.praktyki.User.UserEntity;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 @Data
 @Entity

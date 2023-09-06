@@ -39,16 +39,15 @@ public class CarService {
 
     public List<CarListDTO> getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(
             CarListQueryParamsDTO carListQueryParams) {
-        List<CarEntity> cars = carRepositoryCQ
+        List<CarListDTO> cars = carRepositoryCQ
                 .findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(carListQueryParams);
 
-        List<CarListDTO> carsDTO = new ArrayList<CarListDTO>();
-
-        for (CarEntity car : cars) {
-            carsDTO.add(new CarListDTO(car, carListQueryParams.getFrom(), carListQueryParams.getTo()));
+        for (CarListDTO car : cars) {
+            car.setWholePrice(RentService.calculatePrice(carListQueryParams.getFrom(), carListQueryParams.getTo(),
+                    car.getValue(), car.getProductionYear()));
         }
 
-        return carsDTO;
+        return cars;
     }
 
     public void deleteCarById(Long id) {

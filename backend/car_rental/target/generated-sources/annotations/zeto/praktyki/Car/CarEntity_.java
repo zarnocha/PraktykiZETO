@@ -23,7 +23,6 @@ public abstract class CarEntity_ {
 	public static volatile SingularAttribute<CarEntity, String> picture;
 	public static volatile SingularAttribute<CarEntity, String> licensePlate;
 	public static volatile SingularAttribute<CarEntity, UserEntity> added_by;
-	public static volatile SingularAttribute<CarEntity, Double> price;
 	public static volatile SingularAttribute<CarEntity, String> model;
 	public static volatile SingularAttribute<CarEntity, Long> id;
 	public static volatile SingularAttribute<CarEntity, Gearbox> gearbox;
@@ -42,7 +41,6 @@ public abstract class CarEntity_ {
 	public static final String PICTURE = "picture";
 	public static final String LICENSE_PLATE = "licensePlate";
 	public static final String ADDED_BY = "added_by";
-	public static final String PRICE = "price";
 	public static final String MODEL = "model";
 	public static final String ID = "id";
 	public static final String GEARBOX = "gearbox";

@@ -1,6 +1,9 @@
 package zeto.praktyki.Car;
 
 import java.time.LocalDateTime;
+
+import javax.ws.rs.core.MediaType;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.Produces;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
 import zeto.praktyki.Car.CarEnums.Drive;
 import zeto.praktyki.Car.CarEnums.Gearbox;
 
 @RequestMapping("/api/car")
 @RestController
+@Consumes(MediaType.APPLICATION_JSON)
+@Produces(MediaType.APPLICATION_JSON)
 public class CarController {
     @Autowired
     CarService carService;
@@ -48,20 +55,10 @@ public class CarController {
     }
 
     @GetMapping(path = "/filter", produces = "application/json")
-    public ResponseEntity<Object> getCarsFiltered(@RequestParam(name = "brand", required = false) String brand,
-            @RequestParam(name = "model", required = false) String model,
-            @RequestParam(name = "horsePowerFrom", required = false) Integer horsePowerFrom,
-            @RequestParam(name = "horsePowerTo", required = false) Integer horsePowerTo,
-            @RequestParam(name = "gearbox", required = false) Gearbox gearbox,
-            @RequestParam(name = "drive", required = false) Drive drive,
-            @RequestParam(name = "from", required = true) LocalDateTime from,
-            @RequestParam(name = "to", required = true) LocalDateTime to,
-            @RequestParam(name = "available", required = false, defaultValue = "true") Boolean available) {
+    public ResponseEntity<Object> getCarsFiltered(CarListQueryParamsDTO params) {
         try {
-            CarListQueryParamsDTO argument = new CarListQueryParamsDTO(brand, model, horsePowerFrom, horsePowerTo,
-                    gearbox, drive, from, to, available);
             return new ResponseEntity<>(
-                    carService.getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(argument),
+                    carService.getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(params),
                     HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

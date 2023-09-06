@@ -9,9 +9,6 @@ import zeto.praktyki.Car.CarEnums.Gearbox;
 import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.User.UserEntity;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,12 +38,10 @@ public class CarEntity {
     @Column(nullable = false)
     private Drive drive;
     @Column(nullable = false)
-    private double price;
-    @Column(nullable = false)
     private String licensePlate;
     @Column(nullable = false)
     private int seats;
-    @Column(nullable = true)
+    @Column(nullable = true, length = 1024)
     private String description;
     @Column(nullable = false)
     private double value;
@@ -68,7 +63,7 @@ public class CarEntity {
     private UserEntity added_by;
 
     protected CarEntity(long id, String brand, String model, Integer productionYear, float fuelConsumption,
-            float engineCapacity, Integer horsePower, Drive drive, long price, String licensePlate, int seats,
+            float engineCapacity, Integer horsePower, Drive drive, String licensePlate, int seats,
             String description, double value, long mileage, Gearbox gearbox, String picture) {
         this.id = id;
         this.brand = brand;
@@ -78,7 +73,6 @@ public class CarEntity {
         this.engineCapacity = engineCapacity;
         this.horsePower = horsePower;
         this.drive = drive;
-        this.price = price;
         this.licensePlate = licensePlate;
         this.seats = seats;
         this.description = description;
@@ -90,18 +84,4 @@ public class CarEntity {
         this.picture = picture;
     }
 
-    public double calculatePrice(LocalDateTime from, LocalDateTime to) {
-        Long hours = from.until(to, ChronoUnit.HOURS);
-        System.out.println(hours);
-        Integer carYears = LocalDate.now().getYear() - this.getProductionYear();
-        if (carYears < 30) {
-            carYears = 30;
-        }
-        Double a = Math.pow(0.999, hours);
-        Double b = this.price * 0.0003;
-        Double c = (105 - carYears) / 100.0;
-        return a * b * c * hours;
-        // return Math.pow(0.999, hours) * this.price * 0.0003 * ((105 - carYears) /
-        // 100.0) * hours;
-    }
 }

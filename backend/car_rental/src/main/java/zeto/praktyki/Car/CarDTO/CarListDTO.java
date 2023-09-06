@@ -2,11 +2,15 @@ package zeto.praktyki.Car.CarDTO;
 
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
 import zeto.praktyki.Car.CarEnums.*;
+import zeto.praktyki.Rent.RentEntity;
+import zeto.praktyki.Rent.RentService;
 
 @Data
 @NoArgsConstructor
@@ -21,7 +25,10 @@ public class CarListDTO {
     private Drive drive;
     private int seats;
     private Gearbox gearbox;
+    @JsonIgnore
+    private double value;
     private double wholePrice;
+    private String description;
     private String picture;
 
     public CarListDTO(CarEntity car, LocalDateTime from, LocalDateTime to) {
@@ -35,6 +42,26 @@ public class CarListDTO {
         this.seats = car.getSeats();
         this.gearbox = car.getGearbox();
         this.picture = car.getPicture();
-        this.wholePrice = car.calculatePrice(from, to);
+        this.description = car.getDescription();
+        this.value = car.getValue();
+        this.wholePrice = RentService.calculatePrice(from, to, car.getValue(), car.getProductionYear());
     }
+
+    public CarListDTO(long id, String brand, String model, Integer productionYear, float fuelConsumption,
+            float engineCapacity, Drive drive, int seats, Gearbox gearbox, String description, String picture,
+            Double value) {
+        this.id = id;
+        this.brand = brand;
+        this.model = model;
+        this.productionYear = productionYear;
+        this.fuelConsumption = fuelConsumption;
+        this.engineCapacity = engineCapacity;
+        this.drive = drive;
+        this.seats = seats;
+        this.gearbox = gearbox;
+        this.picture = picture;
+        this.description = description;
+        this.value = value;
+    }
+
 }

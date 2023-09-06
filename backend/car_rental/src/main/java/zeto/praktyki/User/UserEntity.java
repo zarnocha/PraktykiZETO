@@ -28,7 +28,6 @@ public class UserEntity {
     private String login;
 
     @Column(nullable = false)
-    @JsonIgnore
     private String password;
 
     @Column(nullable = false)
