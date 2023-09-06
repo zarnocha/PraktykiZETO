@@ -6,11 +6,11 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatButtonToggleModule } from '@angular/material/button-toggle';
 import { FormsModule } from '@angular/forms';
 import { CarListElementComponent } from '../car-list-element/car-list-element.component';
-import {
-  ProgressSpinnerMode,
-  MatProgressSpinnerModule,
-  MatProgressSpinner,
-} from '@angular/material/progress-spinner';
+// import {
+//   ProgressSpinnerMode,
+//   MatProgressSpinnerModule,
+//   MatProgressSpinner,
+// } from '@angular/material/progress-spinner';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
@@ -35,7 +35,6 @@ import { MatDialogModule } from '@angular/material/dialog';
     MatButtonToggleModule,
     MatIconModule,
     FormsModule,
-    MatProgressSpinnerModule,
     MatGridListModule,
     MatDialogModule,
   ],
@@ -45,7 +44,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 })
 export class HomeComponent implements OnInit {
   constructor(public homeService: HomeService, public dialog: MatDialog) {}
-  cars: api.CarEntity[] = [];
+  cars: api.CarListDTO[] = [];
   showLoader: boolean = false;
   errorMessage: string = '';
   public viewMode: 'list' | 'grid' = 'grid';
@@ -80,7 +79,7 @@ export class HomeComponent implements OnInit {
     this.showLoader = true;
     this.errorMessage = '';
     this.homeService.getCars().subscribe({
-      next: (v: Array<api.CarEntity>) => {
+      next: (v: Array<api.CarListDTO>) => {
         this.cars = v;
         console.log(v);
         this.showLoader = false;

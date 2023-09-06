@@ -13,5 +13,5 @@ import { MatIconModule } from '@angular/material/icon';
 })
 export class CarListElementComponent {
   @Input()
-  carData!: api.CarEntity;
+  carData!: api.CarListDTO;
 }

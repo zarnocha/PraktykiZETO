@@ -21,5 +21,5 @@ import { MatGridListModule } from '@angular/material/grid-list';
 })
 export class CarCardComponent {
   @Input()
-  carData!: api.CarEntity;
- }
+  carData!: api.CarListDTO;
+}

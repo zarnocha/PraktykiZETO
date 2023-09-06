@@ -1,52 +1,35 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-09-05 09:21:25.
+// Generated using typescript-generator version 3.2.1263 on 2023-09-06 08:03:47.
 
 declare namespace api {
-  interface CarEntity {
+  interface CarListDTO {
     id: number;
     brand: string;
     model: string;
     productionYear: number;
     fuelConsumption: number;
     engineCapacity: number;
-    horsePower: number;
     drive: Drive;
-    price: number;
-    licensePlate: string;
     seats: number;
-    description: string;
-    value: number;
-    mileage: number;
-    available: boolean;
     gearbox: Gearbox;
+    wholePrice: number;
     picture: string;
-    added_by: UserEntity;
   }
 
-  interface RentEntity {
-    id: number;
-    startTime: Date;
-    endTime: Date;
-    actualStartTime: Date;
-    actualEndTime: Date;
-    price: number;
-    car: CarEntity;
-    user: UserEntity;
+  interface CarListQueryParamsDTO {
+    brand: string;
+    model: string;
+    horsePowerFrom: number;
+    horsePowerTo: number;
+    gearbox: Gearbox;
+    drive: Drive;
+    from: Date;
+    to: Date;
+    available: boolean;
   }
 
-  interface UserEntity {
-    id: number;
-    login: string;
-    firstName: string;
-    lastName: string;
-    creditCardNuber: string;
-    creditCardExpDate: Date;
-    cvv: string;
-    isAdmin: boolean;
-    rents: RentEntity[];
-    cars: CarEntity[];
-  }
+  interface SingleCarDTO {}
 
   type Drive = 'FWD' | 'RWD' | 'AWD';
 
