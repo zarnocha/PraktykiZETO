@@ -3,7 +3,7 @@
   <p class="mb-2">Uzupełnij pola, aby przefiltrować auta:</p>
   <div class="flex flex-col">
     <mat-form-field>
-      <mat-label>Brand</mat-label>
+      <mat-label>Marka</mat-label>
       <input matInput type="text" [(ngModel)]="data.brand" />
       <button
         *ngIf="data.brand"
@@ -26,15 +26,11 @@
         mat-icon-button
         matTooltip="Wyczyść filter"
         aria-label="Clear"
-        (click)="data.model = null"
+        (click)="data.model = undefined"
       >
         <mat-icon>close</mat-icon>
       </button>
     </mat-form-field>
-
-    <mat-checkbox [(ngModel)]="data.available">
-      Aktualnie zajęte auta</mat-checkbox
-    >
 
     <mat-slider min="0" max="500" thumbLabel tickInterval="auto">
       <input
@@ -48,33 +44,59 @@
         matSliderEndThumb
       />
     </mat-slider>
-    <p>{{ data.horsePowerFrom }} - {{ data.horsePowerTo }}</p>
+    <p>Liczba KM: {{ data.horsePowerFrom }} - {{ data.horsePowerTo }}</p>
+
+    <mat-form-field>
+      <mat-label>Napęd</mat-label>
+      <mat-select [(ngModel)]="data.drive">
+        <mat-option>Wszystkie</mat-option>
+        <mat-option value="FWD">Na przód</mat-option>
+        <mat-option value="RWD">Na tył</mat-option>
+        <mat-option value="AWD">Na cztery koła</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Skrzynia biegów</mat-label>
+      <mat-select [(ngModel)]="data.gearbox">
+        <mat-option>Wszystkie</mat-option>
+        <mat-option value="AUTOMATIC">Automatyczna</mat-option>
+        <mat-option value="MANUAL">Manualna</mat-option>
+      </mat-select>
+    </mat-form-field>
 
     <mat-form-field appearance="fill">
-      <mat-label>Enter a date range</mat-label>
+      <mat-label>Data wypożyczenia (od-do)</mat-label>
       <mat-date-range-input [rangePicker]="rangePicker">
-        <input matStartDate placeholder="Start date" />
-        <input matEndDate placeholder="End date" />
+        <input [(ngModel)]="data.from" matStartDate placeholder="Początek" />
+        <input [(ngModel)]="data.to" matEndDate placeholder="Koniec" />
       </mat-date-range-input>
-      <mat-hint>MM/DD/YYYY - MM/DD/YYYY</mat-hint>
+      <mat-hint>DD.MM.YYYY - DD.MM.YYYY</mat-hint>
       <mat-datepicker-toggle
         matIconSuffix
         [for]="rangePicker"
       ></mat-datepicker-toggle>
       <mat-date-range-picker #rangePicker>
         <mat-date-range-picker-actions>
-          <button mat-button matDateRangePickerCancel>Cancel</button>
+          <button mat-button matDateRangePickerCancel>Zamknij</button>
           <button mat-raised-button color="primary" matDateRangePickerApply>
-            Apply
+            Zatwierdź
           </button>
         </mat-date-range-picker-actions>
       </mat-date-range-picker>
     </mat-form-field>
+
+    <mat-checkbox [(ngModel)]="data.available">
+      Aktualnie zajęte auta</mat-checkbox
+    >
   </div>
 </div>
 <div mat-dialog-actions class="flex !justify-around">
   <button mat-stroked-button color="accent" (click)="onNoClick()">
     Zamknij
+  </button>
+  <button mat-stroked-button color="accent" (click)="onClear()">
+    Zresetuj
   </button>
   <button
     mat-raised-button

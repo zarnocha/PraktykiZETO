@@ -1,24 +1,134 @@
 .list-element
-  background-color: rgba(158, 158, 158, 0.5)
+  background: rgba(255, 255, 255, 0.06) !important
+  border: 1px solid #ccc !important
+  border-radius: 7px
+  padding: 0.5rem
+  -webkit-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.74)
+  -moz-box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
+  box-shadow: 0px 4px 8px 1px rgba(132, 131, 131, 0.3)
   margin-bottom: 1rem
+  // display: flex
+  width: 80dvw
+  // height: 30dvh
+  display: grid
+  max-height: 250px
+  grid-template-rows: 1fr
+  grid-template-columns: 1fr 1fr
+
+.car__image
+  grid-row-start: 1
+  grid-column-start: 1
+  grid-row-end: 2
+  grid-column-end: 2
+  object-fit: scale-down
+
+.card__image
+  display: block
+  margin: 0 auto
+  pointer-events: none
+  max-width: 100%
+  height: auto
+  min-width: 10vw
+  max-width: 100%
+  object-fit: scale-down
+
+.card__image__container
+  overflow: hidden
+  width: 100%
+  min-height: 160px
+  max-width: 400px
+  margin: 0 auto
+  display: -webkit-box
+  display: -ms-flexbox
   display: flex
-  width: 75dvw
-  height: 30dvh
+  -webkit-box-align: center
+  -ms-flex-align: center
+  align-items: center
+
+.grid__right
+  grid-row-start: 1
+  grid-column-start: 2
+  grid-row-end: 2
+  grid-column-end: 3
+  padding: 1rem
+  display: flex
+  flex-direction: column
 
 .car__title
   display: block
-  margin: auto 0
+  color: #ebeb5e !important
+  text-shadow: 4px 4px 6px #31323d
+  text-align: left
+  overflow: hidden
+  pointer-events: auto
+  cursor: pointer
+  padding: 0
+  padding-bottom: 0.5rem
 
-.car__name
+.car__engineCapacity
   width: fit-content
   display: inline
+  // font-size: medium
+  margin-left: 0.5rem
+  white-space: nowrap
+  color: #fff
+  font-size: x-large
+
+.car__name
+  font-size: xx-large
+  font-weight: bold
+  text-align: center
+  padding: 0.125rem
+  margin: 0.5rem 0
+  width: fit-content
+  display: inline
+  word-break: keep-all
+  white-space: nowrap
+
+.car__title:hover
+  white-space: wrap
+  word-break: break-all
+
+  // overflow: visible
+  .car__name
+    word-break: break-word
+    white-space: wrap
+  .car__year
+    word-break: break-all
+    white-space: nowrap
 
 .car__year
   width: fit-content
   display: inline
-  font-size: small
+  font-size: medium
   margin-left: 0.5rem
+  white-space: nowrap
+  color: #bbbbbb
 
 .car__specs
   display: flex
-  justify-content: center
+  width: 100%
+  justify-content: space-evenly
+  margin: auto auto
+
+.car__specs__single-info
+  display: flex
+  align-items: center
+  gap: 0.125rem
+
+.car__buttons
+  display: flex
+  width: 100%
+  justify-content: space-evenly
+  margin: 0 auto
+  margin-top: auto
+
+.car__buttons__primary
+  border: 1px solid #ebeb5e
+  border-color: #ebeb5e !important
+  font-weight: bold
+  text-shadow: 0 0 10px #ebeb5e
+
+.car__buttons__secondary
+  border-color: #ebeb5e !important
+  color: whitesmoke !important

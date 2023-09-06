@@ -9,6 +9,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { NavbarComponent } from './navbar/navbar.component';
 import { HttpClientModule } from '@angular/common/http';
 import { MatMomentDateModule } from '@angular/material-moment-adapter';
+import { MAT_DATE_LOCALE } from '@angular/material/core';
 
 @NgModule({
   declarations: [AppComponent],
@@ -22,7 +23,7 @@ import { MatMomentDateModule } from '@angular/material-moment-adapter';
     MatMomentDateModule,
   ],
 
-  providers: [],
+  providers: [{ provide: MAT_DATE_LOCALE, useValue: 'pl-PL' }],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

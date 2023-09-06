@@ -5,6 +5,7 @@
 declare namespace api {
   interface CarListDTO {
     id: number;
+    description: string;
     brand: string;
     model: string;
     productionYear: number;
@@ -18,15 +19,15 @@ declare namespace api {
   }
 
   interface CarListQueryParamsDTO {
-    brand: string;
-    model: string;
-    horsePowerFrom: number;
-    horsePowerTo: number;
-    gearbox: Gearbox;
-    drive: Drive;
-    from: Date;
-    to: Date;
-    available: boolean;
+    brand?: string;
+    model?: string;
+    horsePowerFrom?: number;
+    horsePowerTo?: number;
+    gearbox?: Gearbox;
+    drive?: Drive;
+    from?: Date;
+    to?: Date;
+    available?: boolean;
   }
 
   interface SingleCarDTO {}

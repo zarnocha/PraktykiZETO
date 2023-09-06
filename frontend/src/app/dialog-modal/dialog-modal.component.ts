@@ -17,16 +17,11 @@ import { MatSliderModule } from '@angular/material/slider';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRippleModule } from '@angular/material/core';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MatSelectModule } from '@angular/material/select';
 
-export interface DialogData {
-  from?: Date;
-  to?: Date;
-  horsePowerFrom?: number | null;
-  horsePowerTo?: number | null;
-  brand?: string | null;
-  model?: string | null;
-  available?: boolean;
+interface GearboxSelect {
+  value: api.Gearbox;
+  viewValue: 'Automatyczna' | 'Manualna';
 }
 
 @Component({
@@ -47,6 +42,7 @@ export interface DialogData {
     MatDatepickerModule,
     ReactiveFormsModule,
     MatRippleModule,
+    MatSelectModule,
   ],
 
   templateUrl: './dialog-modal.component.html',
@@ -56,10 +52,14 @@ export class DialogModalComponent {
   constructor(
     public dialog: MatDialog,
     public dialogRef: MatDialogRef<DialogModalComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: DialogData
+    @Inject(MAT_DIALOG_DATA) public data: api.CarListQueryParamsDTO
   ) {}
 
   onNoClick(): void {
     this.dialogRef.close();
+  }
+
+  onClear(): void {
+    this.data = { horsePowerFrom: 0, horsePowerTo: 500 };
   }
 }
