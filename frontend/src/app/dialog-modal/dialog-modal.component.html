@@ -2,53 +2,91 @@
 <div mat-dialog-content>
   <p class="mb-2">Uzupełnij pola, aby przefiltrować auta:</p>
   <div class="flex flex-col">
-    <mat-form-field>
+    <!-- <mat-form-field>
       <mat-label>Marka</mat-label>
-      <input matInput type="text" [(ngModel)]="data.brand" />
+      <input matInput type="text" [(ngModel)]="data.queryParams.brand" />
       <button
-        *ngIf="data.brand"
+        *ngIf="data.queryParams.brand"
         matSuffix
         mat-icon-button
         matTooltip="Wyczyść filter"
         aria-label="Clear"
-        (click)="data.brand = ''"
+        (click)="data.queryParams.brand = ''"
       >
         <mat-icon>close</mat-icon>
       </button>
+    </mat-form-field> -->
+
+    <mat-form-field>
+      <mat-label>Marki</mat-label>
+      <mat-select
+        (selectionChange)="getBrandModels()"
+        [(ngModel)]="data.queryParams.brand"
+      >
+        <mat-option value="">Wszystkie</mat-option>
+        <mat-option *ngFor="let marka of carBrands" value="{{ marka }}">{{
+          marka
+        }}</mat-option>
+      </mat-select>
     </mat-form-field>
 
     <mat-form-field>
+      <mat-label>Modele</mat-label>
+      <mat-select [(ngModel)]="data.queryParams.model">
+        <ng-container *ngIf="data.queryParams.brand">
+          <mat-option value="">Wszystkie</mat-option>
+          <mat-option *ngFor="let model of brandModels" [value]="model">{{
+            model
+          }}</mat-option>
+        </ng-container>
+      </mat-select>
+    </mat-form-field>
+
+    <!-- <mat-form-field>
       <mat-label>Model</mat-label>
-      <input matInput type="text" min="0" [(ngModel)]="data.model" />
+      <input
+        matInput
+        type="text"
+        min="0"
+        [(ngModel)]="data.queryParams.model"
+      />
       <button
-        *ngIf="data.model"
+        *ngIf="data.queryParams.model"
         matSuffix
         mat-icon-button
         matTooltip="Wyczyść filter"
         aria-label="Clear"
-        (click)="data.model = undefined"
+        (click)="data.queryParams.model = undefined"
       >
         <mat-icon>close</mat-icon>
       </button>
-    </mat-form-field>
+    </mat-form-field> -->
 
-    <mat-slider min="0" max="500" thumbLabel tickInterval="auto">
+    <mat-slider
+      min="data.queryParams.horsePowerFrom"
+      max="data.queryParams.horsePowerTo"
+      thumbLabel
+      tickInterval="auto"
+    >
       <input
-        [(ngModel)]="data.horsePowerFrom"
-        value="{{ data.horsePowerFrom }}"
+        [(ngModel)]="data.queryParams.horsePowerFrom"
+        value="{{ data.queryParams.horsePowerFrom }}"
         matSliderStartThumb
       />
       <input
-        [(ngModel)]="data.horsePowerTo"
-        value="{{ data.horsePowerTo }}"
+        [(ngModel)]="data.queryParams.horsePowerTo"
+        value="{{ data.queryParams.horsePowerTo }}"
         matSliderEndThumb
       />
     </mat-slider>
-    <p>Liczba KM: {{ data.horsePowerFrom }} - {{ data.horsePowerTo }}</p>
+    <p>
+      Liczba KM: {{ data.queryParams.horsePowerFrom }} -
+      {{ data.queryParams.horsePowerTo }}
+    </p>
 
     <mat-form-field>
       <mat-label>Napęd</mat-label>
-      <mat-select [(ngModel)]="data.drive">
+      <mat-select [(ngModel)]="data.queryParams.drive">
         <mat-option>Wszystkie</mat-option>
         <mat-option value="FWD">Na przód</mat-option>
         <mat-option value="RWD">Na tył</mat-option>
@@ -58,20 +96,31 @@
 
     <mat-form-field>
       <mat-label>Skrzynia biegów</mat-label>
-      <mat-select [(ngModel)]="data.gearbox">
+      <mat-select [(ngModel)]="data.queryParams.gearbox">
         <mat-option>Wszystkie</mat-option>
         <mat-option value="AUTOMATIC">Automatyczna</mat-option>
+        <mat-option value="SEMI_AUTOMATIC">Półautomatyczna</mat-option>
         <mat-option value="MANUAL">Manualna</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Data wypożyczenia (od-do)</mat-label>
-      <mat-date-range-input [rangePicker]="rangePicker">
-        <input [(ngModel)]="data.from" matStartDate placeholder="Początek" />
-        <input [(ngModel)]="data.to" matEndDate placeholder="Koniec" />
+      <mat-date-range-input [rangePicker]="rangePicker" [min]="todayDate">
+        <input
+          [(ngModel)]="data.queryParams.from"
+          matStartDate
+          placeholder="Początek"
+        />
+        <input
+          [(ngModel)]="data.queryParams.to"
+          matEndDate
+          placeholder="Koniec"
+        />
       </mat-date-range-input>
-      <mat-hint>DD.MM.YYYY - DD.MM.YYYY</mat-hint>
+      <mat-hint *ngIf="!(data.queryParams.from || data.queryParams.to)"
+        >DD.MM.YYYY - DD.MM.YYYY</mat-hint
+      >
       <mat-datepicker-toggle
         matIconSuffix
         [for]="rangePicker"
@@ -86,7 +135,31 @@
       </mat-date-range-picker>
     </mat-form-field>
 
-    <mat-checkbox [(ngModel)]="data.available">
+    <!-- <my-date-time-range-picker></my-date-time-range-picker> -->
+    <div class="flex" *ngIf="data.queryParams.from || data.queryParams.to">
+      <div
+        *ngIf="data.queryParams.from"
+        class="flex gap-1 flex-col text-center"
+      >
+        <mat-label>Czas wypożyczenia (od)</mat-label>
+        <ngb-timepicker
+          class="flex justify-center"
+          [spinners]="false"
+          [(ngModel)]="data.time.from"
+          *ngIf="data.queryParams.from"
+        ></ngb-timepicker>
+      </div>
+      <div *ngIf="data.queryParams.to" class="flex gap-1 flex-col text-center">
+        <mat-label>Czas wypożyczenia (do)</mat-label>
+        <ngb-timepicker
+          class="flex justify-center"
+          [spinners]="false"
+          [(ngModel)]="data.time.to"
+          *ngIf="data.queryParams.to"
+        ></ngb-timepicker>
+      </div>
+    </div>
+    <mat-checkbox [(ngModel)]="data.queryParams.available">
       Aktualnie zajęte auta</mat-checkbox
     >
   </div>

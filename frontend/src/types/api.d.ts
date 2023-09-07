@@ -1,11 +1,21 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-09-06 08:03:47.
+// Generated using typescript-generator version 3.2.1263 on 2023-09-07 15:02:25.
 
 declare namespace api {
+  interface CarBrandModelDTO {
+    brand: string;
+    models: string[];
+  }
+
+  interface CarFilterDTO {
+    minHorsepower?: number;
+    maxHorsepower?: number;
+    brands?: CarBrandModelDTO[];
+  }
+
   interface CarListDTO {
     id: number;
-    description: string;
     brand: string;
     model: string;
     productionYear: number;
@@ -15,6 +25,7 @@ declare namespace api {
     seats: number;
     gearbox: Gearbox;
     wholePrice: number;
+    description: string;
     picture: string;
   }
 

@@ -17,6 +17,21 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogModalComponent } from '../dialog-modal/dialog-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+// import * as moment from 'moment';
+
+export interface QueryParamsAndHour {
+  queryParams: api.CarListQueryParamsDTO;
+  time: {
+    from: {
+      hour: number;
+      minute: number;
+    };
+    to: {
+      hour: number;
+      minute: number;
+    };
+  };
+}
 
 @Component({
   selector: 'app-home',
@@ -46,69 +61,126 @@ export class HomeComponent implements OnInit {
   errorMessage: string = '';
   public viewMode: 'list' | 'grid' = 'grid';
 
-  dialogData: api.CarListQueryParamsDTO = {
-    horsePowerFrom: 0,
-    horsePowerTo: 200,
+  dialogData: QueryParamsAndHour = {
+    queryParams: {
+      horsePowerFrom: 0,
+      horsePowerTo: 200,
+      available: true,
+    },
+    time: {
+      from: {
+        hour: 0,
+        minute: 0,
+      },
+      to: {
+        hour: 23,
+        minute: 59,
+      },
+    },
   };
 
   openDialog(): void {
     const dialogRef = this.dialog.open(DialogModalComponent, {
       data: {
-        available: this.dialogData.available,
-        brand: this.dialogData.brand,
-        drive: this.dialogData.drive,
-        model: this.dialogData.model,
-        from: this.dialogData.from,
-        to: this.dialogData.to,
-        gearbox: this.dialogData.gearbox,
-        horsePowerFrom: this.dialogData.horsePowerFrom,
-        horsePowerTo: this.dialogData.horsePowerTo,
+        queryParams: {
+          available: this.dialogData.queryParams.available,
+          brand: this.dialogData.queryParams.brand,
+          drive: this.dialogData.queryParams.drive,
+          model: this.dialogData.queryParams.model,
+          from: this.dialogData.queryParams.from,
+          to: this.dialogData.queryParams.to,
+          gearbox: this.dialogData.queryParams.gearbox,
+          horsePowerFrom: this.dialogData.queryParams.horsePowerFrom,
+          horsePowerTo: this.dialogData.queryParams.horsePowerTo,
+        },
+        time: { from: this.dialogData.time.from, to: this.dialogData.time.to },
       },
     });
 
-    dialogRef.afterClosed().subscribe((result: api.CarListQueryParamsDTO) => {
-      if (result) {
-        this.dialogData.available = result.available
-          ? result.available
+    dialogRef.afterClosed().subscribe((result: QueryParamsAndHour) => {
+      if (result && result.queryParams) {
+        this.dialogData.queryParams.available = result.queryParams.available
+          ? result.queryParams.available
           : undefined;
-        this.dialogData.brand = result.brand ? result.brand : undefined;
-        this.dialogData.drive = result.drive ? result.drive : undefined;
-        this.dialogData.model = result.model ? result.model : undefined;
+        this.dialogData.queryParams.brand = result.queryParams.brand
+          ? result.queryParams.brand
+          : undefined;
+        this.dialogData.queryParams.drive = result.queryParams.drive
+          ? result.queryParams.drive
+          : undefined;
+        this.dialogData.queryParams.model = result.queryParams.model
+          ? result.queryParams.model
+          : undefined;
 
-        this.dialogData.from = result.from ? result.from : undefined;
+        this.dialogData.queryParams.from = result.queryParams.from
+          ? result.queryParams.from
+          : undefined;
 
-        this.dialogData.to = result.to ? result.to : undefined;
+        this.dialogData.queryParams.to = result.queryParams.to
+          ? result.queryParams.to
+          : undefined;
 
-        this.dialogData.gearbox = result.gearbox ? result.gearbox : undefined;
+        this.dialogData.time.from = result.time.from;
+        this.dialogData.time.to = result.time.to;
 
-        this.dialogData.horsePowerFrom =
-          result.horsePowerFrom === 0 || result.horsePowerFrom
-            ? result.horsePowerFrom
+        this.dialogData.queryParams.from?.setHours(
+          result.time.from.hour,
+          result.time.from.minute
+        );
+
+        this.dialogData.queryParams.to?.setHours(
+          result.time.to.hour,
+          result.time.to.minute
+        );
+
+        this.dialogData.queryParams.gearbox = result.queryParams.gearbox
+          ? result.queryParams.gearbox
+          : undefined;
+
+        this.dialogData.queryParams.horsePowerFrom =
+          result.queryParams.horsePowerFrom === 0 ||
+          result.queryParams.horsePowerFrom
+            ? result.queryParams.horsePowerFrom
             : undefined;
-        this.dialogData.horsePowerTo = result.horsePowerTo
-          ? result.horsePowerTo
+        this.dialogData.queryParams.horsePowerTo = result.queryParams
+          .horsePowerTo
+          ? result.queryParams.horsePowerTo
           : undefined;
 
-        console.log(result);
+        this.fetchCarData(this.dialogData.queryParams);
       }
     });
   }
 
-  fetchCarData(): void {
+  fetchCarData(queryParams?: api.CarListQueryParamsDTO): void {
     this.showLoader = true;
     this.errorMessage = '';
-    this.homeService.getCars().subscribe({
-      next: (carData: Array<api.CarListDTO>) => {
-        this.cars = carData;
-        console.log(carData);
-        this.showLoader = false;
-      },
-      error: (e) => {
-        console.error(e);
-        this.showLoader = false;
-        this.errorMessage = e.message;
-      },
-    });
+    this.cars = [];
+    if (queryParams) {
+      this.homeService.getCars(queryParams).subscribe({
+        next: (carData: Array<api.CarListDTO>) => {
+          this.cars = carData;
+          this.showLoader = false;
+        },
+        error: (e) => {
+          console.error(e);
+          this.showLoader = false;
+          this.errorMessage = e.message;
+        },
+      });
+    } else {
+      this.homeService.getCars().subscribe({
+        next: (carData: Array<api.CarListDTO>) => {
+          this.cars = carData;
+          this.showLoader = false;
+        },
+        error: (e) => {
+          console.error(e);
+          this.showLoader = false;
+          this.errorMessage = e.message;
+        },
+      });
+    }
   }
 
   ngOnInit(): void {

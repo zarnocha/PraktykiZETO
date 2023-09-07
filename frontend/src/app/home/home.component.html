@@ -52,7 +52,7 @@
     </button>
   </div>
 
-  <ng-container *ngIf="!showLoader">
+  <ng-container *ngIf="!showLoader && cars">
     <ng-container *ngIf="viewMode === 'grid'">
       <div class="cars__grid">
         <ng-container *ngFor="let car of cars">
