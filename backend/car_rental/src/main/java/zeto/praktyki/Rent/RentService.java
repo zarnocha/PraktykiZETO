@@ -29,9 +29,9 @@ public class RentService {
         if (carYears < 30) {
             carYears = 30;
         }
-        Double a = Math.pow(0.999, hours);
-        Double b = price * 0.0003;
-        Double c = (105 - carYears) / 100.0;
+        Double a = 0.15 * Math.pow(0.9999, hours);
+        Double b = 0.55 * price * 0.008;
+        Double c = 0.3 * (105 - carYears) / 100.0;
         return a * b * c * hours;
         // return Math.pow(0.999, hours) * this.price * 0.0003 * ((105 - carYears) /
         // 100.0) * hours;
