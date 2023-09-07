@@ -1,25 +1,24 @@
 package zeto.praktyki.Car;
 
-import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Set;
 
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
+import zeto.praktyki.Car.CarDTO.CarBrandModelDTO;
+import zeto.praktyki.Car.CarDTO.CarFilterDTO;
+import zeto.praktyki.Car.CarDTO.CarListDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
-import zeto.praktyki.Car.CarEnums.Drive;
-import zeto.praktyki.Car.CarEnums.Gearbox;
 
 @RequestMapping("/api/car")
 @RestController
@@ -29,41 +28,30 @@ public class CarController {
     @Autowired
     CarService carService;
 
-    @GetMapping(path = "/all", produces = "application/json")
-    public ResponseEntity<Object> getCars() {
-        try {
-            return new ResponseEntity<>(carService.getCars(), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<Object>("Błąd: " + e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    @GetMapping(path = "/all")
+    // @GetMapping(path = "/all", produces = "application/json")
+    public List<CarEntity> getCars() {
+        return carService.getCars();
     }
 
     @GetMapping(path = "/{id}", produces = "application/json")
-    public ResponseEntity<Object> getById(@PathVariable long id) {
-        return new ResponseEntity<>(carService.getCarById(id), HttpStatus.OK);
+    public CarEntity getById(@PathVariable long id) {
+        return carService.getCarById(id);
     }
 
     @PostMapping(path = "/add", consumes = "application/json")
-    public ResponseEntity<Object> addCar(@RequestBody CarEntity car) {
-        try {
-            return new ResponseEntity<>(carService.addCar(car), HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<Object>("Błąd: " + e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public CarEntity addCar(@RequestBody CarEntity car) {
+        return carService.addCar(car);
     }
 
     @GetMapping(path = "/filter", produces = "application/json")
-    public ResponseEntity<Object> getCarsFiltered(CarListQueryParamsDTO params) {
-        try {
-            return new ResponseEntity<>(
-                    carService.getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(params),
-                    HttpStatus.OK);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return new ResponseEntity<Object>("Błąd: " + e.getMessage(), HttpStatus.NOT_FOUND);
-        }
+    public List<CarListDTO> getCarsFiltered(CarListQueryParamsDTO params) {
+        return carService.getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(params);
+    }
+
+    @GetMapping(path = "/availableFilters", produces = "application/json")
+    public CarFilterDTO getCarsFiltered() {
+        return carService.getCarFilterDTO();
     }
 
     // @DeleteMapping(path = "/{id}")

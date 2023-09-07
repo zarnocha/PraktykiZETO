@@ -5,12 +5,15 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import zeto.praktyki.Car.CarDTO.CarBrandModelDTO;
+import zeto.praktyki.Car.CarDTO.CarFilterDTO;
 import zeto.praktyki.Car.CarDTO.CarListDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
 import zeto.praktyki.Rent.RentService;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class CarService {
@@ -57,6 +60,10 @@ public class CarService {
         } else {
             throw new ResponseStatusException(HttpStatus.OK, "Nie znaleziono samochodu o takim id!");
         }
+    }
+
+    public CarFilterDTO getCarFilterDTO() {
+        return carRepositoryCQ.getCarFilterDTO();
     }
 
 }

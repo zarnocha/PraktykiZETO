@@ -29,6 +29,32 @@ declare namespace api {
     picture: string;
   }
 
+  interface CarBrandModelDTO {
+    brand: string;
+    models: string[];
+  }
+
+  interface CarFilterDTO {
+    minHorsepower?: number;
+    maxHorsepower?: number;
+    brands?: CarBrandModelDTO[];
+  }
+
+  interface CarListDTO {
+    id: number;
+    brand: string;
+    model: string;
+    productionYear: number;
+    fuelConsumption: number;
+    engineCapacity: number;
+    drive: Drive;
+    seats: number;
+    gearbox: Gearbox;
+    wholePrice: number;
+    description: string;
+    picture: string;
+  }
+
   interface CarListQueryParamsDTO {
     brand?: string;
     model?: string;
