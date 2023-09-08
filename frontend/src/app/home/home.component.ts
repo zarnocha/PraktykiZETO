@@ -17,6 +17,7 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogModalComponent } from '../dialog-modal/dialog-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { MatSelectModule } from '@angular/material/select';
 // import * as moment from 'moment';
 
 export interface QueryParamsAndHour {
@@ -32,6 +33,8 @@ export interface QueryParamsAndHour {
     };
   };
 }
+
+type SortType = 'domyślnie' | 'alfabetycznie ↑' | 'alfabetycznie ↓';
 
 @Component({
   selector: 'app-home',
@@ -49,6 +52,7 @@ export interface QueryParamsAndHour {
     FormsModule,
     MatGridListModule,
     MatDialogModule,
+    MatSelectModule,
   ],
 
   templateUrl: './home.component.html',
@@ -56,10 +60,16 @@ export interface QueryParamsAndHour {
 })
 export class HomeComponent implements OnInit {
   constructor(public homeService: HomeService, public dialog: MatDialog) {}
+
   cars: api.CarListDTO[] = [];
+  carsSorted: api.CarListDTO[] = [];
+
   showLoader: boolean = false;
   errorMessage: string = '';
   public viewMode: 'list' | 'grid' = 'grid';
+
+  selectedSort: SortType = 'domyślnie';
+  sorts: SortType[] = ['domyślnie', 'alfabetycznie ↓', 'alfabetycznie ↑'];
 
   dialogData: QueryParamsAndHour = {
     queryParams: {
@@ -157,10 +167,13 @@ export class HomeComponent implements OnInit {
     this.showLoader = true;
     this.errorMessage = '';
     this.cars = [];
-    if (queryParams && queryParams.from && queryParams.to) {
+
+    if (queryParams) {
       this.homeService.getCars(queryParams).subscribe({
         next: (carData: Array<api.CarListDTO>) => {
           this.cars = carData;
+          this.carsSorted = this.cars.slice();
+
           this.showLoader = false;
         },
         error: (e) => {
@@ -173,7 +186,9 @@ export class HomeComponent implements OnInit {
       queryParams = {};
       this.homeService.getCars().subscribe({
         next: (carData: Array<api.CarListDTO>) => {
+          console.log('carData: ', carData);
           this.cars = carData;
+          this.carsSorted = this.cars.slice();
           this.showLoader = false;
         },
         error: (e) => {
@@ -181,6 +196,73 @@ export class HomeComponent implements OnInit {
           this.showLoader = false;
           this.errorMessage = e.message;
         },
+      });
+    }
+  }
+
+  onSortChange() {
+    console.log(this.selectedSort);
+
+    if (this.selectedSort === 'alfabetycznie ↓') {
+      this.carsSorted!.sort((a, b) => {
+        const brandA = a.brand.toLowerCase();
+        const brandB = b.brand.toLowerCase();
+
+        if (brandA < brandB) {
+          return -1;
+        }
+        if (brandA > brandB) {
+          return 1;
+        }
+
+        if (brandA == brandB) {
+          const brandAModel = a.model.toLowerCase();
+          const brandBModel = b.model.toLowerCase();
+          if (brandAModel < brandBModel) {
+            return -1;
+          }
+          if (brandAModel > brandBModel) {
+            return 1;
+          }
+        }
+        return 0;
+      });
+    } else if (this.selectedSort === 'alfabetycznie ↑') {
+      this.carsSorted!.sort((a, b) => {
+        const brandA = a.brand.toLowerCase();
+        const brandB = b.brand.toLowerCase();
+
+        if (brandA < brandB) {
+          return 1;
+        }
+        if (brandA > brandB) {
+          return -1;
+        }
+
+        if (brandA == brandB) {
+          const brandAModel = a.model.toLowerCase();
+          const brandBModel = b.model.toLowerCase();
+          if (brandAModel < brandBModel) {
+            return 1;
+          }
+          if (brandAModel > brandBModel) {
+            return -1;
+          }
+        }
+        return 0;
+      });
+    } else if (this.selectedSort === 'domyślnie') {
+      this.carsSorted!.sort((a, b) => {
+        const brandA = a.id;
+        const brandB = b.id;
+
+        if (brandA < brandB) {
+          return -1;
+        }
+        if (brandA > brandB) {
+          return 1;
+        }
+        return 0;
       });
     }
   }

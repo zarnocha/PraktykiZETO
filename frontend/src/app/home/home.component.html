@@ -4,6 +4,22 @@
   </div>
 
   <div class="button-container">
+    <mat-form-field class="button-container__sort" appearance="fill">
+      <mat-label>Sortuj</mat-label>
+      <mat-select
+        [(ngModel)]="selectedSort"
+        (selectionChange)="onSortChange()"
+        appearance="fill"
+      >
+        <mat-option
+          *ngFor="let type of sorts"
+          [value]="type"
+          appearance="fill"
+          >{{ type }}</mat-option
+        >
+      </mat-select>
+    </mat-form-field>
+
     <button
       (click)="openDialog()"
       mat-raised-button
@@ -55,7 +71,7 @@
   <ng-container *ngIf="!showLoader && cars">
     <ng-container *ngIf="viewMode === 'grid'">
       <div class="cars__grid">
-        <ng-container *ngFor="let car of cars">
+        <ng-container *ngFor="let car of carsSorted">
           <car-card [carData]="car"></car-card>
         </ng-container>
       </div>
@@ -63,7 +79,7 @@
 
     <ng-container *ngIf="viewMode === 'list'">
       <div class="cars__list">
-        <ng-container *ngFor="let car of cars">
+        <ng-container *ngFor="let car of carsSorted">
           <car-list-element [carData]="car"></car-list-element>
         </ng-container>
       </div>

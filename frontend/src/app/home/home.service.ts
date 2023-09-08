@@ -19,9 +19,6 @@ export class HomeService {
     if (queryParams) {
       const sendingParams = Object.create(queryParams);
 
-      if (queryParams.from && queryParams.to && !queryParams.available) {
-        sendingParams.available = false;
-      }
       const urlParams = new URLSearchParams();
 
       for (const key in sendingParams) {
@@ -55,6 +52,7 @@ export class HomeService {
       })
       .pipe(
         catchError((error) => {
+          console.log('error: ', error);
           return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
         })
       );

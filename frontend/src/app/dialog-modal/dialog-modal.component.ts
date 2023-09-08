@@ -73,8 +73,8 @@ export class DialogModalComponent implements OnInit {
 
   onClear(): void {
     this.data.queryParams = {
-      horsePowerFrom: this.filters.minHorsepower,
-      horsePowerTo: this.filters.maxHorsepower,
+      // horsePowerFrom: this.filters.minHorsepower,
+      // horsePowerTo: this.filters.maxHorsepower,
     };
     this.data.time = {
       from: {
@@ -97,7 +97,35 @@ export class DialogModalComponent implements OnInit {
         this.errorMessage = '';
         this.filters = data;
         this.cars = this.filters.brands;
+        this.cars!.sort((a, b) => {
+          const brandA = a.brand.toLowerCase();
+          const brandB = b.brand.toLowerCase();
+
+          if (brandA < brandB) {
+            return -1;
+          }
+          if (brandA > brandB) {
+            return 1;
+          }
+          return 0;
+        });
+
+        this.cars!.forEach((car) => {
+          car.models.sort((a, b) => {
+            const modelA = a.toLowerCase();
+            const modelB = b.toLowerCase();
+
+            if (modelA < modelB) {
+              return -1;
+            }
+            if (modelA > modelB) {
+              return 1;
+            }
+            return 0;
+          });
+        });
       },
+
       error: (e) => {
         console.error(e);
         this.showLoader = false;

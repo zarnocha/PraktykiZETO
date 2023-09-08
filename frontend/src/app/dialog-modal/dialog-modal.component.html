@@ -9,9 +9,9 @@
         (selectionChange)="data.queryParams.model = undefined"
       >
         <mat-option value="">Wszystkie</mat-option>
-        <mat-option *ngFor="let marka of cars" value="{{ marka.brand }}">{{
-          marka.brand
-        }}</mat-option>
+        <mat-option *ngFor="let marka of cars" value="{{ marka.brand }}"
+          >{{ marka.brand }} ({{ marka.models.length }})</mat-option
+        >
       </mat-select>
     </mat-form-field>
 

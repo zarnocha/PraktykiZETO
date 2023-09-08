@@ -27,6 +27,7 @@ declare namespace api {
     wholePrice: number;
     description: string;
     picture: string;
+    value: number;
   }
 
   interface CarBrandModelDTO {
