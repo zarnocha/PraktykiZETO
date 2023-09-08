@@ -1,5 +1,5 @@
-import { Component, Inject, OnInit, Optional } from '@angular/core';
-import { CommonModule, Time } from '@angular/common';
+import { Component, Inject, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -18,32 +18,9 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
-import {
-  NgbDatepickerModule,
-  NgbTimepickerModule,
-} from '@ng-bootstrap/ng-bootstrap';
+import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { QueryParamsAndHour } from '../home/home.component';
 import { DialogModalService } from './dialog-modal.service';
-
-interface GearboxSelect {
-  value: api.Gearbox;
-  viewValue: 'Automatyczna' | 'Manualna';
-}
-
-interface TimeObject {
-  hour: number;
-  minute: number;
-}
-
-function hourAndMinuteToMilisecond(time: TimeObject) {
-  return time && time.hour && time.minute
-    ? time.hour * 3_600_000 + time.minute * 60_000
-    : 0;
-}
-
-function milisecondsToHourAndMinutes(time: number) {
-  return;
-}
 
 @Component({
   selector: 'dialog-modal',
@@ -78,8 +55,7 @@ export class DialogModalComponent implements OnInit {
   showLoader: boolean = false;
   errorMessage: string = '';
 
-  carBrands: string[] = [];
-  brandModels: string[] = [];
+  cars?: api.CarBrandModelDTO[] = [];
 
   constructor(
     public dialog: MatDialog,
@@ -88,6 +64,7 @@ export class DialogModalComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: QueryParamsAndHour
   ) {
     this.todayDate = new Date();
+    this.fetchAvailableFilters();
   }
 
   onNoClick(): void {
@@ -95,7 +72,10 @@ export class DialogModalComponent implements OnInit {
   }
 
   onClear(): void {
-    this.data.queryParams = { horsePowerFrom: 0, horsePowerTo: 500 };
+    this.data.queryParams = {
+      horsePowerFrom: this.filters.minHorsepower,
+      horsePowerTo: this.filters.maxHorsepower,
+    };
     this.data.time = {
       from: {
         hour: 0,
@@ -109,7 +89,6 @@ export class DialogModalComponent implements OnInit {
   }
 
   fetchAvailableFilters(): void {
-    this.filters = {};
     this.showLoader = true;
 
     this.dialogModalService.getAvailableFilters().subscribe({
@@ -117,10 +96,7 @@ export class DialogModalComponent implements OnInit {
         this.showLoader = false;
         this.errorMessage = '';
         this.filters = data;
-        console.log(data);
-        this.data.queryParams.horsePowerFrom = this.filters.minHorsepower;
-        this.data.queryParams.horsePowerTo = this.filters.maxHorsepower;
-        this.carBrands = this.filters.brands!.map((brand) => brand.brand);
+        this.cars = this.filters.brands;
       },
       error: (e) => {
         console.error(e);
@@ -130,36 +106,8 @@ export class DialogModalComponent implements OnInit {
     });
   }
 
-  getBrandModels(): void {
-    const selectedCar = this.data.queryParams.brand;
-    console.log('selectedCar: ', selectedCar);
-
-    const foundCar = this.filters.brands!.find(
-      (car) => car.brand === selectedCar
-    );
-
-    if (foundCar) {
-      this.brandModels = foundCar.models;
-    } else {
-      this.brandModels = [];
-    }
-
-    // this.brandModels = this.filters.brands!.find((car) => {
-    //   if (car.brand === selectedCar) {
-    //     return car.models;
-    //   }
-    // });
-
-    // this.brandModels = this.filters.brands!.map((car) => {
-    //   if (car.brand === selectedCar) {
-    //     return car.models;
-    //   }
-    // });
-  }
-
   ngOnInit(): void {
     this.showLoader = true;
     this.errorMessage = '';
-    this.fetchAvailableFilters();
   }
 }

@@ -17,15 +17,18 @@ export class HomeService {
     let url: string;
 
     if (queryParams) {
-      console.log(queryParams);
+      const sendingParams = Object.create(queryParams);
 
+      if (queryParams.from && queryParams.to && !queryParams.available) {
+        sendingParams.available = true;
+      }
       const urlParams = new URLSearchParams();
 
-      for (const key in queryParams) {
-        if (queryParams[key] !== undefined) {
+      for (const key in sendingParams) {
+        if (sendingParams[key] !== undefined) {
           if (key === 'from' || key === 'to') {
-            const currentDate = queryParams[key];
-            queryParams[key] = `${currentDate.getFullYear()}-${addLeadingZero(
+            const currentDate = sendingParams[key];
+            sendingParams[key] = `${currentDate.getFullYear()}-${addLeadingZero(
               currentDate.getMonth() + 1
             )}-${addLeadingZero(currentDate.getDate())}T${addLeadingZero(
               currentDate.getHours()
@@ -33,7 +36,7 @@ export class HomeService {
               currentDate.getSeconds()
             )}`;
           }
-          urlParams.set(key, queryParams[key].toString());
+          urlParams.set(key, sendingParams[key].toString());
         }
       }
 

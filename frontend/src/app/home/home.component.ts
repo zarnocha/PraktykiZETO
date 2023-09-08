@@ -63,8 +63,6 @@ export class HomeComponent implements OnInit {
 
   dialogData: QueryParamsAndHour = {
     queryParams: {
-      horsePowerFrom: 0,
-      horsePowerTo: 200,
       available: true,
     },
     time: {
@@ -98,7 +96,7 @@ export class HomeComponent implements OnInit {
     });
 
     dialogRef.afterClosed().subscribe((result: QueryParamsAndHour) => {
-      if (result && result.queryParams) {
+      if (result && result.queryParams && result.time.from && result.time.to) {
         this.dialogData.queryParams.available = result.queryParams.available
           ? result.queryParams.available
           : undefined;
@@ -122,6 +120,9 @@ export class HomeComponent implements OnInit {
 
         this.dialogData.time.from = result.time.from;
         this.dialogData.time.to = result.time.to;
+
+        console.log(this.dialogData.queryParams.from);
+        console.log(this.dialogData.queryParams.to);
 
         this.dialogData.queryParams.from?.setHours(
           result.time.from.hour,
@@ -156,7 +157,7 @@ export class HomeComponent implements OnInit {
     this.showLoader = true;
     this.errorMessage = '';
     this.cars = [];
-    if (queryParams) {
+    if (queryParams && queryParams.from && queryParams.to) {
       this.homeService.getCars(queryParams).subscribe({
         next: (carData: Array<api.CarListDTO>) => {
           this.cars = carData;
@@ -169,6 +170,7 @@ export class HomeComponent implements OnInit {
         },
       });
     } else {
+      queryParams = {};
       this.homeService.getCars().subscribe({
         next: (carData: Array<api.CarListDTO>) => {
           this.cars = carData;

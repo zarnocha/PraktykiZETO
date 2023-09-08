@@ -1,31 +1,16 @@
 <h1 mat-dialog-title class="!font-bold">Filtrowanie:</h1>
-<div mat-dialog-content>
+<div mat-dialog-content *ngIf="!showLoader">
   <p class="mb-2">Uzupełnij pola, aby przefiltrować auta:</p>
   <div class="flex flex-col">
-    <!-- <mat-form-field>
-      <mat-label>Marka</mat-label>
-      <input matInput type="text" [(ngModel)]="data.queryParams.brand" />
-      <button
-        *ngIf="data.queryParams.brand"
-        matSuffix
-        mat-icon-button
-        matTooltip="Wyczyść filter"
-        aria-label="Clear"
-        (click)="data.queryParams.brand = ''"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field> -->
-
     <mat-form-field>
       <mat-label>Marki</mat-label>
       <mat-select
-        (selectionChange)="getBrandModels()"
         [(ngModel)]="data.queryParams.brand"
+        (selectionChange)="data.queryParams.model = undefined"
       >
         <mat-option value="">Wszystkie</mat-option>
-        <mat-option *ngFor="let marka of carBrands" value="{{ marka }}">{{
-          marka
+        <mat-option *ngFor="let marka of cars" value="{{ marka.brand }}">{{
+          marka.brand
         }}</mat-option>
       </mat-select>
     </mat-form-field>
@@ -33,80 +18,28 @@
     <mat-form-field>
       <mat-label>Modele</mat-label>
       <mat-select [(ngModel)]="data.queryParams.model">
-        <ng-container *ngIf="data.queryParams.brand">
+        <ng-container>
           <mat-option value="">Wszystkie</mat-option>
-          <mat-option *ngFor="let model of brandModels" [value]="model">{{
-            model
-          }}</mat-option>
+          <ng-container *ngFor="let marka of cars">
+            <ng-container *ngIf="marka.brand === data.queryParams.brand">
+              <mat-option
+                *ngFor="let model of marka.models"
+                value="{{ model }}"
+                >{{ model }}</mat-option
+              >
+            </ng-container>
+          </ng-container>
         </ng-container>
-      </mat-select>
-    </mat-form-field>
-
-    <!-- <mat-form-field>
-      <mat-label>Model</mat-label>
-      <input
-        matInput
-        type="text"
-        min="0"
-        [(ngModel)]="data.queryParams.model"
-      />
-      <button
-        *ngIf="data.queryParams.model"
-        matSuffix
-        mat-icon-button
-        matTooltip="Wyczyść filter"
-        aria-label="Clear"
-        (click)="data.queryParams.model = undefined"
-      >
-        <mat-icon>close</mat-icon>
-      </button>
-    </mat-form-field> -->
-
-    <mat-slider
-      min="data.queryParams.horsePowerFrom"
-      max="data.queryParams.horsePowerTo"
-      thumbLabel
-      tickInterval="auto"
-    >
-      <input
-        [(ngModel)]="data.queryParams.horsePowerFrom"
-        value="{{ data.queryParams.horsePowerFrom }}"
-        matSliderStartThumb
-      />
-      <input
-        [(ngModel)]="data.queryParams.horsePowerTo"
-        value="{{ data.queryParams.horsePowerTo }}"
-        matSliderEndThumb
-      />
-    </mat-slider>
-    <p>
-      Liczba KM: {{ data.queryParams.horsePowerFrom }} -
-      {{ data.queryParams.horsePowerTo }}
-    </p>
-
-    <mat-form-field>
-      <mat-label>Napęd</mat-label>
-      <mat-select [(ngModel)]="data.queryParams.drive">
-        <mat-option>Wszystkie</mat-option>
-        <mat-option value="FWD">Na przód</mat-option>
-        <mat-option value="RWD">Na tył</mat-option>
-        <mat-option value="AWD">Na cztery koła</mat-option>
-      </mat-select>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Skrzynia biegów</mat-label>
-      <mat-select [(ngModel)]="data.queryParams.gearbox">
-        <mat-option>Wszystkie</mat-option>
-        <mat-option value="AUTOMATIC">Automatyczna</mat-option>
-        <mat-option value="SEMI_AUTOMATIC">Półautomatyczna</mat-option>
-        <mat-option value="MANUAL">Manualna</mat-option>
       </mat-select>
     </mat-form-field>
 
     <mat-form-field appearance="fill">
       <mat-label>Data wypożyczenia (od-do)</mat-label>
-      <mat-date-range-input [rangePicker]="rangePicker" [min]="todayDate">
+      <mat-date-range-input
+        [required]="true"
+        [rangePicker]="rangePicker"
+        [min]="todayDate"
+      >
         <input
           [(ngModel)]="data.queryParams.from"
           matStartDate
@@ -135,7 +68,6 @@
       </mat-date-range-picker>
     </mat-form-field>
 
-    <!-- <my-date-time-range-picker></my-date-time-range-picker> -->
     <div class="flex" *ngIf="data.queryParams.from || data.queryParams.to">
       <div
         *ngIf="data.queryParams.from"
@@ -159,6 +91,48 @@
         ></ngb-timepicker>
       </div>
     </div>
+
+    <mat-slider
+      [min]="filters.minHorsepower"
+      [max]="filters.maxHorsepower"
+      discrete="true"
+    >
+      <input
+        [(ngModel)]="data.queryParams.horsePowerFrom"
+        value="{{ data.queryParams.horsePowerFrom }}"
+        matSliderStartThumb
+      />
+      <input
+        [(ngModel)]="data.queryParams.horsePowerTo"
+        value="{{
+          data.queryParams.horsePowerTo
+            ? data.queryParams.horsePowerTo
+            : filters.maxHorsepower
+        }}"
+        matSliderEndThumb
+      />
+    </mat-slider>
+
+    <mat-form-field>
+      <mat-label>Napęd</mat-label>
+      <mat-select [(ngModel)]="data.queryParams.drive">
+        <mat-option>Wszystkie</mat-option>
+        <mat-option value="FWD">Na przód</mat-option>
+        <mat-option value="RWD">Na tył</mat-option>
+        <mat-option value="AWD">Na cztery koła</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-label>Skrzynia biegów</mat-label>
+      <mat-select [(ngModel)]="data.queryParams.gearbox">
+        <mat-option>Wszystkie</mat-option>
+        <mat-option value="AUTOMATIC">Automatyczna</mat-option>
+        <mat-option value="SEMI_AUTOMATIC">Półautomatyczna</mat-option>
+        <mat-option value="MANUAL">Manualna</mat-option>
+      </mat-select>
+    </mat-form-field>
+
     <mat-checkbox [(ngModel)]="data.queryParams.available">
       Aktualnie zajęte auta</mat-checkbox
     >
