@@ -42,12 +42,16 @@ public class CarService {
 
     public List<CarListDTO> getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(
             CarListQueryParamsDTO carListQueryParams) {
+
         List<CarListDTO> cars = carRepositoryCQ
                 .findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(carListQueryParams);
 
-        for (CarListDTO car : cars) {
-            car.setWholePrice(RentService.calculatePrice(carListQueryParams.getFrom(), carListQueryParams.getTo(),
-                    car.getValue(), car.getProductionYear()));
+        if (carListQueryParams.getFrom() != null && carListQueryParams.getTo() != null) {
+
+            for (CarListDTO car : cars) {
+                car.setWholePrice(RentService.calculatePrice(carListQueryParams.getFrom(), carListQueryParams.getTo(),
+                        car.getValue(), car.getProductionYear()));
+            }
         }
 
         return cars;

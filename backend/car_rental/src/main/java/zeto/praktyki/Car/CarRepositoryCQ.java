@@ -95,27 +95,29 @@ public class CarRepositoryCQ {
 
         Predicate doesntHaveRentsPredicate = cb.isEmpty(car.get(CarEntity_.rents));
 
-        Predicate fromBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.startTime),
-                carListQueryParams.getFrom(),
-                carListQueryParams.getTo());
-        Predicate toBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.endTime),
-                carListQueryParams.getFrom(), carListQueryParams.getTo());
-        Predicate outerBeforePredicate = cb.lessThan(rentsJoin.get(RentEntity_.startTime),
-                carListQueryParams.getFrom());
-        Predicate outerAfterPredicate = cb.greaterThan(rentsJoin.get(RentEntity_.endTime),
-                carListQueryParams.getTo());
+        if (carListQueryParams.getTo() != null && carListQueryParams.getFrom() != null) {
 
-        Predicate outerPredicate = cb.and(outerBeforePredicate, outerAfterPredicate);
-        Predicate innerPredicate = cb.or(fromBetweenPredicate, toBetweenPredicate);
+            Predicate fromBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.startTime),
+                    carListQueryParams.getFrom(),
+                    carListQueryParams.getTo());
+            Predicate toBetweenPredicate = cb.between(rentsJoin.get(RentEntity_.endTime),
+                    carListQueryParams.getFrom(), carListQueryParams.getTo());
+            Predicate outerBeforePredicate = cb.lessThan(rentsJoin.get(RentEntity_.startTime),
+                    carListQueryParams.getFrom());
+            Predicate outerAfterPredicate = cb.greaterThan(rentsJoin.get(RentEntity_.endTime),
+                    carListQueryParams.getTo());
+            Predicate outerPredicate = cb.and(outerBeforePredicate, outerAfterPredicate);
+            Predicate innerPredicate = cb.or(fromBetweenPredicate, toBetweenPredicate);
 
-        Predicate preFinalPredicate = cb.or(innerPredicate, outerPredicate).not();
-        Predicate finalPredicate = cb.or(preFinalPredicate,
-                doesntHaveRentsPredicate);
+            Predicate preFinalPredicate = cb.or(innerPredicate, outerPredicate).not();
+            Predicate finalPredicate = cb.or(preFinalPredicate,
+                    doesntHaveRentsPredicate);
 
-        if (carListQueryParams.getAvailable()) {
-            predicates.add(finalPredicate);
-        } else {
-            predicates.add(finalPredicate.not());
+            if (carListQueryParams.getAvailable() != null) {
+                predicates.add(finalPredicate);
+            } else {
+                predicates.add(finalPredicate.not());
+            }
         }
 
         Predicate all = cb.and(predicates.toArray(new Predicate[0]));
