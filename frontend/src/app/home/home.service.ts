@@ -20,7 +20,7 @@ export class HomeService {
       const sendingParams = Object.create(queryParams);
 
       if (queryParams.from && queryParams.to && !queryParams.available) {
-        sendingParams.available = true;
+        sendingParams.available = false;
       }
       const urlParams = new URLSearchParams();
 
