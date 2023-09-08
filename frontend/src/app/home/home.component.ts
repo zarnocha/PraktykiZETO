@@ -34,7 +34,12 @@ export interface QueryParamsAndHour {
   };
 }
 
-type SortType = 'domyślnie' | 'alfabetycznie ↑' | 'alfabetycznie ↓';
+type SortType =
+  | 'domyślnie'
+  | 'alfabetycznie ↑'
+  | 'alfabetycznie ↓'
+  | 'po cenie  ↓'
+  | 'po cenie  ↑';
 
 @Component({
   selector: 'app-home',
@@ -69,7 +74,13 @@ export class HomeComponent implements OnInit {
   public viewMode: 'list' | 'grid' = 'grid';
 
   selectedSort: SortType = 'domyślnie';
-  sorts: SortType[] = ['domyślnie', 'alfabetycznie ↓', 'alfabetycznie ↑'];
+  sorts: SortType[] = [
+    'domyślnie',
+    'alfabetycznie ↓',
+    'alfabetycznie ↑',
+    'po cenie  ↓',
+    'po cenie  ↑',
+  ];
 
   dialogData: QueryParamsAndHour = {
     queryParams: {
@@ -249,6 +260,34 @@ export class HomeComponent implements OnInit {
             return -1;
           }
         }
+        return 0;
+      });
+    } else if (this.selectedSort === 'po cenie  ↓') {
+      this.carsSorted!.sort((a, b) => {
+        const brandA = a.value;
+        const brandB = b.value;
+
+        if (brandA > brandB) {
+          return 1;
+        }
+        if (brandA < brandB) {
+          return -1;
+        }
+
+        return 0;
+      });
+    } else if (this.selectedSort === 'po cenie  ↑') {
+      this.carsSorted!.sort((a, b) => {
+        const brandA = a.value;
+        const brandB = b.value;
+
+        if (brandA < brandB) {
+          return 1;
+        }
+        if (brandA > brandB) {
+          return -1;
+        }
+
         return 0;
       });
     } else if (this.selectedSort === 'domyślnie') {
