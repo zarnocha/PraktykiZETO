@@ -1,0 +1,78 @@
+<a routerLink="/home" mat-raised-button class=""
+  ><mat-icon>home</mat-icon>Powrót do strony głównej</a
+>
+<section class="content" *ngIf="!showLoader && !errorMessage">
+  <div class="image__container">
+    <img [src]="'data:image/png;base64,' + car!.picture" />
+  </div>
+
+  <main class="about-car">
+    <h1>{{ car.brand }} {{ car.model }}</h1>
+    <h2>{{ car.engineCapacity.toFixed(1) }} {{ car.productionYear }}</h2>
+    <div class="specs">
+      <span class="specs__single-info">
+        <mat-icon>airline_seat_recline_normal</mat-icon>
+        {{ car.seats }}
+      </span>
+      <span class="specs__single-info">
+        <mat-icon>settings</mat-icon>
+        <ng-container *ngIf="car.gearbox === 'MANUAL'"> Manual. </ng-container>
+        <ng-container *ngIf="car.gearbox === 'AUTOMATIC'">
+          Automat.
+        </ng-container>
+        <ng-container *ngIf="car.gearbox === 'SEMI_AUTOMATIC'">
+          Półautomat.
+        </ng-container>
+      </span>
+
+      <span class="specs__single-info">
+        <mat-icon class="text-white" svgIcon="axle-drive"></mat-icon>
+        {{ car.drive }}
+      </span>
+
+      <span class="specs__single-info">
+        <mat-icon>oil_barrel</mat-icon>
+        {{ car.fuelConsumption }}L/100KM
+      </span>
+    </div>
+    <article>
+      <p>{{ car.description }}</p>
+    </article>
+  </main>
+</section>
+
+<section *ngIf="showLoader" class="content">
+  <h3 class="mb-4 text-xl">Pobieranie danych...</h3>
+  <img
+    src="../../assets/tire/car-tire-wheel-icon-white.png"
+    class="loading__tire"
+  />
+</section>
+
+<div class="loading">
+  <h3>{{ errorMessage }}</h3>
+  <ng-container
+    *ngIf="
+      errorMessage &&
+      errorMessage !== 'Nie ma takiego samochodu w bazie danych.'
+    "
+  >
+    <button
+      (click)="getCarData()"
+      mat-fab
+      extended
+      color="accent"
+      class="loading__fetchDataButton"
+    >
+      <mat-icon color="primary">cached</mat-icon>
+      Spróbuj ponownie
+    </button>
+  </ng-container>
+  <ng-container
+    *ngIf="errorMessage === 'Nie ma takiego samochodu w bazie danych.'"
+  >
+    <a routerLink="/home" mat-raised-button class=""
+      ><mat-icon>home</mat-icon>Powrót do strony głównej</a
+    >
+  </ng-container>
+</div>

@@ -32,6 +32,7 @@
   min-width: 10vw
   max-width: 100%
   object-fit: contain
+  user-select: none
 
 .card__image__container
   position: relative
@@ -47,6 +48,10 @@
   -webkit-box-align: center
   -ms-flex-align: center
   align-items: center
+
+.card__image__container:hover
+  transform: scale(1.5)
+  cursor: pointer
 
 .car__title
   display: block

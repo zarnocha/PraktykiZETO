@@ -68,7 +68,20 @@ declare namespace api {
     available?: boolean;
   }
 
-  interface SingleCarDTO {}
+  interface SingleCarDTO {
+    id: number;
+    brand: string;
+    model: string;
+    productionYear: number;
+    fuelConsumption: number;
+    engineCapacity: number;
+    drive: Drive;
+    seats: number;
+    gearbox: Gearbox;
+    wholePrice: number;
+    description: string;
+    picture: string;
+  }
 
   type Drive = 'FWD' | 'RWD' | 'AWD';
 
