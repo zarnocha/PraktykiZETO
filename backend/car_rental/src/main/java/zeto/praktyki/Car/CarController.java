@@ -6,19 +6,24 @@ import java.util.Set;
 import javax.ws.rs.core.MediaType;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
+import jakarta.security.auth.message.AuthException;
 import zeto.praktyki.Car.CarDTO.CarBrandModelDTO;
 import zeto.praktyki.Car.CarDTO.CarFilterDTO;
-import zeto.praktyki.Car.CarDTO.CarListDTO;
+import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
+import zeto.praktyki.User.Auth.JwtUtil;
+import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 
 @RequestMapping("/api/car")
 @RestController
@@ -28,40 +33,40 @@ public class CarController {
     @Autowired
     CarService carService;
 
-    @GetMapping(path = "/all")
-    // @GetMapping(path = "/all", produces = "application/json")
-    public List<CarEntity> getCars() {
-        return carService.getCars();
+    @Autowired
+    JwtUtil jwtUtil;
+
+    @GetMapping(path = "/{id}")
+    public CarDTO getById(@PathVariable long id, @RequestHeader("Authorization") String bearerToken)
+            throws AuthException {
+        jwtUtil.access(bearerToken, WhoCanAccess.USER);
+        CarEntity foundCar = carService.getCarById(id);
+        return new CarDTO(foundCar);
     }
 
-    @GetMapping(path = "/{id}", produces = "application/json")
-    public CarEntity getById(@PathVariable long id) {
-        return carService.getCarById(id);
+    @GetMapping(path = "/filter")
+    public List<CarDTO> getCarsFiltered(@RequestHeader("Authorization") String bearerToken,
+            CarListQueryParamsDTO params) {
+        return carService.getCarListDTO(params);
     }
 
-    @PostMapping(path = "/add", consumes = "application/json")
-    public CarEntity addCar(@RequestBody CarEntity car) {
-        return carService.addCar(car);
-    }
-
-    @GetMapping(path = "/filter", produces = "application/json")
-    public List<CarListDTO> getCarsFiltered(CarListQueryParamsDTO params) {
-        return carService.getCarListDTOByBrandAndModelAndHorsePowerAndDriveAndGearboxAndTime(params);
-    }
-
-    @GetMapping(path = "/availableFilters", produces = "application/json")
+    @GetMapping(path = "/availableFilters")
     public CarFilterDTO getCarsFiltered() {
         return carService.getCarFilterDTO();
     }
 
-    // @DeleteMapping(path = "/{id}")
-    // public ResponseEntity<Object> deleteCar() {
-    // try {
-    // carService.deleteCarById();
-    // } catch (Exception e) {
-    // e.printStackTrace();
-    // return new ResponseEntity<Object>("Błąd: " + e.getMessage(),
-    // HttpStatus.NOT_FOUND);
-    // }
-    // }
+    @PostMapping(path = "/add")
+    public CarDTO addCar(@RequestBody CarEntity car, @RequestHeader("Authorization") String bearerToken)
+            throws AuthException {
+        jwtUtil.access(bearerToken, WhoCanAccess.ADMIN);
+        CarEntity createdCar = carService.addCar(car);
+        return new CarDTO(createdCar);
+    }
+
+    @DeleteMapping(path = "/{id}")
+    public String deleteCar(@PathVariable Long id) {
+        carService.deleteCarById(id);
+        return "Pomyślnie usunięto pojazd o ID: " + id;
+
+    }
 }

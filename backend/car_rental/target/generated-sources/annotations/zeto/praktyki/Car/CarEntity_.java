@@ -14,6 +14,7 @@ import zeto.praktyki.User.UserEntity;
 public abstract class CarEntity_ {
 
 	public static volatile SingularAttribute<CarEntity, Integer> horsePower;
+	public static volatile SingularAttribute<CarEntity, UserEntity> addedBy;
 	public static volatile SingularAttribute<CarEntity, String> description;
 	public static volatile SingularAttribute<CarEntity, Integer> productionYear;
 	public static volatile SetAttribute<CarEntity, RentEntity> rents;
@@ -22,7 +23,6 @@ public abstract class CarEntity_ {
 	public static volatile SingularAttribute<CarEntity, Float> engineCapacity;
 	public static volatile SingularAttribute<CarEntity, String> picture;
 	public static volatile SingularAttribute<CarEntity, String> licensePlate;
-	public static volatile SingularAttribute<CarEntity, UserEntity> added_by;
 	public static volatile SingularAttribute<CarEntity, String> model;
 	public static volatile SingularAttribute<CarEntity, Long> id;
 	public static volatile SingularAttribute<CarEntity, Gearbox> gearbox;
@@ -32,6 +32,7 @@ public abstract class CarEntity_ {
 	public static volatile SingularAttribute<CarEntity, Long> mileage;
 
 	public static final String HORSE_POWER = "horsePower";
+	public static final String ADDED_BY = "addedBy";
 	public static final String DESCRIPTION = "description";
 	public static final String PRODUCTION_YEAR = "productionYear";
 	public static final String RENTS = "rents";
@@ -40,7 +41,6 @@ public abstract class CarEntity_ {
 	public static final String ENGINE_CAPACITY = "engineCapacity";
 	public static final String PICTURE = "picture";
 	public static final String LICENSE_PLATE = "licensePlate";
-	public static final String ADDED_BY = "added_by";
 	public static final String MODEL = "model";
 	public static final String ID = "id";
 	public static final String GEARBOX = "gearbox";

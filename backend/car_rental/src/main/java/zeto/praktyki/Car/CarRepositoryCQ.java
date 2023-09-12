@@ -23,7 +23,7 @@ import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
 import zeto.praktyki.Car.CarDTO.CarBrandModelDTO;
 import zeto.praktyki.Car.CarDTO.CarFilterDTO;
-import zeto.praktyki.Car.CarDTO.CarListDTO;
+import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
 import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.Rent.RentEntity_;
@@ -35,11 +35,11 @@ public class CarRepositoryCQ {
     EntityManager em;
 
     @Transactional
-    public List<CarListDTO> findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(
+    public List<CarDTO> findCarByBrandAndModelAndHorsePowerAndDriveAndGearbox(
             CarListQueryParamsDTO carListQueryParams) {
 
         CriteriaBuilder cb = em.getCriteriaBuilder();
-        CriteriaQuery<CarListDTO> cq = cb.createQuery(CarListDTO.class);
+        CriteriaQuery<CarDTO> cq = cb.createQuery(CarDTO.class);
         Root<CarEntity> car = cq.from(CarEntity.class);
 
         List<Predicate> predicates = new ArrayList<>();
@@ -124,7 +124,7 @@ public class CarRepositoryCQ {
 
         cq.where(all);
 
-        TypedQuery<CarListDTO> query = em.createQuery(cq);
+        TypedQuery<CarDTO> query = em.createQuery(cq);
         return query.getResultList();
     }
 

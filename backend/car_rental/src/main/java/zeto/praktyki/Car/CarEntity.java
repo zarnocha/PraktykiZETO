@@ -12,17 +12,25 @@ import zeto.praktyki.User.UserEntity;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.scheduling.config.Task;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "car")
+// @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,
+//
+// property = "id")
 public class CarEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
     @Column(nullable = false)
     private String brand;
     @Column(nullable = false)
@@ -49,18 +57,22 @@ public class CarEntity {
     private long mileage;
     @Column(nullable = false)
     private Gearbox gearbox;
-    @Lob
-    @Column(nullable = true)
+    @Column(nullable = true, name = "LONG_TEXT", columnDefinition = "TEXT")
     String picture;
+    // @Lob
+    // @Type(type = "org.hibernate.type.ImageType")
+    // private byte[] image;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @JsonIgnore
     @OneToMany(mappedBy = "car")
     private Set<RentEntity> rents;
 
+    @JsonIdentityReference(alwaysAsId = true)
     @ManyToOne
     @JoinColumn
     // @Column(nullable = false) TODO: zmienić na nullable true
-    private UserEntity added_by;
+    private UserEntity addedBy;
 
     protected CarEntity(long id, String brand, String model, Integer productionYear, float fuelConsumption,
             float engineCapacity, Integer horsePower, Drive drive, String licensePlate, int seats,
@@ -79,7 +91,7 @@ public class CarEntity {
         this.value = value;
         this.mileage = mileage;
         this.rents = new HashSet<>();
-        this.added_by = null; // TODO jak bedzie token to zmienić
+        this.addedBy = null; // TODO jak bedzie token to zmienić
         this.gearbox = gearbox;
         this.picture = picture;
     }

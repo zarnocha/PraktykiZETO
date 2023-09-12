@@ -15,7 +15,7 @@ import zeto.praktyki.Rent.RentService;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class CarListDTO {
+public class CarDTO {
     private long id;
     private String brand;
     private String model;
@@ -27,11 +27,11 @@ public class CarListDTO {
     private Gearbox gearbox;
     @JsonIgnore
     private double value;
-    private double wholePrice;
+    private double dayPrice;
     private String description;
     private String picture;
 
-    public CarListDTO(CarEntity car, LocalDateTime from, LocalDateTime to) {
+    public CarDTO(CarEntity car) {
         this.id = car.getId();
         this.brand = car.getBrand();
         this.model = car.getModel();
@@ -44,10 +44,10 @@ public class CarListDTO {
         this.picture = car.getPicture();
         this.description = car.getDescription();
         this.value = car.getValue();
-        this.wholePrice = RentService.calculatePrice(from, to, car.getValue(), car.getProductionYear());
+        this.dayPrice = RentService.calculatePrice(car.getValue(), car.getProductionYear());
     }
 
-    public CarListDTO(long id, String brand, String model, Integer productionYear, float fuelConsumption,
+    public CarDTO(long id, String brand, String model, Integer productionYear, float fuelConsumption,
             float engineCapacity, Drive drive, int seats, Gearbox gearbox, String description, String picture,
             Double value) {
         this.id = id;
@@ -59,9 +59,9 @@ public class CarListDTO {
         this.drive = drive;
         this.seats = seats;
         this.gearbox = gearbox;
-        this.picture = picture;
         this.description = description;
+        this.picture = picture;
         this.value = value;
+        this.dayPrice = RentService.calculatePrice(value, productionYear);
     }
-
 }
