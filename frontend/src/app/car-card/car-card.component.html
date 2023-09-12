@@ -1,11 +1,11 @@
 <mat-card class="card">
-  <div class="card__image__container">
+  <div class="card__image__container" routerLink="/car/{{ carData.id }}">
     <img
       class="card__image"
       [src]="'data:image/png;base64,' + carData.picture"
     />
   </div>
-  <span class="car__title">
+  <span routerLink="/car/{{ carData.id }}" class="car__title">
     <h1 class="car__name">{{ carData.brand }} {{ carData.model }}</h1>
     <h4 class="inline car__engineCapacity">
       ({{ carData.engineCapacity.toFixed(1) }} L)
@@ -42,16 +42,20 @@
     <span class="card__price__value"
       >{{
         carData.value
-          ? (carData.value * 0.015).toFixed(2)
+          ? (carData.value * 0.008).toFixed(2)
           : carData.wholePrice.toFixed(2)
       }}zł</span
     >
   </div>
 
   <div class="card__buttons">
-    <button mat-stroked-button class="card__buttons__secondary">
+    <a
+      routerLink="/car/{{ carData.id }}"
+      mat-stroked-button
+      class="card__buttons__secondary"
+    >
       Więcej o aucie
-    </button>
+    </a>
     <button mat-raised-button class="card__buttons__primary">Wypożycz</button>
   </div>
 </mat-card>

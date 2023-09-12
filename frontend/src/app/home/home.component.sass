@@ -1,6 +1,7 @@
 .container
   margin: 0 auto
   margin-top: 1rem
+  margin-bottom: 2rem
   width: 80dvw
 
 .button-container
@@ -11,6 +12,8 @@
   justify-items: center
   margin-top: 1rem
   position: relative
+  grid-auto-flow: dense
+  z-index: 1
   // justify-content: flex-end
 
 .button-container__sort
@@ -40,6 +43,28 @@
 
   grid-row-end: 2
   grid-column-end: 4
+
+@media only screen and (max-width: 750px)
+  .button-container
+    display: flex
+    // flex-wrap: wrap
+    flex-direction: row
+    // align-items: center
+    justify-content: space-around
+
+  .button-container__sort
+    display: block
+    position: static
+    // width: 100%
+
+  .button-container__filter
+    // width: 100%
+    padding-bottom: 2rem
+
+  .button-container__switch-views
+    // width: 100%
+    margin: 0
+    margin-bottom: 1.5rem
 
 .container__title
   text-align: center

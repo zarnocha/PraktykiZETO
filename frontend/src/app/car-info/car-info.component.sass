@@ -1,0 +1,93 @@
+.content
+  display: flex
+  flex-wrap: wrap
+  width: 90dvw
+  height: 70dvh
+  justify-content: center
+  align-items: center
+  margin: 0 auto
+  gap: 2rem
+
+.image__container
+  // width: 70%
+  float: left
+  // background: linear-gradient(90deg, rgba(173,173,179,1) 34%, rgba(128,128,133,1) 48%, rgba(122,122,127,1) 75%, rgba(100,100,104,1) 85%, rgba(53,53,55,1) 94%, rgba(0,0,0,1) 100%)
+  background: linear-gradient(90deg, rgba(18,18,18,1) 0%, rgba(200,200,200,0.8407738095238095) 50%, rgba(18,18,18,1) 100%)
+
+.image__container > img
+  min-width: 600px
+  max-width: 700px
+  transition: all 0.5s ease-in-out
+
+.image__container > img:hover
+  transform: scale(1.3)
+
+.about-car
+  // width: 30%
+  float: right
+  border: 1px solid white
+  border-radius: 10px
+  padding: 2rem
+  flex: 1 2
+
+.car-title
+  font-size: xx-large
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2)
+  border-bottom-width: 1px
+  text-align: center
+  padding-bottom: 0.5rem
+  font-weight: bold
+
+.year-capacity
+  display: flex
+  justify-content: center
+  padding: 1rem
+  gap: 1rem
+
+.specs
+  display: grid
+  grid-template-columns: repeat(2, 1fr)
+  grid-template-rows: repeat(2, 1fr)
+  border: 0.5px dashed rgba(255,255,255,0.15)
+  padding: 1rem
+
+.specs > span
+  display: flex
+  align-items: center
+  justify-content: center
+  align-content: center
+  padding: 0.5rem
+  gap: 0.5rem
+
+.specs span:nth-child(1)
+  grid-area: 1 / 1 / 2 / 2
+.specs span:nth-child(2)
+  grid-area: 1 / 2 / 2 / 3
+.specs span:nth-child(3)
+  grid-area: 2 / 1 / 3 / 2
+.specs span:nth-child(4)
+  grid-area: 2 / 2 / 3 / 3
+
+.description-article
+  margin-top: 1rem
+//////////////////////////////////////////////////////////////////////////////////
+
+.loading
+  margin: 0 auto
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 2rem
+  flex-direction: column
+
+.loading__tire
+  animation: rotation 1s infinite linear
+
+@keyframes rotation
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)
+
+.loading__fetchDataButton
+  margin-top: 1rem

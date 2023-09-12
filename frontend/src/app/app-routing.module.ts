@@ -1,19 +1,48 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { HomeComponent } from './home/home.component';
-import { ProfileComponent } from './profile/profile/profile.component';
-import { AboutComponent } from './about/about/about.component';
 
 const routes: Routes = [
-  { path: 'home', component: HomeComponent, data: { title: 'Strona główna' } },
+  {
+    path: 'home',
+    loadComponent: () =>
+      import('./home/home.component').then((comp) => comp.HomeComponent),
+    data: { title: 'Strona główna' },
+  },
   {
     path: 'locations',
-    component: ProfileComponent,
+    loadComponent: () =>
+      import('./profile/profile.component').then(
+        (comp) => comp.ProfileComponent
+      ),
     data: { title: 'Lokalizacje' },
   },
-  { path: 'cars', component: ProfileComponent, data: { title: 'Flota' } },
-  { path: 'opinions', component: AboutComponent, data: { title: 'Opinie' } },
-  { path: 'about', component: AboutComponent, data: { title: 'O nas' } },
+  {
+    path: 'cars',
+    loadComponent: () =>
+      import('./profile/profile.component').then(
+        (comp) => comp.ProfileComponent
+      ),
+    data: { title: 'Flota' },
+  },
+  {
+    path: 'opinions',
+    loadComponent: () =>
+      import('./about/about.component').then((comp) => comp.AboutComponent),
+    data: { title: 'Opinie' },
+  },
+  {
+    path: 'about',
+    loadComponent: () =>
+      import('./about/about.component').then((comp) => comp.AboutComponent),
+    data: { title: 'O nas' },
+  },
+  {
+    path: 'car/:id',
+    loadComponent: () =>
+      import('./car-info/car-info.component').then(
+        (comp) => comp.CarInfoComponent
+      ),
+  },
   { path: '*', redirectTo: 'home' },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
