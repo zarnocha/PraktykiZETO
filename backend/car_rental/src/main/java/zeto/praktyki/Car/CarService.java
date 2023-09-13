@@ -30,7 +30,7 @@ public class CarService {
             CarEntity car = carRepository.findById(id).get();
             return new CarDTO(car);
         } else {
-            throw new ResponseStatusException(HttpStatus.valueOf(403), "Nie ma takiego użytkownika w bazie danych.");
+            throw new ResponseStatusException(HttpStatus.valueOf(403), "Nie ma takiego samochodu w bazie danych.");
         }
     }
 
