@@ -23,7 +23,7 @@
       {{ link.data["title"] }}
     </a>
   </ng-container>
-  <button mat-raised-button class="login__button">
+  <button (click)="openDialog()" mat-raised-button class="login__button">
     Zaloguj się<mat-icon>perm_identity</mat-icon>
   </button>
 </nav>

@@ -197,7 +197,7 @@ export class HomeComponent implements OnInit {
       queryParams = {};
       this.homeService.getCars().subscribe({
         next: (carData: Array<api.CarDTO>) => {
-          console.log('carData: ', carData);
+          // console.log('carData: ', carData);
           this.cars = carData;
           this.carsSorted = this.cars.slice();
           this.showLoader = false;

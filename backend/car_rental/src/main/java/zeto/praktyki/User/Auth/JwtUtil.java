@@ -53,7 +53,7 @@ public class JwtUtil {
                         .setExpiration(expirationDate)
                         .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
                         .compact());
-                put("expires_at", expirationDate.toString());
+                put("expires_at", expirationDate.toInstant().toString());
             }
         };
     }

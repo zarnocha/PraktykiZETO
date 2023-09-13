@@ -1,7 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, ViewEncapsulation } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+import {
+  ActivatedRoute,
+  NavigationEnd,
+  Router,
+  RouterModule,
+} from '@angular/router';
 import { filter } from 'rxjs/operators';
 import { AppRoutingModule } from '../app-routing.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -10,6 +15,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatButtonModule } from '@angular/material/button';
 import { SearchbarComponent } from '../searchbar/searchbar.component';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginModalComponent } from '../login-modal/login-modal.component';
 
 @Component({
   selector: 'navbar',
@@ -19,6 +26,7 @@ import { SearchbarComponent } from '../searchbar/searchbar.component';
     CommonModule,
     BrowserModule,
     AppRoutingModule,
+    RouterModule,
     BrowserAnimationsModule,
     MatTabsModule,
     MatIconModule,
@@ -31,8 +39,13 @@ import { SearchbarComponent } from '../searchbar/searchbar.component';
 })
 export class NavbarComponent {
   activeRouteTitle: string = '';
+  loginModalShown: boolean = false;
 
-  constructor(private router: Router, private route: ActivatedRoute) {
+  constructor(
+    private router: Router,
+    private route: ActivatedRoute,
+    public dialog: MatDialog
+  ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
       .subscribe(() => {
@@ -45,4 +58,9 @@ export class NavbarComponent {
   }
   routes = this.router.config;
   activeLink = this.router.url;
+  openDialog(): void {
+    this.dialog.open(LoginModalComponent);
+
+    // dialogRef.afterClosed().subscribe((result) => {});
+  }
 }

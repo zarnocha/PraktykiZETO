@@ -45,6 +45,10 @@
     <article class="description-article">
       <p class="description">{{ car.description }}</p>
     </article>
+    <div class="car__price" *ngIf="car.dayPrice">
+      Cena za dobę:
+      <span class="car__price__value">{{ car.dayPrice.toFixed(2) }}zł</span>
+    </div>
     <button mat-raised-button class="card__buttons__primary w-full mt-2">
       Wypożycz
     </button>

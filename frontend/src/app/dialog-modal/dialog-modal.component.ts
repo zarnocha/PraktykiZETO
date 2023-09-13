@@ -72,10 +72,7 @@ export class DialogModalComponent implements OnInit {
   }
 
   onClear(): void {
-    this.data.queryParams = {
-      // horsePowerFrom: this.filters.minHorsepower,
-      // horsePowerTo: this.filters.maxHorsepower,
-    };
+    this.data.queryParams = {};
     this.data.time = {
       from: {
         hour: 0,
