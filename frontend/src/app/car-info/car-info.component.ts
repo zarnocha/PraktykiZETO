@@ -26,7 +26,7 @@ viewBox="0 0 451 512.57"
 })
 export class CarInfoComponent implements OnInit {
   carId!: number;
-  car!: api.SingleCarDTO;
+  car!: api.CarDTO;
   showLoader: boolean = false;
   errorMessage: string = '';
 
@@ -35,7 +35,7 @@ export class CarInfoComponent implements OnInit {
     this.errorMessage = '';
 
     this.carInfoService.getCar(this.carId).subscribe({
-      next: (carData: api.SingleCarDTO) => {
+      next: (carData: api.CarDTO) => {
         console.log('car: ', carData);
         this.car = carData;
         this.showLoader = false;

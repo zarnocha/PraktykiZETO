@@ -66,8 +66,8 @@ type SortType =
 export class HomeComponent implements OnInit {
   constructor(public homeService: HomeService, public dialog: MatDialog) {}
 
-  cars: api.CarListDTO[] = [];
-  carsSorted: api.CarListDTO[] = [];
+  cars: api.CarDTO[] = [];
+  carsSorted: api.CarDTO[] = [];
 
   showLoader: boolean = false;
   errorMessage: string = '';
@@ -181,7 +181,7 @@ export class HomeComponent implements OnInit {
 
     if (queryParams) {
       this.homeService.getCars(queryParams).subscribe({
-        next: (carData: Array<api.CarListDTO>) => {
+        next: (carData: Array<api.CarDTO>) => {
           this.cars = carData;
           this.carsSorted = this.cars.slice();
 
@@ -196,7 +196,7 @@ export class HomeComponent implements OnInit {
     } else {
       queryParams = {};
       this.homeService.getCars().subscribe({
-        next: (carData: Array<api.CarListDTO>) => {
+        next: (carData: Array<api.CarDTO>) => {
           console.log('carData: ', carData);
           this.cars = carData;
           this.carsSorted = this.cars.slice();
@@ -264,8 +264,8 @@ export class HomeComponent implements OnInit {
       });
     } else if (this.selectedSort === 'po cenie  ↓') {
       this.carsSorted!.sort((a, b) => {
-        const brandA = a.value;
-        const brandB = b.value;
+        const brandA = a.dayPrice;
+        const brandB = b.dayPrice;
 
         if (brandA > brandB) {
           return 1;
@@ -278,8 +278,8 @@ export class HomeComponent implements OnInit {
       });
     } else if (this.selectedSort === 'po cenie  ↑') {
       this.carsSorted!.sort((a, b) => {
-        const brandA = a.value;
-        const brandB = b.value;
+        const brandA = a.dayPrice;
+        const brandB = b.dayPrice;
 
         if (brandA < brandB) {
           return 1;

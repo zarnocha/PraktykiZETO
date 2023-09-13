@@ -43,7 +43,7 @@ export class HomeService {
       console.log('url ', url);
     } else {
       headers = new HttpHeaders();
-      url = 'http://localhost:8080/api/car/all';
+      url = 'http://localhost:8080/api/car/filter';
     }
 
     return this.http

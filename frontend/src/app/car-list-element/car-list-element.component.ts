@@ -14,5 +14,5 @@ import { RouterModule } from '@angular/router';
 })
 export class CarListElementComponent {
   @Input()
-  carData!: api.CarListDTO;
+  carData!: api.CarDTO;
 }
