@@ -5,15 +5,9 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
-import zeto.praktyki.Rent.RentDTO.AddRentDTO;
 import zeto.praktyki.User.UserEntity;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.temporal.ChronoUnit;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIdentityReference;
 
 @Data
 @AllArgsConstructor

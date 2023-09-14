@@ -10,12 +10,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import zeto.praktyki.Car.CarEntity;
-import zeto.praktyki.Car.CarRepository;
 import zeto.praktyki.Car.CarService;
 import zeto.praktyki.Rent.RentDTO.AddRentDTO;
 import zeto.praktyki.Rent.RentDTO.RentDTO;
+import zeto.praktyki.Rent.RentDTO.RentListQueryParamsDTO;
 import zeto.praktyki.User.UserEntity;
-import zeto.praktyki.User.UserRepository;
 import zeto.praktyki.User.UserService;
 
 @Service
@@ -67,14 +66,19 @@ public class RentService {
 
         RentEntity rentEntity = new RentEntity(rent.getStartTime(), rent.getEndTime(), wholePrice, car, user);
         RentEntity savedEntity = rentRepository.save(rentEntity);
+
         return new RentDTO(savedEntity);
     }
 
-    public List<RentDTO> getRentsDTO() {
-        List<RentEntity> listRentEntity = rentRepository.findAll();
-        return listRentEntity.stream()
-                .map((rent) -> new RentDTO(rent))
-                .collect(Collectors.toList());
+    public List<RentDTO> getRentListDTO(RentListQueryParamsDTO rentListQueryParamsDTO) {
+        return rentRepositoryCQ.findRentByTimeAndPriceAndUserAndCarAndReturn(rentListQueryParamsDTO);
     }
+
+    // public List<RentDTO> getRentsDTO() {
+    // List<RentEntity> listRentEntity = rentRepository.findAll();
+    // return listRentEntity.stream()
+    // .map((rent) -> new RentDTO(rent))
+    // .collect(Collectors.toList());
+    // }
 
 }

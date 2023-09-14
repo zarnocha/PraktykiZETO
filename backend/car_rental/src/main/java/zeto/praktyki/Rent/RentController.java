@@ -1,6 +1,5 @@
 package zeto.praktyki.Rent;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,14 +11,14 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import jakarta.security.auth.message.AuthException;
 import jakarta.transaction.Transactional;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
-import zeto.praktyki.Car.CarEntity;
-import zeto.praktyki.Car.CarService;
 import zeto.praktyki.Rent.RentDTO.AddRentDTO;
 import zeto.praktyki.Rent.RentDTO.RentDTO;
+import zeto.praktyki.Rent.RentDTO.RentListQueryParamsDTO;
 import zeto.praktyki.User.Auth.JwtUtil;
 import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 
@@ -50,7 +49,15 @@ public class RentController {
 
     @Transactional
     @GetMapping(path = "")
-    public List<RentDTO> getRents() {
-        return new ArrayList<RentDTO>(rentService.getRentsDTO());
+    public List<RentDTO> getRents(RentListQueryParamsDTO rentListQueryParamsDTO,
+            @RequestHeader("Authorization") String bearerToken) throws AuthException {
+        jwtUtil.access(bearerToken, WhoCanAccess.ADMIN);
+        return rentService.getRentListDTO(rentListQueryParamsDTO);
     }
+
+    // @Transactional
+    // @GetMapping(path = "")
+    // public List<RentDTO> getRents() {
+    // return new ArrayList<RentDTO>(rentService.getRentsDTO());
+    // }
 }

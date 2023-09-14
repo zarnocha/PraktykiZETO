@@ -18,8 +18,8 @@ public class CarService {
     public CarRepository carRepository;
     @Autowired
     public CarRepositoryCQ carRepositoryCQ;
-    @Autowired
-    public RentService rentService;
+    // @Autowired
+    // public RentService rentService;
 
     public List<CarEntity> getCars() {
         return carRepository.findAll();

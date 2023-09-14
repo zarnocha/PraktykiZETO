@@ -6,14 +6,14 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
+import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.User.UserEntity;
 import zeto.praktyki.User.UserDTO.SimpleUserDTO;
 
 @Data
-@AllArgsConstructor
+// @AllArgsConstructor
 @NoArgsConstructor
-
 public class RentDTO {
 
     private Long id;
@@ -33,6 +33,18 @@ public class RentDTO {
         this.price = rentEntity.getPrice();
         this.car = new RentCarDTO(rentEntity.getCar());
         this.user = new SimpleUserDTO(rentEntity.getUser());
+    }
+
+    public RentDTO(Long id, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime actualStartTime,
+            LocalDateTime actualEndTime, double price, CarEntity car, UserEntity user) {
+        this.id = id;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.actualStartTime = actualStartTime;
+        this.actualEndTime = actualEndTime;
+        this.price = price;
+        this.car = new RentCarDTO(car);
+        this.user = new SimpleUserDTO(user);
     }
 
 }

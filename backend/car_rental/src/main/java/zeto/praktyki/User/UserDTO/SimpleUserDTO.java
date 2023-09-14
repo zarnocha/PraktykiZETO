@@ -22,6 +22,7 @@ public class SimpleUserDTO {
     private String lastName;
 
     public SimpleUserDTO(UserEntity userEntity) {
+        this.id = userEntity.getId();
         this.firstName = userEntity.getFirstName();
         this.lastName = userEntity.getLastName();
     }
