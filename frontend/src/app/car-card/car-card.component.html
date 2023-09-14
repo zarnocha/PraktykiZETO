@@ -37,15 +37,9 @@
     </span>
   </div>
 
-  <div class="card__price" *ngIf="carData.value || carData.wholePrice">
+  <div class="card__price" *ngIf="carData.dayPrice">
     Cena za dobę:
-    <span class="card__price__value"
-      >{{
-        carData.value
-          ? (carData.value * 0.008).toFixed(2)
-          : carData.wholePrice.toFixed(2)
-      }}zł</span
-    >
+    <span class="card__price__value">{{ carData.dayPrice.toFixed(2) }}zł</span>
   </div>
 
   <div class="card__buttons">

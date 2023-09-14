@@ -34,7 +34,7 @@ public class JwtUtil {
         this.userRepository = userRepository;
     }
 
-    public String generateToken(Boolean isAdmin, String firstName, String lastName, Long id) {
+    public Map<String, String> generateToken(Boolean isAdmin, String firstName, String lastName, Long id) {
         Map<String, Object> claims = new HashMap<>();
 
         claims.put("isAdmin", isAdmin);
@@ -45,12 +45,17 @@ public class JwtUtil {
         Date now = new Date();
         Date expirationDate = new Date(now.getTime() + 1 * 60 * 60 * 1000L); // Token expires in 1 hour
 
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(now)
-                .setExpiration(expirationDate)
-                .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
-                .compact();
+        return new HashMap<String, String>() {
+            {
+                put("token", Jwts.builder()
+                        .setClaims(claims)
+                        .setIssuedAt(now)
+                        .setExpiration(expirationDate)
+                        .signWith(SignatureAlgorithm.HS256, SECRET_KEY)
+                        .compact());
+                put("expires_at", expirationDate.toInstant().toString());
+            }
+        };
     }
 
     public Boolean authorize(String token, WhoCanAccess whoCanAccess) {

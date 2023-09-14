@@ -17,6 +17,8 @@ import zeto.praktyki.User.UserDTO.AdminRegisterDTO;
 import zeto.praktyki.User.UserDTO.UserLoginDTO;
 import zeto.praktyki.User.UserDTO.UserRegisterDTO;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 @RequestMapping("/api/user")
@@ -55,7 +57,8 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse response) throws AuthException {
+    public HashMap<String, String> login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse response)
+            throws AuthException {
         String loginFromRequest = userLoginDTO.getLogin();
         String givenPassword = userLoginDTO.getPassword();
 
@@ -77,10 +80,19 @@ public class UserController {
             String lastName = foundUser.getLastName();
             Long id = foundUser.getId();
 
-            String generatedToken = jwtUtil.generateToken(isAdmin, firstName, lastName, id);
+            Map<String, String> generatedToken = jwtUtil.generateToken(isAdmin, firstName, lastName, id);
+            String token = generatedToken.get("token");
+            String expirationDate = generatedToken.get("expires_at");
 
-            response.addHeader("Bearer", generatedToken);
-            return "Pomyślne logowanie";
+            response.addHeader("Bearer", token);
+
+            return new HashMap<String, String>() {
+                {
+                    put("token", token);
+                    put("expires_at", expirationDate);
+                }
+            };
+
         }
     }
 

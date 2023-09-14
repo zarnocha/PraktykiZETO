@@ -1,5 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+import { LoginModalComponent } from './login-modal/login-modal.component';
+import { AppComponent } from './app.component';
 
 const routes: Routes = [
   {
@@ -8,6 +10,12 @@ const routes: Routes = [
       import('./home/home.component').then((comp) => comp.HomeComponent),
     data: { title: 'Strona główna' },
   },
+  // {
+  //   path: 'login',
+  //   component: LoginModalComponent,
+  //   providers: [AppComponent],
+  //   outlet: 'login',
+  // },
   {
     path: 'locations',
     loadComponent: () =>
@@ -43,6 +51,7 @@ const routes: Routes = [
         (comp) => comp.CarInfoComponent
       ),
   },
+
   { path: '*', redirectTo: 'home' },
   { path: '', redirectTo: 'home', pathMatch: 'full' },
 ];
