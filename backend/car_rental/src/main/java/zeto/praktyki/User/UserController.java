@@ -2,6 +2,7 @@ package zeto.praktyki.User;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -10,10 +11,14 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.security.auth.message.AuthException;
 import jakarta.servlet.http.HttpServletResponse;
+import zeto.praktyki.Rent.RentRepositoryCQ;
+import zeto.praktyki.Rent.RentDTO.RentListQueryParamsDTO;
 import zeto.praktyki.User.Auth.JwtUtil;
 import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 import zeto.praktyki.User.UserDTO.AdminRegisterDTO;
 import zeto.praktyki.User.UserDTO.UserLoginDTO;
+import zeto.praktyki.User.UserDTO.UserProfileDTO;
+import zeto.praktyki.User.UserDTO.UserProfileWithRentsDTO;
 import zeto.praktyki.User.UserDTO.UserRegisterDTO;
 
 import java.util.HashMap;
@@ -29,6 +34,9 @@ public class UserController {
 
     @Autowired
     JwtUtil jwtUtil;
+
+    @Autowired
+    public RentRepositoryCQ rentRepositoryCQ;
 
     @PostMapping("/signup")
     public void signUp(@RequestBody UserRegisterDTO userRegisterDTO) {
@@ -97,9 +105,17 @@ public class UserController {
 
     // @RequestHeader("Authorization") String bearerToken
 
-    // @GetMapping("/{id}")
-    // public void viewData(@PathVariable int id) {
-    // userRepository.findById(id);
-    // }
+    @GetMapping("/profile")
+    public UserProfileWithRentsDTO viewData(RentListQueryParamsDTO rentListQueryParamsDTO,
+            @RequestHeader("Authorization") String bearerToken) throws Exception {
+        jwtUtil.access(bearerToken, WhoCanAccess.USER);
+        UserEntity user = jwtUtil.getUserFromToken(bearerToken);
+        Long userId = user.getId();
+        rentListQueryParamsDTO.setUserId(userId);
+
+        return new UserProfileWithRentsDTO(new UserProfileDTO(user),
+                rentRepositoryCQ.findRentByTimeAndPriceAndUserAndCarAndReturn(rentListQueryParamsDTO));
+
+    };
 
 }
