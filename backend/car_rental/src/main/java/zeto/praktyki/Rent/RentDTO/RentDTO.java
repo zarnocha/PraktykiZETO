@@ -2,11 +2,9 @@ package zeto.praktyki.Rent.RentDTO;
 
 import java.time.LocalDateTime;
 
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
-import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.User.UserEntity;
 import zeto.praktyki.User.UserDTO.SimpleUserDTO;
@@ -26,6 +24,7 @@ public class RentDTO {
     private SimpleUserDTO user;
 
     public RentDTO(RentEntity rentEntity) {
+        this.id = rentEntity.getId();
         this.startTime = rentEntity.getStartTime();
         this.endTime = rentEntity.getEndTime();
         this.actualStartTime = rentEntity.getActualStartTime();

@@ -1,7 +1,5 @@
 package zeto.praktyki.User.UserDTO;
 
-import java.time.LocalDate;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

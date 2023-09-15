@@ -12,12 +12,8 @@ import zeto.praktyki.User.UserEntity;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.springframework.scheduling.config.Task;
-
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIdentityReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 @NoArgsConstructor

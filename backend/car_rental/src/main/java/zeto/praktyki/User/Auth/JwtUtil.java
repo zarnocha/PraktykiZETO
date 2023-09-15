@@ -11,7 +11,6 @@ import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Service
 public class JwtUtil {
@@ -26,9 +25,6 @@ public class JwtUtil {
 
     @Autowired
     private final UserRepository userRepository;
-
-    // final List<String> USER_ROLES = Arrays.asList("wlasciciel", "kierownik",
-    // "pracownik");
 
     public JwtUtil(UserRepository userRepository) {
         this.userRepository = userRepository;

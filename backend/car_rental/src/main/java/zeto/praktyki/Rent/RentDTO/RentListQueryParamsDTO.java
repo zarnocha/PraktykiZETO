@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import zeto.praktyki.User.UserDTO.SimpleUserDTO;
 import jakarta.annotation.Nullable;
 
 @Data

@@ -1,7 +1,5 @@
 package zeto.praktyki.Car.CarDTO;
 
-import java.time.LocalDateTime;
-
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
@@ -9,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
 import zeto.praktyki.Car.CarEnums.*;
-import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.Rent.RentService;
 
 @Data

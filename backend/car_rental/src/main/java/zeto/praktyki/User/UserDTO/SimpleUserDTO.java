@@ -1,12 +1,8 @@
 package zeto.praktyki.User.UserDTO;
 
-import java.time.LocalDateTime;
-
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import zeto.praktyki.Car.CarEntity;
-import zeto.praktyki.Rent.RentEntity;
 import zeto.praktyki.User.UserEntity;
 
 @Data

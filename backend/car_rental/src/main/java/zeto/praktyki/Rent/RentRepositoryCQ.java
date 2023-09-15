@@ -5,37 +5,18 @@ import org.springframework.stereotype.Repository;
 
 import jakarta.persistence.EntityManager;
 import zeto.praktyki.Rent.RentDTO.RentListQueryParamsDTO;
-import zeto.praktyki.User.UserEntity_;
 import zeto.praktyki.User.UserService;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
-
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.TypedQuery;
 import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
-import jakarta.persistence.criteria.Expression;
-import jakarta.persistence.criteria.Join;
-import jakarta.persistence.criteria.JoinType;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import jakarta.transaction.Transactional;
-import zeto.praktyki.Car.CarEntity_;
 import zeto.praktyki.Car.CarService;
-import zeto.praktyki.Car.CarDTO.CarBrandModelDTO;
-import zeto.praktyki.Car.CarDTO.CarFilterDTO;
-import zeto.praktyki.Car.CarDTO.CarDTO;
-import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
-import zeto.praktyki.Rent.RentEntity;
-import zeto.praktyki.Rent.RentEntity_;
 import zeto.praktyki.Rent.RentDTO.RentDTO;
 
 @Repository

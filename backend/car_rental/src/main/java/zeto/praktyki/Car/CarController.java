@@ -34,7 +34,7 @@ public class CarController {
     @Autowired
     JwtUtil jwtUtil;
 
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "{id}")
     public CarDTO getById(@PathVariable long id, @RequestHeader("Authorization") String bearerToken)
             throws AuthException {
         jwtUtil.access(bearerToken, WhoCanAccess.USER);
@@ -42,17 +42,17 @@ public class CarController {
         return new CarDTO(foundCar);
     }
 
-    @GetMapping(path = "/filter")
+    @GetMapping(path = "filter")
     public List<CarDTO> getCarsFiltered(CarListQueryParamsDTO params) {
         return carService.getCarListDTO(params);
     }
 
-    @GetMapping(path = "/availableFilters")
+    @GetMapping(path = "availableFilters")
     public CarFilterDTO getCarsFilters() {
         return carService.getCarFilterDTO();
     }
 
-    @PostMapping(path = "/add")
+    @PostMapping(path = "add")
     public CarDTO addCar(@RequestBody CarEntity car, @RequestHeader("Authorization") String bearerToken)
             throws AuthException {
         jwtUtil.access(bearerToken, WhoCanAccess.ADMIN);
@@ -60,7 +60,7 @@ public class CarController {
         return new CarDTO(createdCar);
     }
 
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "{id}")
     public String deleteCar(@PathVariable Long id, @RequestHeader("Authorization") String bearerToken)
             throws AuthException {
         jwtUtil.access(bearerToken, WhoCanAccess.ADMIN);
