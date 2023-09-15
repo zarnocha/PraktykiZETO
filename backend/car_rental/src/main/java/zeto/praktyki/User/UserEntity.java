@@ -41,7 +41,7 @@ public class UserEntity {
     private String lastName;
 
     @Column(nullable = true)
-    private String creditCardNuber;
+    private String creditCardNumber;
 
     @Column(nullable = true)
     private LocalDate creditCardExpDate;
@@ -63,7 +63,7 @@ public class UserEntity {
         this.password = userRegisterDTO.getPassword();
         this.firstName = userRegisterDTO.getFirstName();
         this.lastName = userRegisterDTO.getLastName();
-        this.creditCardNuber = userRegisterDTO.getCreditCardNuber();
+        this.creditCardNumber = userRegisterDTO.getCreditCardNumber();
         this.creditCardExpDate = userRegisterDTO.getCreditCardExpDate();
         this.cvv = userRegisterDTO.getCvv();
         this.isAdmin = false;

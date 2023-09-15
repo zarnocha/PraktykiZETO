@@ -7,6 +7,7 @@ import javax.ws.rs.core.MediaType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.lang.reflect.Field;
+
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.Produces;
 import jakarta.security.auth.message.AuthException;
 import zeto.praktyki.Car.CarDTO.CarFilterDTO;
 import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
+import zeto.praktyki.Car.CarDTO.EditCarDTO;
 import zeto.praktyki.User.Auth.JwtUtil;
 import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 
@@ -32,12 +36,15 @@ public class CarController {
     CarService carService;
 
     @Autowired
+    CarRepository carRepository;
+
+    @Autowired
     JwtUtil jwtUtil;
 
     @GetMapping(path = "{id}")
     public CarDTO getById(@PathVariable long id, @RequestHeader("Authorization") String bearerToken)
             throws AuthException {
-        jwtUtil.access(bearerToken, WhoCanAccess.USER);
+        jwtUtil.access(bearerToken, WhoCanAccess.EVERYONE);
         CarEntity foundCar = carService.getCarById(id);
         return new CarDTO(foundCar);
     }
@@ -68,4 +75,36 @@ public class CarController {
         return "Pomyślnie usunięto pojazd o ID: " + id;
 
     }
+
+    @PatchMapping(path = "{id}")
+    public CarDTO editCar(@PathVariable Long id, @RequestBody EditCarDTO editCarDTO,
+            @RequestHeader("Authorization") String bearerToken) throws Exception {
+        jwtUtil.access(bearerToken, WhoCanAccess.ADMIN);
+
+        CarEntity foundCar = carService.getCarById(id);
+
+        Field[] fields = EditCarDTO.class.getDeclaredFields();
+
+        for (Field dtoField : fields) {
+            try {
+                Field entityField = CarEntity.class.getDeclaredField(dtoField.getName());
+
+                dtoField.setAccessible(true);
+                entityField.setAccessible(true);
+
+                Object dtoValue = dtoField.get(editCarDTO);
+
+                if (dtoValue != null) {
+                    entityField.set(foundCar, dtoValue);
+                }
+
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new Exception("Nie udało się edytować auta.");
+            }
+        }
+
+        carRepository.save(foundCar);
+        return new CarDTO(foundCar);
+
+    };
 }

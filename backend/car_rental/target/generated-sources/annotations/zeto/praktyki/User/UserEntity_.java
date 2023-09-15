@@ -18,11 +18,11 @@ public abstract class UserEntity_ {
 	public static volatile SingularAttribute<UserEntity, String> password;
 	public static volatile SingularAttribute<UserEntity, String> cvv;
 	public static volatile SingularAttribute<UserEntity, LocalDate> creditCardExpDate;
+	public static volatile SingularAttribute<UserEntity, String> creditCardNumber;
 	public static volatile SingularAttribute<UserEntity, Long> id;
 	public static volatile SingularAttribute<UserEntity, Boolean> isAdmin;
 	public static volatile SingularAttribute<UserEntity, String> login;
 	public static volatile SetAttribute<UserEntity, RentEntity> rents;
-	public static volatile SingularAttribute<UserEntity, String> creditCardNuber;
 
 	public static final String FIRST_NAME = "firstName";
 	public static final String LAST_NAME = "lastName";
@@ -30,11 +30,11 @@ public abstract class UserEntity_ {
 	public static final String PASSWORD = "password";
 	public static final String CVV = "cvv";
 	public static final String CREDIT_CARD_EXP_DATE = "creditCardExpDate";
+	public static final String CREDIT_CARD_NUMBER = "creditCardNumber";
 	public static final String ID = "id";
 	public static final String IS_ADMIN = "isAdmin";
 	public static final String LOGIN = "login";
 	public static final String RENTS = "rents";
-	public static final String CREDIT_CARD_NUBER = "creditCardNuber";
 
 }
 

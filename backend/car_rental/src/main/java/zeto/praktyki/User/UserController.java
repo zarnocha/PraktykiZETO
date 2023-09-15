@@ -3,6 +3,7 @@ package zeto.praktyki.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -16,11 +17,13 @@ import zeto.praktyki.Rent.RentDTO.RentListQueryParamsDTO;
 import zeto.praktyki.User.Auth.JwtUtil;
 import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 import zeto.praktyki.User.UserDTO.AdminRegisterDTO;
+import zeto.praktyki.User.UserDTO.EditProfileDTO;
 import zeto.praktyki.User.UserDTO.UserLoginDTO;
 import zeto.praktyki.User.UserDTO.UserProfileDTO;
 import zeto.praktyki.User.UserDTO.UserProfileWithRentsDTO;
 import zeto.praktyki.User.UserDTO.UserRegisterDTO;
 
+import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -115,6 +118,37 @@ public class UserController {
 
         return new UserProfileWithRentsDTO(new UserProfileDTO(user),
                 rentRepositoryCQ.findRentByTimeAndPriceAndUserAndCarAndReturn(rentListQueryParamsDTO));
+
+    };
+
+    @PatchMapping("/profile")
+    public UserProfileDTO editProfile(@RequestBody EditProfileDTO editProfileDTO,
+            @RequestHeader("Authorization") String bearerToken) throws Exception {
+        jwtUtil.access(bearerToken, WhoCanAccess.USER);
+        UserEntity user = jwtUtil.getUserFromToken(bearerToken);
+
+        Field[] fields = EditProfileDTO.class.getDeclaredFields();
+
+        for (Field dtoField : fields) {
+            try {
+                Field entityField = UserEntity.class.getDeclaredField(dtoField.getName());
+
+                dtoField.setAccessible(true);
+                entityField.setAccessible(true);
+
+                Object dtoValue = dtoField.get(editProfileDTO);
+
+                if (dtoValue != null) {
+                    entityField.set(user, dtoValue);
+                }
+
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                throw new Exception("Nie udało się edytować profilu.");
+            }
+        }
+
+        userRepository.save(user);
+        return new UserProfileDTO(user);
 
     };
 

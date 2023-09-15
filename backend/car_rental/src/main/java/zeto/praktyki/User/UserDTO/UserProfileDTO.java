@@ -17,7 +17,7 @@ public class UserProfileDTO {
     String firstName;
     String lastName;
 
-    String creditCardNuber;
+    String creditCardNumber;
     LocalDate creditCardExpDate;
     String cvv;
 
@@ -26,7 +26,7 @@ public class UserProfileDTO {
         this.login = userEntity.getLogin();
         this.firstName = userEntity.getFirstName();
         this.lastName = userEntity.getLastName();
-        this.creditCardNuber = userEntity.getCreditCardNuber();
+        this.creditCardNumber = userEntity.getCreditCardNumber();
         this.creditCardExpDate = userEntity.getCreditCardExpDate();
         this.cvv = userEntity.getCvv();
     }
