@@ -1,0 +1,75 @@
+<ng-container *ngIf="isLoggedIn">
+  <form id="rent" class="form" [formGroup]="form">
+    <h1 class="title">Wypożycz to auto:</h1>
+    <div class="!flex flex-col"></div>
+
+    <div class="datepicker">
+      <mat-form-field appearance="fill" class="!mx-auto">
+        <mat-label>Data wypożyczenia (od-do)</mat-label>
+        <mat-date-range-input
+          [required]="true"
+          [rangePicker]="rangePicker"
+          [min]="todayDate"
+        >
+          <input
+            [defaultValue]="startTime"
+            [formControl]="startTime"
+            matStartDate
+            placeholder="Początek"
+          />
+          <input
+            [defaultValue]="endTime"
+            [formControl]="endTime"
+            matEndDate
+            (dateChange)="getPriceForCar()"
+            placeholder="Koniec"
+          />
+        </mat-date-range-input>
+        <mat-hint *ngIf="!(startTime || endTime)"
+          >DD.MM.YYYY - DD.MM.YYYY</mat-hint
+        >
+        <mat-datepicker-toggle
+          matIconSuffix
+          [for]="rangePicker"
+        ></mat-datepicker-toggle>
+        <mat-date-range-picker #rangePicker>
+          <mat-date-range-picker-actions>
+            <button mat-button matDateRangePickerCancel>Zamknij</button>
+            <button mat-raised-button color="primary" matDateRangePickerApply>
+              Zatwierdź
+            </button>
+          </mat-date-range-picker-actions>
+        </mat-date-range-picker>
+      </mat-form-field>
+    </div>
+
+    <div class="price" *ngIf="price">
+      <p class="dayPrice">
+        Cena wypożyczenia za dzień: <b>{{ price!.dayPrice.toFixed(2) }}</b> zł
+      </p>
+      <p class="wholePrice">
+        Łączna kwota wypożyczenia: <b>{{ price!.wholePrice.toFixed(2) }}</b> zł
+      </p>
+    </div>
+
+    <div mat-dialog-actions class="buttons flex !justify-around">
+      <button
+        mat-stroked-button
+        class="buttons__secondary-button"
+        (click)="resetDate()"
+      >
+        Zresetuj
+      </button>
+
+      <button
+        mat-raised-button
+        color="primary"
+        class="buttons__primary-button"
+        cdkFocusInitial
+        [disabled]="startTime.value === '' || endTime.value === ''"
+      >
+        Wypożycz
+      </button>
+    </div>
+  </form>
+</ng-container>

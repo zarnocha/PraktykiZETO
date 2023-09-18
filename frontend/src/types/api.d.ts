@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-// Generated using typescript-generator version 3.2.1263 on 2023-09-13 08:09:22.
+// Generated using typescript-generator version 3.2.1263 on 2023-09-18 12:12:24.
 
 declare namespace api {
 
@@ -42,11 +42,26 @@ declare namespace api {
         available?: boolean;
     }
 
+    interface CarPriceDTO {
+        wholePrice: number;
+        dayPrice: number;
+    }
+
+    interface EditCarDTO {
+        brand: string;
+        model: string;
+        licensePlate: string;
+        description: string;
+        value: number;
+        mileage: number;
+        picture: string;
+    }
+
     interface AddRentDTO {
         startTime: Date;
         endTime: Date;
         carId: number;
-        userId: number;
+        userId?: number;
     }
 
     interface RentCarDTO {
@@ -67,11 +82,31 @@ declare namespace api {
         user: SimpleUserDTO;
     }
 
+    interface RentListQueryParamsDTO {
+        from?: Date;
+        to?: Date;
+        priceFrom?: number;
+        priceTo?: number;
+        carId?: number;
+        userId?: number;
+        returned?: boolean;
+        isLate?: boolean;
+    }
+
     interface AdminRegisterDTO {
         login: string;
         password: string;
         firstName: string;
         lastName: string;
+    }
+
+    interface EditProfileDTO {
+        password?: string;
+        firstName?: string;
+        lastName?: string;
+        creditCardNumber?: string;
+        creditCardExpDate?: Date;
+        cvv?: string;
     }
 
     interface SimpleUserDTO {
@@ -85,12 +120,27 @@ declare namespace api {
         password: string;
     }
 
+    interface UserProfileDTO {
+        id: number;
+        login: string;
+        firstName: string;
+        lastName: string;
+        creditCardNumber: string;
+        creditCardExpDate: Date;
+        cvv: string;
+    }
+
+    interface UserProfileWithRentsDTO {
+        profile: UserProfileDTO;
+        rents: RentDTO[];
+    }
+
     interface UserRegisterDTO {
         login: string;
         password: string;
         firstName: string;
         lastName: string;
-        creditCardNuber: string;
+        creditCardNumber: string;
         creditCardExpDate: Date;
         cvv: string;
     }

@@ -9,6 +9,7 @@ import {
 import { CommonModule } from '@angular/common';
 import {
   FormBuilder,
+  FormControl,
   FormGroup,
   FormGroupDirective,
   FormsModule,
@@ -78,19 +79,34 @@ export class LoginModalComponent implements OnInit {
     private formBuilder: FormBuilder,
     private dialog: MatDialog,
     public dialogRef: MatDialogRef<LoginModalComponent>,
-    private authService: AuthService
+    private authService: AuthService,
+    private router: Router
   ) {}
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-      login: [''],
-      password: [''],
+      login: new FormControl('', { nonNullable: true }).setValidators([
+        Validators.minLength(4),
+        Validators.required,
+      ]),
+      password: new FormControl('', { nonNullable: true }).setValidators([
+        Validators.minLength(4),
+        Validators.required,
+      ]),
     });
   }
 
   onLogin(): void {
+    if (this.form.invalid) {
+      return;
+    }
     console.log('onLogin fV ', this.form.value);
-    this.authService.login(this.form.value);
+    const sub = this.authService.login(this.form.value).subscribe((res) => {
+      console.log('login response: ', res);
+      this.authService.setSession(res);
+      this.dialogRef.close();
+      // this.router.navigate(['/profile']);
+    });
   }
 
   onNoClick(): void {

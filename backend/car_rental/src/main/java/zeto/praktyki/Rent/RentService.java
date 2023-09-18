@@ -59,10 +59,23 @@ public class RentService {
         return dayPrice * a;
     }
 
+    static public double calculateWholePriceForDate(Double dayPrice, LocalDateTime from, LocalDateTime to) {
+        Long days = from.until(to, ChronoUnit.DAYS);
+        Double a = Math.pow(0.999, days);
+        return dayPrice * a * (days + 1);
+    }
+
     static public double calculatePriceForDateForCar(Double carValue, Integer productionYear, LocalDateTime startTime,
             LocalDateTime endTime) {
         Double priceForCar = calculatePrice(carValue, productionYear);
         return calculatePriceForDate(priceForCar, startTime, endTime);
+    }
+
+    static public double calculateWholePriceForDateForCar(Double carValue, Integer productionYear,
+            LocalDateTime startTime,
+            LocalDateTime endTime) {
+        Double priceForCar = calculatePrice(carValue, productionYear);
+        return calculateWholePriceForDate(priceForCar, startTime, endTime);
     }
 
     public RentDTO addRent(AddRentDTO rent) {
@@ -84,7 +97,8 @@ public class RentService {
         }
 
         UserEntity user = userService.getUserById(rent.getUserId());
-        Double wholePrice = calculatePriceForDateForCar(car.getValue(), car.getProductionYear(), rent.getStartTime(),
+        Double wholePrice = calculateWholePriceForDateForCar(car.getValue(), car.getProductionYear(),
+                rent.getStartTime(),
                 rent.getEndTime());
 
         RentEntity rentEntity = new RentEntity(rent.getStartTime(), rent.getEndTime(), wholePrice, car, user);

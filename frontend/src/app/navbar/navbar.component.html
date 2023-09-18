@@ -23,8 +23,22 @@
       {{ link.data["title"] }}
     </a>
   </ng-container>
-  <button (click)="openDialog()" mat-raised-button class="login__button">
+  <button
+    *ngIf="!isLoggedIn"
+    (click)="openDialog()"
+    mat-raised-button
+    class="login__button"
+  >
     Zaloguj się<mat-icon>perm_identity</mat-icon>
+  </button>
+
+  <button
+    *ngIf="isLoggedIn"
+    (click)="logOut()"
+    mat-raised-button
+    class="login__button"
+  >
+    Wyloguj się<mat-icon>perm_identity</mat-icon>
   </button>
 </nav>
 

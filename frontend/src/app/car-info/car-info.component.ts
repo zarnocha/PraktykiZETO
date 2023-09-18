@@ -6,11 +6,18 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule, MatIconRegistry } from '@angular/material/icon';
 import { CarInfoService } from './car-info.service';
 import { DomSanitizer } from '@angular/platform-browser';
+import { RentFormComponent } from '../rent-form/rent-form.component';
 
 @Component({
   selector: 'car-info',
   standalone: true,
-  imports: [CommonModule, RouterModule, MatIconModule, MatButtonModule],
+  imports: [
+    CommonModule,
+    RouterModule,
+    MatIconModule,
+    MatButtonModule,
+    RentFormComponent,
+  ],
   templateUrl: './car-info.component.html',
   styleUrls: ['./car-info.component.sass'],
 })

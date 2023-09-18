@@ -50,6 +50,23 @@
     >
       Więcej o aucie
     </a>
-    <button mat-raised-button class="card__buttons__primary">Wypożycz</button>
+    <button
+      *ngIf="!isLoggedIn"
+      mat-raised-button
+      (click)="openDialog()"
+      class="card__buttons__primary"
+    >
+      Wypożycz
+    </button>
+    <button
+      *ngIf="isLoggedIn"
+      (click)="
+        this.router.navigate(['car/' + carData.id], { fragment: 'rent' })
+      "
+      mat-raised-button
+      class="card__buttons__primary"
+    >
+      Wypożycz
+    </button>
   </div>
 </mat-card>

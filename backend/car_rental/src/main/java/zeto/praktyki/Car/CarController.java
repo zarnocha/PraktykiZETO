@@ -23,7 +23,10 @@ import jakarta.security.auth.message.AuthException;
 import zeto.praktyki.Car.CarDTO.CarFilterDTO;
 import zeto.praktyki.Car.CarDTO.CarDTO;
 import zeto.praktyki.Car.CarDTO.CarListQueryParamsDTO;
+import zeto.praktyki.Car.CarDTO.CarPriceDTO;
 import zeto.praktyki.Car.CarDTO.EditCarDTO;
+import zeto.praktyki.Rent.RentService;
+import zeto.praktyki.Rent.RentDTO.AddRentDTO;
 import zeto.praktyki.User.Auth.JwtUtil;
 import zeto.praktyki.User.Auth.JwtUtil.WhoCanAccess;
 
@@ -42,11 +45,24 @@ public class CarController {
     JwtUtil jwtUtil;
 
     @GetMapping(path = "{id}")
-    public CarDTO getById(@PathVariable long id, @RequestHeader("Authorization") String bearerToken)
+    public CarDTO getById(@PathVariable long id)
             throws AuthException {
-        jwtUtil.access(bearerToken, WhoCanAccess.EVERYONE);
         CarEntity foundCar = carService.getCarById(id);
         return new CarDTO(foundCar);
+    }
+
+    @GetMapping(path = "{id}/price")
+    public CarPriceDTO getPriceForSpecificCar(@PathVariable long id, AddRentDTO addRentDTO) {
+        CarEntity foundCar = carService.getCarById(id);
+
+        Double wholePrice = RentService.calculateWholePriceForDateForCar(foundCar.getValue(),
+                foundCar.getProductionYear(), addRentDTO.getStartTime(), addRentDTO.getEndTime());
+        Double dayPrice = RentService.calculatePriceForDateForCar(foundCar.getValue(), foundCar.getProductionYear(),
+                addRentDTO.getStartTime(), addRentDTO.getEndTime());
+
+        CarPriceDTO carPriceDTO = new CarPriceDTO(wholePrice, dayPrice);
+
+        return carPriceDTO;
     }
 
     @GetMapping(path = "filter")

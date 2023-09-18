@@ -1,5 +1,10 @@
 import { CommonModule } from '@angular/common';
-import { Component, ViewEncapsulation } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  OnInit,
+  ViewEncapsulation,
+} from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import {
   ActivatedRoute,
@@ -17,6 +22,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { SearchbarComponent } from '../searchbar/searchbar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
+import { AuthService } from '../login-modal/AuthService.service';
 
 @Component({
   selector: 'navbar',
@@ -37,14 +43,17 @@ import { LoginModalComponent } from '../login-modal/login-modal.component';
   styleUrls: ['./navbar.component.sass'],
   encapsulation: ViewEncapsulation.None,
 })
-export class NavbarComponent {
+export class NavbarComponent implements OnInit {
   activeRouteTitle: string = '';
   loginModalShown: boolean = false;
+  isLoggedIn: boolean = false;
 
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService,
+    private changeDetectorRef: ChangeDetectorRef
   ) {
     this.router.events
       .pipe(filter((event) => event instanceof NavigationEnd))
@@ -58,9 +67,19 @@ export class NavbarComponent {
   }
   routes = this.router.config;
   activeLink = this.router.url;
+
   openDialog(): void {
     this.dialog.open(LoginModalComponent);
+  }
+  logOut(): void {
+    this.changeDetectorRef.detectChanges();
+    this.authService.logout();
+  }
 
-    // dialogRef.afterClosed().subscribe((result) => {});
+  ngOnInit() {
+    this.authService.isLoggedIn$.subscribe((loggedIn) => {
+      this.isLoggedIn = loggedIn;
+    });
+    this.isLoggedIn = this.authService.isLoggedIn();
   }
 }
