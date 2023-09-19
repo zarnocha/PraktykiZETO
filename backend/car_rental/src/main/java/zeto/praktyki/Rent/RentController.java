@@ -40,6 +40,10 @@ public class RentController {
     public RentDTO addRent(@RequestBody AddRentDTO rent, @RequestHeader("Authorization") String bearerToken)
             throws Exception {
         jwtUtil.access(bearerToken, WhoCanAccess.USER);
+        if (!rentService.isRentPossible(rent.getCarId(), rent.getStartTime(), rent.getEndTime())) {
+            throw new Exception("Samochód jest zajęty w danym terminie.");
+        }
+
         Long userId = jwtUtil.getUserIdFromToken(bearerToken);
 
         rent.setUserId(userId);
