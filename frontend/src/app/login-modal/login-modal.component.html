@@ -28,6 +28,8 @@
           }}</mat-icon>
         </button>
       </mat-form-field>
+
+      <p *ngIf="invalidField">{{ invalidField }}</p>
     </div>
 
     <div mat-dialog-actions class="flex !justify-around">
@@ -52,117 +54,148 @@
 </ng-container>
 
 <!-- ------------------------------------------------------------------------------------------------------ -->
+<!-- --------------------------------------------LOGOWANIE------------------------------------------------- -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
+<!-- -------------------------------------------REJESTRACJA------------------------------------------------ -->
 <!-- ------------------------------------------------------------------------------------------------------ -->
 
 <ng-container *ngIf="typeOfForm === 'REGISTER'">
   <h1 mat-dialog-title class="!font-bold">Rejestracja:</h1>
-  <div mat-dialog-content class="!flex flex-col">
-    <h2>{{ typeOfForm }}</h2>
+  <form [formGroup]="form" (ngSubmit)="onRegister()">
+    <div mat-dialog-content class="!flex flex-col">
+      <mat-form-field>
+        <mat-label>Login</mat-label>
+        <input
+          matInput
+          type="login"
+          id="login"
+          formControlName="login"
+          required
+        />
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Login</mat-label>
-      <input
-        matInput
-        type="login"
-        id="login"
-        formControlName="login"
-        required
-      />
-    </mat-form-field>
+      <mat-form-field>
+        <mat-label>Hasło</mat-label>
+        <input
+          formControlName="password"
+          required
+          matInput
+          [type]="hidePassword ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hidePassword = !hidePassword"
+          [attr.aria-label]="'Zmień widoczność hasła'"
+          [attr.aria-pressed]="hidePassword"
+        >
+          <mat-icon>{{
+            hidePassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Hasło</mat-label>
-      <input required matInput [type]="hidePassword ? 'password' : 'text'" />
+      <mat-form-field>
+        <mat-label>Powtórz hasło</mat-label>
+        <input
+          formControlName="repeatPassword"
+          required
+          matInput
+          [type]="hideRepeatPassword ? 'password' : 'text'"
+        />
+        <button
+          mat-icon-button
+          matSuffix
+          (click)="hideRepeatPassword = !hideRepeatPassword"
+          [attr.aria-label]="'Zmień widoczność powtarzanego hasła'"
+          [attr.aria-pressed]="hideRepeatPassword"
+        >
+          <mat-icon>{{
+            hideRepeatPassword ? "visibility_off" : "visibility"
+          }}</mat-icon>
+        </button>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          required
+          type="firstName"
+          id="firstName"
+          placeholder="Imię"
+          formControlName="firstName"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <input
+          matInput
+          required
+          type="lastName"
+          id="lastName"
+          placeholder="Nazwisko"
+          formControlName="lastName"
+        />
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Numer karty kredytowej</mat-label>
+        <input
+          formControlName="ccNumber"
+          matInput
+          required
+          type="tel"
+          ccNumber
+          #ccNumber="ccNumber"
+        />
+        <span class="scheme">{{ ccNumber.resolvedScheme$ | async }}</span>
+      </mat-form-field>
+
+      <mat-form-field>
+        <mat-label>Data ważności karty</mat-label>
+        <input
+          formControlName="ccExpDate"
+          matInput
+          required
+          id="cc-exp-date"
+          type="tel"
+          autocomplete="cc-exp"
+          ccExp
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>CVV/CVC</mat-label>
+        <input
+          formControlName="cvv"
+          matInput
+          required
+          id="cc-cvc"
+          type="tel"
+          autocomplete="off"
+          ccCVC
+      /></mat-form-field>
+      <p *ngIf="invalidField">{{ invalidField }}</p>
+    </div>
+
+    <div mat-dialog-actions class="flex !justify-around">
       <button
-        mat-icon-button
-        matSuffix
-        (click)="hidePassword = !hidePassword"
-        [attr.aria-label]="'Zmień widoczność hasła'"
-        [attr.aria-pressed]="hidePassword"
+        mat-stroked-button
+        color="accent"
+        mat-dialog-close
+        (click)="onNoClick()"
       >
-        <mat-icon>{{
-          hidePassword ? "visibility_off" : "visibility"
-        }}</mat-icon>
+        Zamknij
       </button>
-    </mat-form-field>
 
-    <mat-form-field>
-      <mat-label>Powtórz hasło</mat-label>
-      <input
-        required
-        matInput
-        [type]="hideRepeatPassword ? 'password' : 'text'"
-      />
-      <button
-        mat-icon-button
-        matSuffix
-        (click)="hideRepeatPassword = !hideRepeatPassword"
-        [attr.aria-label]="'Zmień widoczność powtarzanego hasła'"
-        [attr.aria-pressed]="hideRepeatPassword"
-      >
-        <mat-icon>{{
-          hideRepeatPassword ? "visibility_off" : "visibility"
-        }}</mat-icon>
+      <button mat-stroked-button (click)="switchForms()">
+        Masz już konto? Zaloguj się
       </button>
-    </mat-form-field>
 
-    <hr />
-
-    <mat-form-field>
-      <input
-        matInput
-        type="firstName"
-        id="firstName"
-        placeholder="Imię"
-        formControlName="firstName"
-        required
-      />
-    </mat-form-field>
-
-    <mat-form-field>
-      <input
-        matInput
-        type="lastName"
-        id="lastName"
-        placeholder="Nazwisko"
-        formControlName="lastName"
-        required
-      />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>Numer karty kredytowej</mat-label>
-      <input matInput type="tel" ccNumber #ccNumber="ccNumber" />
-      <span class="scheme">{{ ccNumber.resolvedScheme$ | async }}</span>
-    </mat-form-field>
-
-    <mat-form-field>
-      <mat-label>Data ważności karty</mat-label>
-      <input matInput id="cc-exp-date" type="tel" autocomplete="cc-exp" ccExp />
-    </mat-form-field>
-    <mat-form-field>
-      <mat-label>CVV/CVC</mat-label>
-      <input matInput id="cc-cvc" type="tel" autocomplete="off" ccCVC
-    /></mat-form-field>
-  </div>
-  <div mat-dialog-actions class="flex !justify-around">
-    <button
-      mat-stroked-button
-      color="accent"
-      mat-dialog-close
-      (click)="onNoClick()"
-    >
-      Zamknij
-    </button>
-
-    <button mat-stroked-button (click)="switchForms()">
-      Masz już konto? Zaloguj się
-    </button>
-
-    <button mat-raised-button color="primary" cdkFocusInitial>
-      Zarejestruj się
-    </button>
-  </div>
+      <button mat-raised-button color="primary" cdkFocusInitial>
+        Zarejestruj się
+      </button>
+    </div>
+  </form>
 </ng-container>
 
 <!-- </mat-form-field>

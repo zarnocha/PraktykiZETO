@@ -3,7 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { AppComponent } from './app.component';
 import { AuthGuard } from './login-modal/Auth.guard';
-import { UserProfileComponent } from './user-profile/user-profile.component';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -56,7 +56,10 @@ const routes: Routes = [
 
   {
     path: 'profile',
-    component: UserProfileComponent,
+    loadComponent: () =>
+      import('./profile/profile.component').then(
+        (comp) => comp.ProfileComponent
+      ),
     canActivate: [AuthGuard],
   },
 

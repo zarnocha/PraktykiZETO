@@ -5,7 +5,7 @@ import { Observable, catchError, throwError } from 'rxjs';
 @Injectable({
   providedIn: 'root',
 })
-export class UserProfileService {
+export class ProfileService {
   constructor(private http: HttpClient) {}
 
   getUserProfile(): Observable<any> {
@@ -13,7 +13,7 @@ export class UserProfileService {
     let url: string;
 
     headers = new HttpHeaders();
-    url = `http://localhost:8080/api/car`;
+    url = `http://localhost:8080/api/user/profile`;
 
     return this.http
       .get(url, {

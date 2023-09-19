@@ -1,1 +1,84 @@
-<p>profile works!</p>
+<div class="wrapper">
+  <button (click)="manageAllRows(true)">Expand All</button>
+  <button (click)="manageAllRows(false)">Collpase All</button>
+
+  <table
+    mat-table
+    [dataSource]="dataSource"
+    multiTemplateDataRows
+    class="mat-elevation-z8"
+  >
+    <ng-container
+      matColumnDef="{{ column }}"
+      *ngFor="let column of columnsToDisplay"
+    >
+      <th mat-header-cell *matHeaderCellDef>
+        {{
+          column === "startTime"
+            ? "Czas rozpoczęcia"
+            : column === "endTime"
+            ? "Czas zakończenia"
+            : "Cena/całość"
+        }}
+      </th>
+      <td mat-cell *matCellDef="let element">{{ element[column] }}</td>
+    </ng-container>
+
+    <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+    <ng-container matColumnDef="expandedDetail">
+      <td
+        mat-cell
+        *matCellDef="let element"
+        [attr.colspan]="columnsToDisplay.length"
+      >
+        <div
+          class="example-element-detail"
+          [@detailExpand]="element.expanded ? 'expanded' : 'collapsed'"
+        >
+          <table class="detail-table">
+            <tr>
+              <th>Zdjęcie</th>
+              <th>Marka</th>
+              <th>Model</th>
+            </tr>
+            <tr>
+              <td>
+                <img
+                  class="car__image"
+                  [src]="'data:image/png;base64,' + element.picture"
+                />
+              </td>
+              <td>{{ element.brand }}</td>
+              <td>{{ element.model }}</td>
+            </tr>
+          </table>
+        </div>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="columnsToDisplay"></tr>
+    <tr
+      mat-row
+      *matRowDef="let element; columns: columnsToDisplay"
+      class="visible-row"
+      [class.example-expanded-row]="element.expanded"
+      (click)="toggleRow(element)"
+    >
+      <hr />
+    </tr>
+    <tr
+      mat-row
+      *matRowDef="let row; columns: ['expandedDetail']"
+      class="example-detail-row"
+    ></tr>
+  </table>
+</div>
+
+<div *ngIf="profileData">
+  <p>Login: {{ profileData.login }}</p>
+  <p>Imię: {{ profileData.firstName }}</p>
+  <p>Nazwisko: {{ profileData.lastName }}</p>
+  <p>Nr karty: {{ profileData.creditCardNumber }}</p>
+  <p>Data ważności karty: {{ profileData.creditCardExpDate }}</p>
+  <p>CVV karty: {{ profileData.cvv }}</p>
+</div>

@@ -23,6 +23,7 @@ import { SearchbarComponent } from '../searchbar/searchbar.component';
 import { MatDialog } from '@angular/material/dialog';
 import { LoginModalComponent } from '../login-modal/login-modal.component';
 import { AuthService } from '../login-modal/AuthService.service';
+import { MatMenuModule } from '@angular/material/menu';
 
 @Component({
   selector: 'navbar',
@@ -39,6 +40,7 @@ import { AuthService } from '../login-modal/AuthService.service';
     MatTooltipModule,
     MatButtonModule,
     SearchbarComponent,
+    MatMenuModule,
   ],
   styleUrls: ['./navbar.component.sass'],
   encapsulation: ViewEncapsulation.None,
@@ -49,7 +51,7 @@ export class NavbarComponent implements OnInit {
   isLoggedIn: boolean = false;
 
   constructor(
-    private router: Router,
+    public router: Router,
     private route: ActivatedRoute,
     public dialog: MatDialog,
     private authService: AuthService,
