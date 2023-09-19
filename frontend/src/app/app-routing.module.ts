@@ -2,6 +2,8 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginModalComponent } from './login-modal/login-modal.component';
 import { AppComponent } from './app.component';
+import { AuthGuard } from './login-modal/Auth.guard';
+import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
   {
@@ -50,6 +52,15 @@ const routes: Routes = [
       import('./car-info/car-info.component').then(
         (comp) => comp.CarInfoComponent
       ),
+  },
+
+  {
+    path: 'profile',
+    loadComponent: () =>
+      import('./profile/profile.component').then(
+        (comp) => comp.ProfileComponent
+      ),
+    canActivate: [AuthGuard],
   },
 
   { path: '*', redirectTo: 'home' },

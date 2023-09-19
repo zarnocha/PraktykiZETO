@@ -84,5 +84,9 @@
         </ng-container>
       </div>
     </ng-container>
+
+    <ng-container *ngIf="carsSorted.length < 1">
+      <h3 class="text-4xl text-center mt-10">Brak dostępnych pojazdów</h3>
+    </ng-container>
   </ng-container>
 </div>

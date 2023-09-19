@@ -23,9 +23,38 @@
       {{ link.data["title"] }}
     </a>
   </ng-container>
-  <button (click)="openDialog()" mat-raised-button class="login__button">
+  <button
+    *ngIf="!isLoggedIn"
+    (click)="openDialog()"
+    mat-raised-button
+    class="login__button"
+  >
     Zaloguj się<mat-icon>perm_identity</mat-icon>
   </button>
+
+  <ng-container *ngIf="isLoggedIn">
+    <button
+      mat-fab
+      color="primary"
+      class="!border-double !border-black ml-2 outline-2"
+      extended
+      [matMenuTriggerFor]="menu"
+      aria-label="Rozwijane menu konta"
+    >
+      <mat-icon>person</mat-icon>
+      Twoje konto
+    </button>
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item (click)="this.router.navigate(['/profile'])">
+        <mat-icon>perm_identity</mat-icon>
+        <span>Profil</span>
+      </button>
+      <button mat-menu-item (click)="logOut()">
+        <mat-icon>logout</mat-icon>
+        <span>Wyloguj się</span>
+      </button>
+    </mat-menu>
+  </ng-container>
 </nav>
 
 <div class="tire-pattern"></div>

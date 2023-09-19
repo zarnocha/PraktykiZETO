@@ -21,6 +21,7 @@ import {
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { AuthInterceptor } from './login-modal/AuthInterceptor';
+import { AuthService } from './login-modal/AuthService.service';
 
 @NgModule({
   declarations: [AppComponent],
@@ -49,6 +50,7 @@ import { AuthInterceptor } from './login-modal/AuthInterceptor';
       useClass: AuthInterceptor,
       multi: true,
     },
+    AuthService,
   ],
   bootstrap: [AppComponent],
 })

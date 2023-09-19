@@ -1,60 +1,64 @@
 <!-- <a routerLink="/home" mat-raised-button class=""
   ><mat-icon>home</mat-icon>Powrót do strony głównej</a
 > -->
-<section class="content" *ngIf="!showLoader && !errorMessage">
-  <div class="image__container">
-    <img [src]="'data:image/png;base64,' + car!.picture" />
-  </div>
-
-  <main class="about-car">
-    <h1 class="car-title">{{ car.brand }} {{ car.model }}</h1>
-    <div class="year-capacity">
-      <h2>
-        Pojemność silnika: <b>{{ car.engineCapacity.toFixed(1) }}</b>
-      </h2>
-      <h2>
-        Rocznik <b>{{ car.productionYear }}</b>
-      </h2>
+<div>
+  <section class="content" *ngIf="!showLoader && !errorMessage">
+    <div class="image__container">
+      <img [src]="'data:image/png;base64,' + car!.picture" />
     </div>
-    <div class="specs">
-      <span class="specs__single-info">
-        <mat-icon>airline_seat_recline_normal</mat-icon>
-        {{ car.seats }}
-      </span>
-      <span class="specs__single-info">
-        <mat-icon>settings</mat-icon>
-        <ng-container *ngIf="car.gearbox === 'MANUAL'"> Manual. </ng-container>
-        <ng-container *ngIf="car.gearbox === 'AUTOMATIC'">
-          Automat.
-        </ng-container>
-        <ng-container *ngIf="car.gearbox === 'SEMI_AUTOMATIC'">
-          Półautomat.
-        </ng-container>
-      </span>
 
-      <span class="specs__single-info">
-        <mat-icon class="text-white" svgIcon="axle-drive"></mat-icon>
-        {{ car.drive }}
-      </span>
+    <main class="about-car">
+      <h1 class="car-title">{{ car.brand }} {{ car.model }}</h1>
+      <div class="year-capacity">
+        <h2>
+          Pojemność silnika: <b>{{ car.engineCapacity.toFixed(1) }}</b>
+        </h2>
+        <h2>
+          Rocznik <b>{{ car.productionYear }}</b>
+        </h2>
+      </div>
+      <div class="specs">
+        <span class="specs__single-info">
+          <mat-icon>airline_seat_recline_normal</mat-icon>
+          {{ car.seats }}
+        </span>
+        <span class="specs__single-info">
+          <mat-icon>settings</mat-icon>
+          <ng-container *ngIf="car.gearbox === 'MANUAL'">
+            Manual.
+          </ng-container>
+          <ng-container *ngIf="car.gearbox === 'AUTOMATIC'">
+            Automat.
+          </ng-container>
+          <ng-container *ngIf="car.gearbox === 'SEMI_AUTOMATIC'">
+            Półautomat.
+          </ng-container>
+        </span>
 
-      <span class="specs__single-info">
-        <mat-icon>oil_barrel</mat-icon>
-        {{ car.fuelConsumption }}L/100KM
-      </span>
-    </div>
-    <article class="description-article">
-      <p class="description">{{ car.description }}</p>
-    </article>
-    <div class="car__price" *ngIf="car.dayPrice">
-      Cena za dobę:
-      <span class="car__price__value">{{ car.dayPrice.toFixed(2) }}zł</span>
-    </div>
-    <button mat-raised-button class="card__buttons__primary w-full mt-2">
-      Wypożycz
-    </button>
-  </main>
-</section>
+        <span class="specs__single-info">
+          <mat-icon class="text-white" svgIcon="axle-drive"></mat-icon>
+          {{ car.drive }}
+        </span>
 
+        <span class="specs__single-info">
+          <mat-icon>oil_barrel</mat-icon>
+          {{ car.fuelConsumption }}L/100KM
+        </span>
+      </div>
+      <article class="description-article">
+        <p class="description">{{ car.description }}</p>
+      </article>
+      <!-- <div class="car__price" *ngIf="car.dayPrice">
+        Cena za dobę:
+        <span class="car__price__value">{{ car.dayPrice.toFixed(2) }}zł</span>
+      </div>
+      <button mat-raised-button class="card__buttons__primary w-full mt-2">
+        Wypożycz
+      </button> -->
+    </main>
+  </section>
+  <rent-form></rent-form>
+</div>
 <section *ngIf="showLoader" class="content">
   <h3 class="mb-4 text-xl">Pobieranie danych...</h3>
   <img
