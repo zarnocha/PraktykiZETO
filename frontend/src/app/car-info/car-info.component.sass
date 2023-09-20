@@ -4,7 +4,7 @@
   width: 90dvw
   // height: 70dvh
   justify-content: center
-  align-items: center
+  // align-items: center
   margin: 10dvh auto
   gap: 2rem
 
@@ -13,6 +13,9 @@
   float: left
   // background: linear-gradient(90deg, rgba(173,173,179,1) 34%, rgba(128,128,133,1) 48%, rgba(122,122,127,1) 75%, rgba(100,100,104,1) 85%, rgba(53,53,55,1) 94%, rgba(0,0,0,1) 100%)
   background: linear-gradient(90deg, rgba(18,18,18,1) 0%, rgba(200,200,200,0.8407738095238095) 50%, rgba(18,18,18,1) 100%)
+  display: flex
+  flex-wrap: wrap
+  align-content: center
 
 .image__container > img
   min-width: 600px
@@ -29,6 +32,11 @@
   border-radius: 10px
   padding: 2rem
   flex: 1 2
+  display: flex
+  flex-direction: column
+
+.about-car__text
+  margin: auto 0
 
 .car-title
   font-size: xx-large

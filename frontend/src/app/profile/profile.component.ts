@@ -11,10 +11,12 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ProfileService } from './profile.service';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 export interface Table {
-  startTime: Date;
-  endTime: Date;
+  startTime: string;
+  endTime: string;
+
   price: string;
   brand: string;
   model: string;
@@ -31,6 +33,7 @@ export interface Table {
     MatButtonModule,
     NgIf,
     MatIconModule,
+    MatTooltipModule,
   ],
   templateUrl: './profile.component.html',
   standalone: true,
@@ -48,6 +51,8 @@ export interface Table {
 })
 export class ProfileComponent {
   showLoader: boolean = false;
+  expandedRows: boolean = false;
+
   errorMessage: string = '';
   wholeProfileData!: api.UserProfileWithRentsDTO;
   profileData!: api.UserProfileDTO;
@@ -58,7 +63,7 @@ export class ProfileComponent {
     this.getProfileData();
   }
 
-  columnsToDisplay = ['startTime', 'endTime', 'price'];
+  columnsToDisplay = ['startTime', 'endTime', 'price', 'expandButton'];
 
   toggleRow(element: { expanded: boolean }) {
     // this.dataSource.forEach((row) => {
@@ -68,6 +73,8 @@ export class ProfileComponent {
   }
 
   manageAllRows(flag: boolean) {
+    this.expandedRows = flag;
+
     this.dataSource.forEach((row) => {
       row.expanded = flag;
     });
@@ -87,8 +94,8 @@ export class ProfileComponent {
         this.dataSource = this.ELEMENT_DATA.map((item) => {
           console.log('item: ', item);
           return {
-            startTime: item.startTime,
-            endTime: item.endTime,
+            startTime: new Date(item.startTime).toLocaleString(),
+            endTime: new Date(item.endTime).toLocaleString(),
             price: item.price.toFixed(2),
             brand: item.car.brand,
             model: item.car.model,

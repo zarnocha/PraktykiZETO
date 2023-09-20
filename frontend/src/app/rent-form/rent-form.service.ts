@@ -8,6 +8,12 @@ type GetPriceParams = {
   endTime: Date;
 };
 
+type SendRent = {
+  carId: number;
+  startTime: string;
+  endTime: string;
+};
+
 function addLeadingZero(number: number) {
   return number < 10 ? `0${number}` : `${number}`;
 }
@@ -44,11 +50,39 @@ export class RentFormService {
         urlParams.set(key, sendingParams[key].toString());
       }
     }
+    console.log('sendingParams: ', sendingParams);
 
     url = `${url}?${urlParams.toString()}`;
+    console.log('url: ', url);
 
     return this.http
       .get(url, {
+        headers: headers,
+      })
+      .pipe(
+        catchError((error) => {
+          console.log('error: ', error);
+          console.log('message: ', error.error.message);
+          if (error.error && error.error.message) {
+            return throwError(() => new Error(error.error.message));
+          }
+
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
+        })
+      );
+  }
+
+  makeARent(data: SendRent): Observable<any> {
+    let headers: HttpHeaders;
+    let url: string;
+
+    headers = new HttpHeaders();
+    url = `http://localhost:8080/api/rent/add`;
+
+    console.log(data);
+
+    return this.http
+      .post(url, data, {
         headers: headers,
       })
       .pipe(

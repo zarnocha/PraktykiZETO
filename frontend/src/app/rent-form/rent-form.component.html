@@ -1,5 +1,5 @@
 <ng-container *ngIf="isLoggedIn">
-  <form id="rent" class="form" [formGroup]="form">
+  <form id="rent" class="form" [formGroup]="form" (ngSubmit)="onSubmit()">
     <h1 class="title">Wypożycz to auto:</h1>
     <div class="!flex flex-col"></div>
 
@@ -22,6 +22,7 @@
             [formControl]="endTime"
             matEndDate
             (dateChange)="getPriceForCar()"
+            (stateChanges)="getPriceForCar()"
             placeholder="Koniec"
           />
         </mat-date-range-input>
@@ -43,6 +44,27 @@
       </mat-form-field>
     </div>
 
+    <div class="flex justify-center" *ngIf="endTime">
+      <div class="flex gap-1 flex-col text-center">
+        <mat-label>Czas wypożyczenia (od)</mat-label>
+        <ngb-timepicker
+          class="flex justify-center"
+          [spinners]="false"
+          (ngModelChange)="getPriceForCar()"
+          formControlName="timeFrom"
+        ></ngb-timepicker>
+      </div>
+      <div class="flex gap-1 flex-col text-center">
+        <mat-label>Czas wypożyczenia (do)</mat-label>
+        <ngb-timepicker
+          class="flex justify-center"
+          [spinners]="false"
+          (ngModelChange)="getPriceForCar()"
+          formControlName="timeTo"
+        ></ngb-timepicker>
+      </div>
+    </div>
+
     <div class="price" *ngIf="price">
       <p *ngIf="defaultPrice !== price.dayPrice">
         Cena wypożyczenia za dzień:
@@ -60,6 +82,7 @@
 
     <div mat-dialog-actions class="buttons flex !justify-around">
       <button
+        type="button"
         mat-stroked-button
         class="buttons__secondary-button"
         (click)="resetDate()"
@@ -72,7 +95,7 @@
         color="primary"
         class="buttons__primary-button"
         cdkFocusInitial
-        [disabled]="startTime.value === '' || endTime.value === ''"
+        [disabled]="!enabledSubmitionButton"
       >
         Wypożycz
       </button>

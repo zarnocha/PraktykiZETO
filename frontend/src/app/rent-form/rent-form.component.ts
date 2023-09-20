@@ -18,7 +18,12 @@ import { NgbTimepickerModule } from '@ng-bootstrap/ng-bootstrap';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RentFormService } from './rent-form.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+
+type TimeSelector = {
+  hour: number;
+  minute: number;
+};
 
 @Component({
   selector: 'rent-form',
@@ -42,10 +47,21 @@ import { ActivatedRoute } from '@angular/router';
 export class RentFormComponent implements OnInit {
   @Input() defaultPrice!: api.CarDTO['dayPrice'];
 
+  enabledSubmitionButton: boolean = false;
   carId: number = 0;
   isLoggedIn: boolean = false;
   form!: FormGroup;
   todayDate: Date;
+  // timeFrom: TimeSelector = { hour: 13, minute: 30 };
+  // timeTo: TimeSelector = { hour: 13, minute: 30 };
+
+  timeFrom: FormControl<TimeSelector | string> = new FormControl('', {
+    nonNullable: true,
+  });
+  timeTo: FormControl<TimeSelector | string> = new FormControl('', {
+    nonNullable: true,
+  });
+
   startTime: FormControl<Date | string> = new FormControl('', {
     nonNullable: true,
   });
@@ -58,55 +74,118 @@ export class RentFormComponent implements OnInit {
     private formBuilder: FormBuilder,
     private authService: AuthService,
     private rentFormService: RentFormService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {
     this.todayDate = new Date();
+
     const routeParams = this.route.snapshot.paramMap;
     this.carId = Number(routeParams.get('id'));
 
-    this.getPriceForCar();
+    // this.getPriceForCar();
 
-    if (this.startTime !== null && this.endTime !== null) {
-      this.form = this.formBuilder.group({
-        startTime: this.startTime.setValidators([
-          Validators.minLength(4),
-          Validators.required,
-        ]),
-        endTime: this.endTime.setValidators([
-          Validators.minLength(4),
-          Validators.required,
-        ]),
-        carId: new FormControl(this.carId, { nonNullable: true }).setValidators(
-          [Validators.minLength(1)]
-        ),
-      });
+    this.form = this.formBuilder.group({
+      startTime: this.startTime,
+      endTime: this.endTime,
+      // timeFrom: ['', [Validators.minLength(4), Validators.required]],
+      // timeTo: ['', [Validators.minLength(4), Validators.required]],
+      timeFrom: [this.timeFrom, [Validators.minLength(4), Validators.required]],
+      timeTo: [this.timeTo, [Validators.minLength(4), Validators.required]],
+      carId: [this.carId, [Validators.minLength(1)]],
+    });
+  }
+
+  onSubmit(): void {
+    const timeFromValue: TimeSelector = this.form.controls['timeFrom'].value;
+    const timeToValue: TimeSelector = this.form.controls['timeTo'].value;
+    const finalStartTime: Date = new Date(
+      JSON.parse(JSON.stringify(this.form.controls['startTime'].value))
+    );
+    const finalEndTime: Date = new Date(
+      JSON.parse(JSON.stringify(this.form.controls['endTime'].value))
+    );
+
+    if (
+      !timeFromValue ||
+      !timeToValue ||
+      !Object.hasOwn(timeFromValue, 'hour') ||
+      !Object.hasOwn(timeFromValue, 'minute') ||
+      !Object.hasOwn(timeToValue, 'hour') ||
+      !Object.hasOwn(timeToValue, 'minute')
+    ) {
+      return;
     }
+    finalStartTime.setHours(timeFromValue.hour);
+    finalStartTime.setMinutes(timeFromValue.minute);
+
+    finalEndTime.setHours(timeToValue.hour);
+    finalEndTime.setMinutes(timeToValue.minute);
+
+    this.rentFormService
+      .makeARent({
+        carId: this.carId,
+        startTime: finalStartTime.toJSON(),
+        endTime: finalEndTime.toJSON(),
+      })
+      .subscribe({
+        next: (data) => {
+          if (data.error !== null) {
+            this.router.navigate(['/profile']);
+          }
+        },
+      });
   }
 
   getPriceForCar(): void {
+    const timeFromValue: TimeSelector = this.form.controls['timeFrom'].value;
+    const timeToValue: TimeSelector = this.form.controls['timeTo'].value;
+    const finalStartTime: Date = new Date(
+      JSON.parse(JSON.stringify(this.form.controls['startTime'].value))
+    );
+    const finalEndTime: Date = new Date(
+      JSON.parse(JSON.stringify(this.form.controls['endTime'].value))
+    );
+
     if (
-      typeof this.startTime.value !== 'string' &&
-      typeof this.endTime.value !== 'string'
+      !timeFromValue ||
+      !timeToValue ||
+      !Object.hasOwn(timeFromValue, 'hour') ||
+      !Object.hasOwn(timeFromValue, 'minute') ||
+      !Object.hasOwn(timeToValue, 'hour') ||
+      !Object.hasOwn(timeToValue, 'minute')
     ) {
-      this.rentFormService
-        .getPriceForCar({
-          carId: this!.carId,
-          startTime: this.startTime.value,
-          endTime: this.endTime.value,
-        })
-        .subscribe({
-          next: (data: api.CarPriceDTO) => {
-            console.log('rent form price data: ', data);
-            this.price = data;
-          },
-        });
+      return;
     }
+
+    finalStartTime.setHours(timeFromValue.hour);
+    finalStartTime.setMinutes(timeFromValue.minute);
+
+    finalEndTime.setHours(timeToValue.hour);
+    finalEndTime.setMinutes(timeToValue.minute);
+
+    this.rentFormService
+      .getPriceForCar({
+        carId: this!.carId,
+        startTime: finalStartTime,
+        endTime: finalEndTime,
+      })
+      .subscribe({
+        next: (data: api.CarPriceDTO) => {
+          console.log('rent form price data: ', data);
+          this.price = data;
+          this.enabledSubmitionButton = true;
+        },
+      });
   }
 
   resetDate(): void {
     this.startTime.setValue('');
     this.endTime.setValue('');
+    this.timeFrom.setValue('');
+    this.timeTo.setValue('');
+
     this.price = null;
+    this.enabledSubmitionButton = false;
   }
 
   ngOnInit() {
