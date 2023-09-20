@@ -124,6 +124,19 @@ public class RentService {
         return "Pomyślnie oznaczono czas odebrania samochodu.";
     }
 
+    public Boolean isRentPossible(Long carId, LocalDateTime from, LocalDateTime to) {
+        RentListQueryParamsDTO arguments = new RentListQueryParamsDTO();
+        arguments.setCarId(carId);
+        arguments.setFrom(from);
+        arguments.setTo(to);
+        List<RentDTO> rents = rentRepositoryCQ.findRentByTimeAndPriceAndUserAndCarAndReturn(arguments);
+        if (rents.isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public String markCarRentReturn(Long id, LocalDateTime endTime) throws Exception {
         RentEntity rent = getRentById(id);
 
