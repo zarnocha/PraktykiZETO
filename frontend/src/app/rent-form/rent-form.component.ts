@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../login-modal/AuthService.service';
 import {
@@ -40,6 +40,8 @@ import { ActivatedRoute } from '@angular/router';
   styleUrls: ['./rent-form.component.sass'],
 })
 export class RentFormComponent implements OnInit {
+  @Input() defaultPrice!: api.CarDTO['dayPrice'];
+
   carId: number = 0;
   isLoggedIn: boolean = false;
   form!: FormGroup;

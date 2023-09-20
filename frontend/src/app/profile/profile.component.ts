@@ -61,9 +61,9 @@ export class ProfileComponent {
   columnsToDisplay = ['startTime', 'endTime', 'price'];
 
   toggleRow(element: { expanded: boolean }) {
-    this.dataSource.forEach((row) => {
-      row.expanded = false;
-    });
+    // this.dataSource.forEach((row) => {
+    //   row.expanded = false;
+    // });
     element.expanded = !element.expanded;
   }
 
