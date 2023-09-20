@@ -42,8 +42,6 @@ public class CarRepositoryCQ {
 
         List<Predicate> predicates = new ArrayList<>();
 
-        cq.where(predicates.toArray(new Predicate[0]));
-
         cq.multiselect(car.get(CarEntity_.id),
                 car.get(CarEntity_.brand),
                 car.get(CarEntity_.model),
@@ -55,7 +53,7 @@ public class CarRepositoryCQ {
                 car.get(CarEntity_.gearbox),
                 car.get(CarEntity_.description),
                 car.get(CarEntity_.picture),
-                car.get(CarEntity_.value));
+                car.get(CarEntity_.value)).distinct(true);
 
         Join<CarEntity, RentEntity> rentsJoin = car.join(CarEntity_.rents,
                 JoinType.LEFT);
@@ -112,9 +110,11 @@ public class CarRepositoryCQ {
                     doesntHaveRentsPredicate);
 
             if (carListQueryParams.getAvailable() != null) {
-                predicates.add(finalPredicate);
-            } else {
-                predicates.add(finalPredicate.not());
+                if (carListQueryParams.getAvailable()) {
+                    predicates.add(finalPredicate);
+                } else {
+                    predicates.add(finalPredicate.not());
+                }
             }
         }
 

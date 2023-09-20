@@ -52,8 +52,12 @@ public class CarController {
     }
 
     @GetMapping(path = "{id}/price")
-    public CarPriceDTO getPriceForSpecificCar(@PathVariable long id, AddRentDTO addRentDTO) {
+    public CarPriceDTO getPriceForSpecificCar(@PathVariable long id, AddRentDTO addRentDTO) throws Exception {
         CarEntity foundCar = carService.getCarById(id);
+
+        if (addRentDTO.getStartTime().isAfter(addRentDTO.getEndTime())) {
+            throw new Exception("Czas zakończenia nie może być wcześniejszy niż czas rozpoczęcia.");
+        }
 
         Double wholePrice = RentService.calculateWholePriceForDateForCar(foundCar.getValue(),
                 foundCar.getProductionYear(), addRentDTO.getStartTime(), addRentDTO.getEndTime());
