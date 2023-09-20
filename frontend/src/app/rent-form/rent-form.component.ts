@@ -121,19 +121,25 @@ export class RentFormComponent implements OnInit {
     finalEndTime.setHours(timeToValue.hour);
     finalEndTime.setMinutes(timeToValue.minute);
 
-    this.rentFormService
-      .makeARent({
-        carId: this.carId,
-        startTime: finalStartTime.toJSON(),
-        endTime: finalEndTime.toJSON(),
-      })
-      .subscribe({
-        next: (data) => {
-          if (data.error !== null) {
-            this.router.navigate(['/profile']);
-          }
-        },
-      });
+    if (
+      confirm(
+        'Czy na pewno chcesz wypożyczyć to auto? Po zatwierdzeniu nie ma możliwości anulowania wypożyczenia.'
+      )
+    ) {
+      this.rentFormService
+        .makeARent({
+          carId: this.carId,
+          startTime: finalStartTime.toJSON(),
+          endTime: finalEndTime.toJSON(),
+        })
+        .subscribe({
+          next: (data) => {
+            if (data.error !== null) {
+              this.router.navigate(['/profile']);
+            }
+          },
+        });
+    }
   }
 
   getPriceForCar(): void {
