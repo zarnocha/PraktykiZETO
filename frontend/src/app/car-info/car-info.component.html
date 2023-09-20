@@ -57,7 +57,7 @@
       </button> -->
     </main>
   </section>
-  <rent-form></rent-form>
+  <rent-form [defaultPrice]="car.dayPrice"></rent-form>
 </div>
 <section *ngIf="showLoader" class="content">
   <h3 class="mb-4 text-xl">Pobieranie danych...</h3>

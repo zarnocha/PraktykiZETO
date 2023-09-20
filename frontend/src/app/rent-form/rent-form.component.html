@@ -44,7 +44,13 @@
     </div>
 
     <div class="price" *ngIf="price">
-      <p class="dayPrice">
+      <p *ngIf="defaultPrice !== price.dayPrice">
+        Cena wypożyczenia za dzień:
+        <span class="old-price">{{ defaultPrice.toFixed(2) }} zł</span>&nbsp;
+        <b class="new-price">{{ price!.dayPrice.toFixed(2) }} zł</b>
+        (oszczędzasz {{ (defaultPrice - price.dayPrice).toFixed(2) }} zł!)
+      </p>
+      <p *ngIf="defaultPrice === price.dayPrice" class="dayPrice">
         Cena wypożyczenia za dzień: <b>{{ price!.dayPrice.toFixed(2) }}</b> zł
       </p>
       <p class="wholePrice">
