@@ -17,10 +17,16 @@ public class SimpleUserDTO {
 
     private String lastName;
 
+    private String email;
+
+    private String phoneNumber;
+
     public SimpleUserDTO(UserEntity userEntity) {
         this.id = userEntity.getId();
         this.firstName = userEntity.getFirstName();
         this.lastName = userEntity.getLastName();
+        this.email = userEntity.getEmail();
+        this.phoneNumber = userEntity.getPhoneNumber();
     }
 
 }

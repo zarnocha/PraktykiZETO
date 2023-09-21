@@ -73,7 +73,27 @@
           required
         />
       </mat-form-field>
-
+      <mat-form-field>
+        <mat-label>Nr telefonu (format: 123-456-789)</mat-label>
+        <input
+          matInput
+          type="tel"
+          pattern="[0-9]{3}-[0-9]{3}-[0-9]{3}"
+          id="phoneNumber"
+          formControlName="phoneNumber"
+          required
+        />
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Adres e-mail</mat-label>
+        <input
+          matInput
+          type="email"
+          id="email"
+          formControlName="email"
+          required
+        />
+      </mat-form-field>
       <mat-form-field>
         <mat-label>Hasło</mat-label>
         <input

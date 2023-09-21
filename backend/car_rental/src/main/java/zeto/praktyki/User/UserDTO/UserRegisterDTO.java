@@ -23,4 +23,8 @@ public class UserRegisterDTO {
     private LocalDate creditCardExpDate;
 
     private String cvv;
+
+    private String email;
+
+    private String phoneNumber;
 }

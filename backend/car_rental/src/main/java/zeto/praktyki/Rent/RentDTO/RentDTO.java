@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import zeto.praktyki.Car.CarEntity;
 import zeto.praktyki.Rent.RentEntity;
+import zeto.praktyki.Rent.RentService;
 import zeto.praktyki.User.UserEntity;
 import zeto.praktyki.User.UserDTO.SimpleUserDTO;
 
@@ -20,6 +21,7 @@ public class RentDTO {
     private LocalDateTime actualStartTime;
     private LocalDateTime actualEndTime;
     private double price;
+    private double dayPrice;
     private RentCarDTO car;
     private SimpleUserDTO user;
 
@@ -32,6 +34,8 @@ public class RentDTO {
         this.price = rentEntity.getPrice();
         this.car = new RentCarDTO(rentEntity.getCar());
         this.user = new SimpleUserDTO(rentEntity.getUser());
+        this.dayPrice = RentService.calculatePriceForDateForCar(rentEntity.getCar().getValue(),
+                rentEntity.getCar().getProductionYear(), rentEntity.getStartTime(), rentEntity.getEndTime());
     }
 
     public RentDTO(Long id, LocalDateTime startTime, LocalDateTime endTime, LocalDateTime actualStartTime,
@@ -44,6 +48,8 @@ public class RentDTO {
         this.price = price;
         this.car = new RentCarDTO(car);
         this.user = new SimpleUserDTO(user);
+        this.dayPrice = RentService.calculatePriceForDateForCar(
+                car.getValue(), car.getProductionYear(), startTime, endTime);
     }
 
 }

@@ -52,6 +52,12 @@ public class UserEntity {
     @Column(nullable = false)
     private Boolean isAdmin;
 
+    @Column(nullable = false, unique = true)
+    private String email;
+
+    @Column(nullable = false, unique = true)
+    private String phoneNumber;
+
     @OneToMany(mappedBy = "user")
     private Set<RentEntity> rents;
 
@@ -66,6 +72,8 @@ public class UserEntity {
         this.creditCardNumber = userRegisterDTO.getCreditCardNumber();
         this.creditCardExpDate = userRegisterDTO.getCreditCardExpDate();
         this.cvv = userRegisterDTO.getCvv();
+        this.email = userRegisterDTO.getEmail();
+        this.phoneNumber = userRegisterDTO.getPhoneNumber();
         this.isAdmin = false;
     }
 
@@ -74,6 +82,8 @@ public class UserEntity {
         this.password = adminRegisterDTO.getPassword();
         this.firstName = adminRegisterDTO.getFirstName();
         this.lastName = adminRegisterDTO.getLastName();
+        this.email = adminRegisterDTO.getEmail();
+        this.phoneNumber = adminRegisterDTO.getPhoneNumber();
         this.isAdmin = true;
     }
 

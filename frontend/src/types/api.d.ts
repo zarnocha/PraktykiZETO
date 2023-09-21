@@ -77,6 +77,7 @@ declare namespace api {
     actualStartTime: Date;
     actualEndTime: Date;
     price: number;
+    dayPrice: number;
     car: RentCarDTO;
     user: SimpleUserDTO;
   }
@@ -124,6 +125,8 @@ declare namespace api {
     login: string;
     firstName: string;
     lastName: string;
+    email: string;
+    phoneNumber: string;
     creditCardNumber: string;
     creditCardExpDate: Date;
     cvv: string;

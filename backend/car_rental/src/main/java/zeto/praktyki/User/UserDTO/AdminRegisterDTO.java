@@ -16,4 +16,7 @@ public class AdminRegisterDTO {
 
     private String lastName;
 
+    private String email;
+
+    private String phoneNumber;
 }

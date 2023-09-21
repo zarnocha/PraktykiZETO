@@ -24,4 +24,8 @@ public class EditProfileDTO {
     private LocalDate creditCardExpDate;
     @Nullable
     private String cvv;
+    @Nullable
+    private String email;
+    @Nullable
+    private String phoneNumber;
 }

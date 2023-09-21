@@ -18,6 +18,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DialogModalComponent } from '../dialog-modal/dialog-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
+import { MatDividerModule } from '@angular/material/divider';
 // import * as moment from 'moment';
 
 export interface QueryParamsAndHour {
@@ -58,6 +59,7 @@ type SortType =
     MatGridListModule,
     MatDialogModule,
     MatSelectModule,
+    MatDividerModule,
   ],
 
   templateUrl: './home.component.html',

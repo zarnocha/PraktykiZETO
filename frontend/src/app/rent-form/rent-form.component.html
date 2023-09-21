@@ -5,7 +5,7 @@
 
     <div class="datepicker">
       <mat-form-field appearance="fill" class="!mx-auto">
-        <mat-label>Data wypożyczenia (od-do)</mat-label>
+        <mat-label>Okres wypożyczenia</mat-label>
         <mat-date-range-input
           [required]="true"
           [rangePicker]="rangePicker"
@@ -46,7 +46,7 @@
 
     <div class="flex justify-center" *ngIf="endTime">
       <div class="flex gap-1 flex-col text-center">
-        <mat-label>Czas wypożyczenia (od)</mat-label>
+        <mat-label>Czas wypożyczenia od:</mat-label>
         <ngb-timepicker
           class="flex justify-center"
           [spinners]="false"
@@ -55,7 +55,7 @@
         ></ngb-timepicker>
       </div>
       <div class="flex gap-1 flex-col text-center">
-        <mat-label>Czas wypożyczenia (do)</mat-label>
+        <mat-label>Czas wypożyczenia do:</mat-label>
         <ngb-timepicker
           class="flex justify-center"
           [spinners]="false"

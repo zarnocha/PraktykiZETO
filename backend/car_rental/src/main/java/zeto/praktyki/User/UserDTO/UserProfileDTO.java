@@ -11,15 +11,18 @@ import zeto.praktyki.User.UserEntity;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserProfileDTO {
-    long id;
-    String login;
+    private long id;
+    private String login;
 
-    String firstName;
-    String lastName;
+    private String firstName;
+    private String lastName;
 
-    String creditCardNumber;
-    LocalDate creditCardExpDate;
-    String cvv;
+    private String creditCardNumber;
+    private LocalDate creditCardExpDate;
+    private String cvv;
+
+    private String email;
+    private String phoneNumber;
 
     public UserProfileDTO(UserEntity userEntity) {
         this.id = userEntity.getId();
@@ -29,6 +32,8 @@ public class UserProfileDTO {
         this.creditCardNumber = userEntity.getCreditCardNumber();
         this.creditCardExpDate = userEntity.getCreditCardExpDate();
         this.cvv = userEntity.getCvv();
+        this.email = userEntity.getEmail();
+        this.phoneNumber = userEntity.getPhoneNumber();
     }
 
 }

@@ -162,6 +162,8 @@ export class LoginModalComponent implements OnInit {
       this.form = this.formBuilder.group(
         {
           login: ['', [Validators.required, Validators.minLength(4)]],
+          email: ['', [Validators.required, Validators.minLength(4)]],
+          phoneNumber: ['', [Validators.required, Validators.minLength(4)]],
 
           password: ['', [Validators.required, Validators.minLength(4)]],
 

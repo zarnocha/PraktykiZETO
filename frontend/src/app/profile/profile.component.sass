@@ -4,6 +4,7 @@
   width: 90dvw
   justify-content: center
   margin: 10dvh auto
+  padding-bottom: 10dvh
   gap: 2rem
 
 .user-profile
@@ -13,7 +14,39 @@
   border: 1px solid white
   border-radius: 10px
   padding: 2rem
-  height: 30dvh
+  // height: 30dvh 
+
+.profile-card
+  display: flex
+  flex-direction: row
+  height: 100%
+  padding: 1rem
+
+.profile-card__left
+  flex: 0.333
+  display: flex
+  flex-direction: column
+  justify-content: center
+
+.profile-card__left__image
+  width: 100%
+  margin: 0 auto
+
+.profile-card__right
+  border-left: 1px solid rgba(0, 0, 0, 0.12)
+  flex: 0.667
+  display: flex
+  flex-direction: column
+  justify-content: center
+  gap: 10%
+
+.profile-card__right__email, .profile-card__right__card__number
+  margin-bottom: 0.5rem
+
+.profile-card__title
+  font-weight: bold
+  letter-spacing: 0.2rem
+  font-size: x-large
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
 // PROFIL
@@ -23,7 +56,7 @@
 
 .wrapper
   flex: 1 2
-  height: 50dvh
+  height: 60dvh
   overflow: auto
 
 .example-detail-row

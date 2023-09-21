@@ -70,11 +70,19 @@ public class UserController {
     public HashMap<String, String> login(@RequestBody UserLoginDTO userLoginDTO, HttpServletResponse response)
             throws AuthException {
         String loginFromRequest = userLoginDTO.getLogin();
+        String emailFromRequest = userLoginDTO.getEmail();
+        String phoneNumberFromRequest = userLoginDTO.getPhoneNumber();
         String givenPassword = userLoginDTO.getPassword();
 
         Optional<UserEntity> loggingUser = userRepository.findByLogin(loginFromRequest);
         if (loggingUser.isEmpty()) {
-            throw new AuthException("Nie ma takiego użytkownika w bazie danych");
+            loggingUser = userRepository.findByEmail(emailFromRequest);
+            if (loggingUser.isEmpty()) {
+                loggingUser = userRepository.findByPhoneNumber(phoneNumberFromRequest);
+                if (loggingUser.isEmpty()) {
+                    throw new AuthException("Nie ma takiego użytkownika w bazie danych");
+                }
+            }
         }
         UserEntity foundUser = loggingUser.get();
 

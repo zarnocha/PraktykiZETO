@@ -12,29 +12,33 @@ import zeto.praktyki.Rent.RentEntity;
 @StaticMetamodel(UserEntity.class)
 public abstract class UserEntity_ {
 
-	public static volatile SingularAttribute<UserEntity, String> firstName;
 	public static volatile SingularAttribute<UserEntity, String> lastName;
-	public static volatile SetAttribute<UserEntity, CarEntity> cars;
-	public static volatile SingularAttribute<UserEntity, String> password;
 	public static volatile SingularAttribute<UserEntity, String> cvv;
-	public static volatile SingularAttribute<UserEntity, LocalDate> creditCardExpDate;
-	public static volatile SingularAttribute<UserEntity, String> creditCardNumber;
-	public static volatile SingularAttribute<UserEntity, Long> id;
 	public static volatile SingularAttribute<UserEntity, Boolean> isAdmin;
 	public static volatile SingularAttribute<UserEntity, String> login;
 	public static volatile SetAttribute<UserEntity, RentEntity> rents;
+	public static volatile SingularAttribute<UserEntity, String> firstName;
+	public static volatile SetAttribute<UserEntity, CarEntity> cars;
+	public static volatile SingularAttribute<UserEntity, String> password;
+	public static volatile SingularAttribute<UserEntity, LocalDate> creditCardExpDate;
+	public static volatile SingularAttribute<UserEntity, String> phoneNumber;
+	public static volatile SingularAttribute<UserEntity, String> creditCardNumber;
+	public static volatile SingularAttribute<UserEntity, Long> id;
+	public static volatile SingularAttribute<UserEntity, String> email;
 
-	public static final String FIRST_NAME = "firstName";
 	public static final String LAST_NAME = "lastName";
-	public static final String CARS = "cars";
-	public static final String PASSWORD = "password";
 	public static final String CVV = "cvv";
-	public static final String CREDIT_CARD_EXP_DATE = "creditCardExpDate";
-	public static final String CREDIT_CARD_NUMBER = "creditCardNumber";
-	public static final String ID = "id";
 	public static final String IS_ADMIN = "isAdmin";
 	public static final String LOGIN = "login";
 	public static final String RENTS = "rents";
+	public static final String FIRST_NAME = "firstName";
+	public static final String CARS = "cars";
+	public static final String PASSWORD = "password";
+	public static final String CREDIT_CARD_EXP_DATE = "creditCardExpDate";
+	public static final String PHONE_NUMBER = "phoneNumber";
+	public static final String CREDIT_CARD_NUMBER = "creditCardNumber";
+	public static final String ID = "id";
+	public static final String EMAIL = "email";
 
 }
 

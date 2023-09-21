@@ -115,10 +115,10 @@ export class RentFormComponent implements OnInit {
     ) {
       return;
     }
-    finalStartTime.setHours(timeFromValue.hour);
+    finalStartTime.setHours(timeFromValue.hour + 1);
     finalStartTime.setMinutes(timeFromValue.minute);
 
-    finalEndTime.setHours(timeToValue.hour);
+    finalEndTime.setHours(timeToValue.hour + 1);
     finalEndTime.setMinutes(timeToValue.minute);
 
     if (

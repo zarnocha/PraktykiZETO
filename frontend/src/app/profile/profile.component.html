@@ -1,12 +1,62 @@
 <main class="profile">
-  <div class="user-profile" *ngIf="profileData">
-    <p>Login: {{ profileData.login }}</p>
-    <p>Imię: {{ profileData.firstName }}</p>
-    <p>Nazwisko: {{ profileData.lastName }}</p>
-    <p>Nr karty: {{ profileData.creditCardNumber }}</p>
-    <p>Data ważności karty: {{ profileData.creditCardExpDate }}</p>
-    <p>CVV karty: {{ profileData.cvv }}</p>
-  </div>
+  <mat-card style="flex: 0.6" *ngIf="profileData">
+    <div class="profile-card">
+      <mat-card-content class="profile-card__left">
+        <img
+          class="profile-card__left__image"
+          src="../../assets/icons/user-icon/user-icon.png"
+        />
+        <mat-card-title
+          class="!text-black !font-bold text-center profile-card__title"
+          >{{ profileData.firstName }}
+          {{ profileData.lastName }}</mat-card-title
+        >
+        <mat-divider></mat-divider>
+        <mat-card-subtitle class="text-center">{{
+          profileData.login
+        }}</mat-card-subtitle>
+      </mat-card-content>
+
+      <mat-card-content class="profile-card__right">
+        <div class="profile-card__right__contact">
+          <mat-card-title class="!text-black !font-bold profile-card__title"
+            >Kontakt</mat-card-title
+          >
+          <mat-divider></mat-divider>
+
+          <span class="profile-card__right__email">
+            <mat-card-subtitle>E-mail</mat-card-subtitle>
+            <p class="text-black">{{ profileData.email }}</p>
+          </span>
+          <span class="profile-card__right__phone">
+            <mat-card-subtitle>Telefon</mat-card-subtitle>
+            <p class="text-black">{{ profileData.phoneNumber }}</p>
+          </span>
+        </div>
+
+        <div class="profile-card__right__card">
+          <mat-card-title class="!text-black !font-bold profile-card__title"
+            >Podłączona karta</mat-card-title
+          >
+          <mat-divider></mat-divider>
+          <span class="profile-card__right__card__number">
+            <mat-card-subtitle>Numer</mat-card-subtitle>
+            <p class="text-black">{{ profileData.creditCardNumber }}</p>
+          </span>
+          <span class="profile-card__right__card__expir">
+            <mat-card-subtitle>Data ważności</mat-card-subtitle>
+            <p class="text-black">
+              {{ profileData.creditCardExpDate }}
+            </p>
+          </span>
+        </div>
+      </mat-card-content>
+    </div>
+    <mat-card-actions>
+      <button mat-button>Edytuj dane</button>
+      <button disabled mat-button>Zapisz</button>
+    </mat-card-actions>
+  </mat-card>
 
   <div class="wrapper">
     <table
@@ -26,6 +76,8 @@
                 ? "Czas rozpoczęcia"
                 : column === "endTime"
                 ? "Czas zakończenia"
+                : column === "dayPrice"
+                ? "Cena/doba"
                 : "Cena/całość"
             }}
           </th>

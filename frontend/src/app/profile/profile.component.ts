@@ -12,12 +12,16 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatTableModule } from '@angular/material/table';
 import { ProfileService } from './profile.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatCardModule } from '@angular/material/card';
+import { MatDividerModule } from '@angular/material/divider';
 
 export interface Table {
   startTime: string;
   endTime: string;
 
   price: string;
+  dayPrice: string;
+
   brand: string;
   model: string;
   picture: string;
@@ -34,6 +38,8 @@ export interface Table {
     NgIf,
     MatIconModule,
     MatTooltipModule,
+    MatCardModule,
+    MatDividerModule,
   ],
   templateUrl: './profile.component.html',
   standalone: true,
@@ -63,7 +69,13 @@ export class ProfileComponent {
     this.getProfileData();
   }
 
-  columnsToDisplay = ['startTime', 'endTime', 'price', 'expandButton'];
+  columnsToDisplay = [
+    'startTime',
+    'endTime',
+    'price',
+    'dayPrice',
+    'expandButton',
+  ];
 
   toggleRow(element: { expanded: boolean }) {
     // this.dataSource.forEach((row) => {
@@ -96,7 +108,8 @@ export class ProfileComponent {
           return {
             startTime: new Date(item.startTime).toLocaleString(),
             endTime: new Date(item.endTime).toLocaleString(),
-            price: item.price.toFixed(2),
+            price: `${item.price.toFixed(2)} zł`,
+            dayPrice: `${item.dayPrice.toFixed(2)} zł`,
             brand: item.car.brand,
             model: item.car.model,
             picture: item.car.picture,

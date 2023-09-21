@@ -39,11 +39,9 @@ export class CarCardComponent implements OnInit {
     authService.isLoggedIn$.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
     });
-    // this.isLoggedIn = authService.isLoggedIn();
   }
 
   openDialog(): void {
-    console.log(this.isLoggedIn);
     this.dialog.open(LoginModalComponent);
   }
 
@@ -51,10 +49,6 @@ export class CarCardComponent implements OnInit {
     this.authService.isLoggedIn$.subscribe((loggedIn) => {
       this.isLoggedIn = loggedIn;
     });
-    // console.log('onInit: ', this.isLoggedIn);
-    // this.authService.isLoggedIn$.subscribe((loggedIn) => {
-    //   console.log('onInit fn: ', loggedIn);
-    // });
 
     this.isLoggedIn = this.authService.isLoggedIn();
   }
