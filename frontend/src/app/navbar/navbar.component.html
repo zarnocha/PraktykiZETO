@@ -10,6 +10,9 @@
     </h3>
   </div>
 </div>
+
+<div class="tire-pattern"></div>
+
 <nav mat-tab-nav-bar [tabPanel]="tabPanel" color="primary">
   <ng-container *ngFor="let link of routes; let i = index">
     <searchbar *ngIf="i === 6"></searchbar>
@@ -56,7 +59,5 @@
     </mat-menu>
   </ng-container>
 </nav>
-
-<div class="tire-pattern"></div>
 
 <mat-tab-nav-panel #tabPanel></mat-tab-nav-panel>

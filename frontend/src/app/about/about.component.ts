@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-about',
@@ -6,4 +7,9 @@ import { Component } from '@angular/core';
   styleUrls: ['./about.component.sass'],
   standalone: true,
 })
-export class AboutComponent {}
+export class AboutComponent {
+  url = 'about';
+  constructor(private router: Router) {
+    this.url = router.url.replace('/', '');
+  }
+}

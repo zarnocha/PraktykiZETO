@@ -21,7 +21,7 @@ export class AuthGuard {
     | boolean
     | UrlTree {
     if (this.authService.isLoggedIn() !== true) {
-      window.alert('Access not allowed!');
+      window.alert('Brak dostępu.');
       this.router.navigate(['home']);
     }
     return true;

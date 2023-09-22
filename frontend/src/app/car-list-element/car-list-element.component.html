@@ -41,6 +41,11 @@
       </span>
     </div>
 
+    <div class="car__price" *ngIf="carData.dayPrice">
+      Cena za dobę:
+      <span class="car__price__value">{{ carData.dayPrice.toFixed(2) }}zł</span>
+    </div>
+
     <div class="car__buttons">
       <a
         routerLink="/car/{{ carData.id }}"

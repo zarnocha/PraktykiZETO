@@ -19,6 +19,7 @@ import { DialogModalComponent } from '../dialog-modal/dialog-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { MatSelectModule } from '@angular/material/select';
 import { MatDividerModule } from '@angular/material/divider';
+import { Router } from '@angular/router';
 // import * as moment from 'moment';
 
 export interface QueryParamsAndHour {
@@ -66,7 +67,15 @@ type SortType =
   styleUrls: ['./home.component.sass'],
 })
 export class HomeComponent implements OnInit {
-  constructor(public homeService: HomeService, public dialog: MatDialog) {}
+  constructor(
+    public homeService: HomeService,
+    public dialog: MatDialog,
+    private router: Router
+  ) {
+    if (router.url === '/cars') {
+      this.viewMode = 'list';
+    }
+  }
 
   cars: api.CarDTO[] = [];
   carsSorted: api.CarDTO[] = [];
