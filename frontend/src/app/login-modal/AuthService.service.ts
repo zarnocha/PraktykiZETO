@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 declare var angular: any;
 
 type AuthResponse = {
@@ -30,6 +30,16 @@ export class AuthService {
     return this.http
       .post('http://localhost:8080/api/user/login', userData)
       .pipe(
+        catchError((error) => {
+          console.log('error: ', error);
+          console.log('message: ', error.error.message);
+          if (error.error && error.error.message) {
+            return throwError(() => new Error(error.error.message));
+          }
+
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
+        }),
+
         tap((res) => {
           this.loggedIn = true;
           this.loggedInSubject.next(true);
@@ -38,7 +48,19 @@ export class AuthService {
   }
 
   register(userData: api.UserRegisterDTO) {
-    return this.http.post('http://localhost:8080/api/user/signup', userData);
+    return this.http
+      .post('http://localhost:8080/api/user/signup', userData)
+      .pipe(
+        catchError((error) => {
+          console.log('error: ', error);
+          console.log('message: ', error.error.message);
+          if (error.error && error.error.message) {
+            return throwError(() => new Error(error.error.message));
+          }
+
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
+        })
+      );
   }
 
   public setSession(response: any) {
