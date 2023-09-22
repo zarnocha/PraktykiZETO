@@ -35,7 +35,8 @@
         </div>
 
         <div class="profile-card__right__card">
-          <mat-card-title class="!text-black !font-bold profile-card__title"
+          <mat-card-title
+            class="!text-black !font-bold profile-card__title mt-4"
             >Podłączona karta</mat-card-title
           >
           <mat-divider></mat-divider>
@@ -52,10 +53,10 @@
         </div>
       </mat-card-content>
     </div>
-    <mat-card-actions>
+    <!-- <mat-card-actions>
       <button mat-button>Edytuj dane</button>
       <button disabled mat-button>Zapisz</button>
-    </mat-card-actions>
+    </mat-card-actions> -->
   </mat-card>
 
   <div class="wrapper">
@@ -117,7 +118,6 @@
         </ng-container>
       </ng-container>
 
-      <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
       <ng-container matColumnDef="expandedDetail">
         <td
           mat-cell
@@ -130,19 +130,19 @@
           >
             <table class="detail-table">
               <tr>
-                <th>Zdjęcie</th>
                 <th>Marka</th>
                 <th>Model</th>
+                <th>Zdjęcie</th>
               </tr>
-              <tr>
+              <tr class="cursor-pointer" routerLink="/car/{{ element.carId }}">
+                <td>{{ element.brand }}</td>
+                <td>{{ element.model }}</td>
                 <td>
                   <img
                     class="car__image"
                     [src]="'data:image/png;base64,' + element.picture"
                   />
                 </td>
-                <td>{{ element.brand }}</td>
-                <td>{{ element.model }}</td>
               </tr>
             </table>
           </div>
@@ -156,9 +156,8 @@
         class="visible-row"
         [class.example-expanded-row]="element.expanded"
         (click)="toggleRow(element)"
-      >
-        <hr />
-      </tr>
+      ></tr>
+
       <tr
         mat-row
         *matRowDef="let row; columns: ['expandedDetail']"

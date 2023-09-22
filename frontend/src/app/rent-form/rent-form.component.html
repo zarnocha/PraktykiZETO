@@ -44,20 +44,20 @@
       </mat-form-field>
     </div>
 
-    <div class="flex justify-center" *ngIf="endTime">
-      <div class="flex gap-1 flex-col text-center">
-        <mat-label>Czas wypożyczenia od:</mat-label>
+    <div class="flex justify-center flex-col" *ngIf="endTime">
+      <div class="flex text-center flex-row items-center gap-2 mx-auto">
+        <mat-label class="w-fit">Czas wypożyczenia od:</mat-label>
         <ngb-timepicker
-          class="flex justify-center"
+          class="flex justify-center w-fit"
           [spinners]="false"
           (ngModelChange)="getPriceForCar()"
           formControlName="timeFrom"
         ></ngb-timepicker>
       </div>
-      <div class="flex gap-1 flex-col text-center">
-        <mat-label>Czas wypożyczenia do:</mat-label>
+      <div class="flex text-center flex-row items-center gap-2 mx-auto mt-4">
+        <mat-label class="w-fit">Czas wypożyczenia do:</mat-label>
         <ngb-timepicker
-          class="flex justify-center"
+          class="flex justify-center w-fit"
           [spinners]="false"
           (ngModelChange)="getPriceForCar()"
           formControlName="timeTo"
@@ -80,6 +80,18 @@
       </p>
     </div>
 
+    <div *ngIf="loading" class="loading">
+      <h3 class="mb-4 text-xl">Pobieranie danych...</h3>
+      <img
+        src="../../assets/tire/car-tire-wheel-icon-white.png"
+        class="loading__tire"
+      />
+    </div>
+
+    <div *ngIf="errorMessage" class="loading errorMessage">
+      <h3>Wystąpił błąd: {{ errorMessage }}</h3>
+    </div>
+
     <div mat-dialog-actions class="buttons flex !justify-around">
       <button
         type="button"
@@ -90,15 +102,20 @@
         Zresetuj
       </button>
 
-      <button
-        mat-raised-button
-        color="primary"
-        class="buttons__primary-button"
-        cdkFocusInitial
-        [disabled]="!enabledSubmitionButton"
+      <div
+        matTooltip="Najpierw wypełnij powyższe pola"
+        [matTooltipDisabled]="enabledSubmitionButton"
       >
-        Wypożycz
-      </button>
+        <button
+          mat-raised-button
+          color="primary"
+          class="buttons__primary-button"
+          cdkFocusInitial
+          [disabled]="!enabledSubmitionButton"
+        >
+          Wypożycz
+        </button>
+      </div>
     </div>
   </form>
 </ng-container>

@@ -19,6 +19,7 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import { RentFormService } from './rent-form.service';
 import { ActivatedRoute, Router } from '@angular/router';
+import { MatTooltipModule } from '@angular/material/tooltip';
 
 type TimeSelector = {
   hour: number;
@@ -40,6 +41,7 @@ type TimeSelector = {
     MatButtonModule,
     MatCheckboxModule,
     FormsModule,
+    MatTooltipModule,
   ],
   templateUrl: './rent-form.component.html',
   styleUrls: ['./rent-form.component.sass'],
@@ -52,8 +54,9 @@ export class RentFormComponent implements OnInit {
   isLoggedIn: boolean = false;
   form!: FormGroup;
   todayDate: Date;
-  // timeFrom: TimeSelector = { hour: 13, minute: 30 };
-  // timeTo: TimeSelector = { hour: 13, minute: 30 };
+
+  loading: boolean = false;
+  errorMessage: string = '';
 
   timeFrom: FormControl<TimeSelector | string> = new FormControl('', {
     nonNullable: true,
@@ -82,13 +85,9 @@ export class RentFormComponent implements OnInit {
     const routeParams = this.route.snapshot.paramMap;
     this.carId = Number(routeParams.get('id'));
 
-    // this.getPriceForCar();
-
     this.form = this.formBuilder.group({
       startTime: this.startTime,
       endTime: this.endTime,
-      // timeFrom: ['', [Validators.minLength(4), Validators.required]],
-      // timeTo: ['', [Validators.minLength(4), Validators.required]],
       timeFrom: [this.timeFrom, [Validators.minLength(4), Validators.required]],
       timeTo: [this.timeTo, [Validators.minLength(4), Validators.required]],
       carId: [this.carId, [Validators.minLength(1)]],
@@ -108,6 +107,8 @@ export class RentFormComponent implements OnInit {
     if (
       !timeFromValue ||
       !timeToValue ||
+      isNaN(finalStartTime.getTime()) ||
+      isNaN(finalEndTime.getTime()) ||
       !Object.hasOwn(timeFromValue, 'hour') ||
       !Object.hasOwn(timeFromValue, 'minute') ||
       !Object.hasOwn(timeToValue, 'hour') ||
@@ -115,10 +116,10 @@ export class RentFormComponent implements OnInit {
     ) {
       return;
     }
-    finalStartTime.setHours(timeFromValue.hour + 1);
+    finalStartTime.setHours(timeFromValue.hour);
     finalStartTime.setMinutes(timeFromValue.minute);
 
-    finalEndTime.setHours(timeToValue.hour + 1);
+    finalEndTime.setHours(timeToValue.hour);
     finalEndTime.setMinutes(timeToValue.minute);
 
     if (
@@ -126,17 +127,25 @@ export class RentFormComponent implements OnInit {
         'Czy na pewno chcesz wypożyczyć to auto? Po zatwierdzeniu nie ma możliwości anulowania wypożyczenia.'
       )
     ) {
+      this.loading = true;
+      this.errorMessage = '';
+
       this.rentFormService
         .makeARent({
           carId: this.carId,
-          startTime: finalStartTime.toJSON(),
-          endTime: finalEndTime.toJSON(),
+          startTime: finalStartTime,
+          endTime: finalEndTime,
         })
         .subscribe({
           next: (data) => {
-            if (data.error !== null) {
-              this.router.navigate(['/profile']);
-            }
+            this.loading = false;
+            this.errorMessage = '';
+            this.router.navigate(['/profile']);
+          },
+          error: (e) => {
+            console.error(e);
+            this.loading = false;
+            this.errorMessage = e.message;
           },
         });
     }
@@ -155,11 +164,14 @@ export class RentFormComponent implements OnInit {
     if (
       !timeFromValue ||
       !timeToValue ||
+      isNaN(finalStartTime.getTime()) ||
+      isNaN(finalEndTime.getTime()) ||
       !Object.hasOwn(timeFromValue, 'hour') ||
       !Object.hasOwn(timeFromValue, 'minute') ||
       !Object.hasOwn(timeToValue, 'hour') ||
       !Object.hasOwn(timeToValue, 'minute')
     ) {
+      this.enabledSubmitionButton = false;
       return;
     }
 
@@ -169,6 +181,9 @@ export class RentFormComponent implements OnInit {
     finalEndTime.setHours(timeToValue.hour);
     finalEndTime.setMinutes(timeToValue.minute);
 
+    this.loading = true;
+    this.errorMessage = '';
+
     this.rentFormService
       .getPriceForCar({
         carId: this!.carId,
@@ -176,10 +191,17 @@ export class RentFormComponent implements OnInit {
         endTime: finalEndTime,
       })
       .subscribe({
-        next: (data: api.CarPriceDTO) => {
-          console.log('rent form price data: ', data);
+        next: (data) => {
+          this.loading = false;
+
           this.price = data;
           this.enabledSubmitionButton = true;
+        },
+        error: (e) => {
+          console.error(e);
+          this.loading = false;
+          this.enabledSubmitionButton = false;
+          this.errorMessage = e.message;
         },
       });
   }
@@ -201,8 +223,3 @@ export class RentFormComponent implements OnInit {
     this.isLoggedIn = this.authService.isLoggedIn();
   }
 }
-
-//         startTime: Date;
-//         endTime: Date;
-//         carId: number;
-//         userId: number;
