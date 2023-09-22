@@ -12,26 +12,16 @@ const routes: Routes = [
       import('./home/home.component').then((comp) => comp.HomeComponent),
     data: { title: 'Strona główna' },
   },
-  // {
-  //   path: 'login',
-  //   component: LoginModalComponent,
-  //   providers: [AppComponent],
-  //   outlet: 'login',
-  // },
   {
     path: 'locations',
     loadComponent: () =>
-      import('./profile/profile.component').then(
-        (comp) => comp.ProfileComponent
-      ),
+      import('./about/about.component').then((comp) => comp.AboutComponent),
     data: { title: 'Lokalizacje' },
   },
   {
     path: 'cars',
     loadComponent: () =>
-      import('./profile/profile.component').then(
-        (comp) => comp.ProfileComponent
-      ),
+      import('./home/home.component').then((comp) => comp.HomeComponent),
     data: { title: 'Flota' },
   },
   {

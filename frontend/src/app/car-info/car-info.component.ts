@@ -33,7 +33,6 @@ export class CarInfoComponent implements OnInit {
 
     this.carInfoService.getCar(this.carId).subscribe({
       next: (carData: api.CarDTO) => {
-        console.log('car: ', carData);
         this.car = carData;
         this.showLoader = false;
       },

@@ -1,9 +1,10 @@
 <ng-container *ngIf="typeOfForm === 'LOGIN'">
   <h1 mat-dialog-title class="!font-bold text-center">Logowanie:</h1>
+  <h2 class="" *ngIf="successfulMessage">{{ successfulMessage }}</h2>
   <form [formGroup]="form" (ngSubmit)="onLogin()">
     <div mat-dialog-content class="!flex flex-col">
       <mat-form-field>
-        <mat-label>Login</mat-label>
+        <mat-label>Login (lub nr telefonu lub e-mail)</mat-label>
         <input required matInput id="login" formControlName="login" />
       </mat-form-field>
 
@@ -29,7 +30,18 @@
         </button>
       </mat-form-field>
 
-      <p *ngIf="invalidField">{{ invalidField }}</p>
+      <p
+        class="text-xl text-red-500 font-bold text-center"
+        *ngIf="invalidField"
+      >
+        {{ invalidField }}
+      </p>
+      <p
+        class="text-xl text-red-500 font-bold text-center"
+        *ngIf="errorMessage"
+      >
+        {{ errorMessage }}
+      </p>
     </div>
 
     <div mat-dialog-actions class="flex !justify-around">
@@ -194,7 +206,19 @@
           autocomplete="off"
           ccCVC
       /></mat-form-field>
-      <p *ngIf="invalidField">{{ invalidField }}</p>
+
+      <p
+        class="text-xl text-red-500 font-bold text-center"
+        *ngIf="invalidField"
+      >
+        {{ invalidField }}
+      </p>
+      <p
+        class="text-xl text-red-500 font-bold text-center"
+        *ngIf="errorMessage"
+      >
+        {{ errorMessage }}
+      </p>
     </div>
 
     <div mat-dialog-actions class="flex !justify-around">
@@ -217,19 +241,3 @@
     </div>
   </form>
 </ng-container>
-
-<!-- </mat-form-field>
-<mat-form-field>
-  <mat-label>Numer karty kredytowej</mat-label>
-  <input matInput type="tel" ccNumber #ccNumber="ccNumber" />
-  <span class="scheme">{{ ccNumber.resolvedScheme$ | async }}</span>
-</mat-form-field>
-
-<mat-form-field>
-  <mat-label>Data ważności karty</mat-label>
-  <input matInput id="cc-exp-date" type="tel" autocomplete="cc-exp" ccExp />
-</mat-form-field>
-<mat-form-field>
-  <mat-label>CVV/CVC</mat-label>
-  <input matInput id="cc-cvc" type="tel" autocomplete="off" ccCVC
-/></mat-form-field> -->

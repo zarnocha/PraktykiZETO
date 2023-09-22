@@ -14,6 +14,7 @@ import { ProfileService } from './profile.service';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatCardModule } from '@angular/material/card';
 import { MatDividerModule } from '@angular/material/divider';
+import { Router, RouterModule } from '@angular/router';
 
 export interface Table {
   startTime: string;
@@ -40,6 +41,7 @@ export interface Table {
     MatTooltipModule,
     MatCardModule,
     MatDividerModule,
+    RouterModule,
   ],
   templateUrl: './profile.component.html',
   standalone: true,
@@ -65,7 +67,7 @@ export class ProfileComponent {
   dataSource!: Table[];
   ELEMENT_DATA!: api.UserProfileWithRentsDTO['rents'];
 
-  constructor(public profileService: ProfileService) {
+  constructor(public profileService: ProfileService, public router: Router) {
     this.getProfileData();
   }
 
@@ -104,7 +106,6 @@ export class ProfileComponent {
         this.showLoader = false;
 
         this.dataSource = this.ELEMENT_DATA.map((item) => {
-          console.log('item: ', item);
           return {
             startTime: new Date(item.startTime).toLocaleString(),
             endTime: new Date(item.endTime).toLocaleString(),
@@ -113,6 +114,7 @@ export class ProfileComponent {
             brand: item.car.brand,
             model: item.car.model,
             picture: item.car.picture,
+            carId: item.car.id,
             expanded: false,
           };
         });

@@ -22,8 +22,9 @@
   text-align: center
 
 .buttons
-  width: 50%
+  width: 30%
   margin: 0 auto
+  margin-top: 1rem
 
 .buttons__primary-button
   border: 1px solid #ebeb5e
@@ -42,3 +43,26 @@
 
 .new-price
   color: green
+
+.loading
+  margin: 0 auto
+  display: flex
+  justify-content: center
+  align-items: center
+  margin-top: 2rem
+  flex-direction: column
+
+.errorMessage
+  margin-top: 1rem
+  font-weight: bold
+  font-size: x-large
+  color: red
+
+.loading__tire
+  animation: rotation 1s infinite linear
+
+@keyframes rotation
+  from
+    transform: rotate(0deg)
+  to
+    transform: rotate(360deg)

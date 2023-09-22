@@ -2,8 +2,8 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { ChangeDetectorRef, Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import * as moment from 'moment';
-import { Subject } from 'rxjs';
-import { tap } from 'rxjs/operators';
+import { Subject, throwError } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 declare var angular: any;
 
 type AuthResponse = {
@@ -30,28 +30,40 @@ export class AuthService {
     return this.http
       .post('http://localhost:8080/api/user/login', userData)
       .pipe(
+        catchError((error) => {
+          console.log('error: ', error);
+          console.log('message: ', error.error.message);
+          if (error.error && error.error.message) {
+            return throwError(() => new Error(error.error.message));
+          }
+
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
+        }),
+
         tap((res) => {
           this.loggedIn = true;
           this.loggedInSubject.next(true);
         })
       );
-    // this.loggedIn = true;
-    // this.loggedInSubject.next(true);
-    // .pipe(
-    //   tap((response: any) => {
-    //     console.log('login response: ', response);
-    //     this.setSession(response);
-    //     this.router.navigate(['/']);
-    //   })
-    // );
   }
 
   register(userData: api.UserRegisterDTO) {
-    return this.http.post('http://localhost:8080/api/user/signup', userData);
+    return this.http
+      .post('http://localhost:8080/api/user/signup', userData)
+      .pipe(
+        catchError((error) => {
+          console.log('error: ', error);
+          console.log('message: ', error.error.message);
+          if (error.error && error.error.message) {
+            return throwError(() => new Error(error.error.message));
+          }
+
+          return throwError(() => new Error('Wystąpił błąd z połączeniem.'));
+        })
+      );
   }
 
   public setSession(response: any) {
-    // console.log('zalogowany: ', response);
     localStorage.setItem('JWT_TOKEN', response.token);
     localStorage.setItem('expires_at', response.expires_at);
   }
@@ -65,14 +77,11 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    // console.log('is logged?');
     const JWT_TOKEN = localStorage.getItem('JWT_TOKEN');
     const expires_at = localStorage.getItem('expires_at');
     if (JWT_TOKEN && expires_at) {
-      // console.log('zalogowany');
       return moment().isBefore(this.getExpiration());
     }
-    // console.log('wylogowany');
     return false;
   }
 

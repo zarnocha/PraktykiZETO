@@ -2,17 +2,25 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 
-type GetPriceParams = {
+type RentParams = {
   carId: number;
   startTime: Date;
   endTime: Date;
 };
 
-type SendRent = {
+type SendingParams = {
   carId: number;
   startTime: string;
   endTime: string;
 };
+
+function convertDate(data: Date) {
+  return `${data.getFullYear()}-${addLeadingZero(
+    data.getMonth() + 1
+  )}-${addLeadingZero(data.getDate())}T${addLeadingZero(
+    data.getHours()
+  )}:${addLeadingZero(data.getMinutes())}:${addLeadingZero(data.getSeconds())}`;
+}
 
 function addLeadingZero(number: number) {
   return number < 10 ? `0${number}` : `${number}`;
@@ -24,7 +32,7 @@ function addLeadingZero(number: number) {
 export class RentFormService {
   constructor(private http: HttpClient) {}
 
-  getPriceForCar(params: GetPriceParams): Observable<any> {
+  getPriceForCar(params: RentParams): Observable<any> {
     let headers: HttpHeaders;
     let url: string;
 
@@ -39,21 +47,13 @@ export class RentFormService {
       if (sendingParams[key] !== undefined) {
         if (key === 'startTime' || key === 'endTime') {
           const currentDate = sendingParams[key];
-          sendingParams[key] = `${currentDate.getFullYear()}-${addLeadingZero(
-            currentDate.getMonth() + 1
-          )}-${addLeadingZero(currentDate.getDate())}T${addLeadingZero(
-            currentDate.getHours()
-          )}:${addLeadingZero(currentDate.getMinutes())}:${addLeadingZero(
-            currentDate.getSeconds()
-          )}`;
+          sendingParams[key] = convertDate(currentDate);
         }
-        urlParams.set(key, sendingParams[key].toString());
+        urlParams.set(key, sendingParams[key]);
       }
     }
-    console.log('sendingParams: ', sendingParams);
 
     url = `${url}?${urlParams.toString()}`;
-    console.log('url: ', url);
 
     return this.http
       .get(url, {
@@ -72,17 +72,21 @@ export class RentFormService {
       );
   }
 
-  makeARent(data: SendRent): Observable<any> {
+  makeARent(data: RentParams): Observable<any> {
     let headers: HttpHeaders;
     let url: string;
 
     headers = new HttpHeaders();
     url = `http://localhost:8080/api/rent/add`;
 
-    console.log(data);
+    const sendingParams: SendingParams = {
+      carId: data.carId,
+      startTime: convertDate(data.startTime),
+      endTime: convertDate(data.endTime),
+    };
 
     return this.http
-      .post(url, data, {
+      .post(url, sendingParams, {
         headers: headers,
       })
       .pipe(
