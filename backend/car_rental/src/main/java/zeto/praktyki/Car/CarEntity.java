@@ -25,7 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 // property = "id")
 public class CarEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private Long id;
     @Column(nullable = false)
     private String brand;

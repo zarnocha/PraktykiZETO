@@ -25,7 +25,7 @@ import zeto.praktyki.User.UserDTO.AdminRegisterDTO;
 @Table(name = "User_")
 public class UserEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.TABLE)
     private long id;
 
     @Column(nullable = false, unique = true)
