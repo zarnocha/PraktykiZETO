@@ -48,13 +48,6 @@ type typeOfForm = 'REGISTER' | 'LOGIN';
 function checkFields(form: FormGroup<any>) {
   for (const controlName in form.controls) {
     if (form.controls[controlName].invalid) {
-      console.log(
-        'invalid field: ',
-        controlName,
-        ' value: ',
-        form.controls[controlName].value
-      );
-
       if (controlName === 'password') {
         return `Pole \"hasło\" jest błędne.`;
       } else if (controlName === 'login') return `Pole \"login\" jest błędne.`;
@@ -143,7 +136,6 @@ export class LoginModalComponent implements OnInit {
     this.invalidField = checkFields(this.form);
 
     this.authService.register(this.form.value).subscribe((res) => {
-      console.log('register response', res);
       this.switchForms();
     });
   }

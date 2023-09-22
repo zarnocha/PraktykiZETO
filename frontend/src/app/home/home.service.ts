@@ -40,7 +40,6 @@ export class HomeService {
       headers = new HttpHeaders();
       url = 'http://localhost:8080/api/car/filter';
       url = `${url}?${urlParams.toString()}`;
-      console.log('url ', url);
     } else {
       headers = new HttpHeaders();
       url = 'http://localhost:8080/api/car/filter';

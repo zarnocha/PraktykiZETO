@@ -144,9 +144,6 @@ export class HomeComponent implements OnInit {
         this.dialogData.time.from = result.time.from;
         this.dialogData.time.to = result.time.to;
 
-        console.log(this.dialogData.queryParams.from);
-        console.log(this.dialogData.queryParams.to);
-
         this.dialogData.queryParams.from?.setHours(
           result.time.from.hour,
           result.time.from.minute
@@ -199,7 +196,6 @@ export class HomeComponent implements OnInit {
       queryParams = {};
       this.homeService.getCars().subscribe({
         next: (carData: Array<api.CarDTO>) => {
-          // console.log('carData: ', carData);
           this.cars = carData;
           this.carsSorted = this.cars.slice();
           this.showLoader = false;
@@ -214,8 +210,6 @@ export class HomeComponent implements OnInit {
   }
 
   onSortChange() {
-    console.log(this.selectedSort);
-
     if (this.selectedSort === 'alfabetycznie ↓') {
       this.carsSorted!.sort((a, b) => {
         const brandA = a.brand.toLowerCase();

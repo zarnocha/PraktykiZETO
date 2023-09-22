@@ -106,7 +106,6 @@ export class ProfileComponent {
         this.showLoader = false;
 
         this.dataSource = this.ELEMENT_DATA.map((item) => {
-          console.log('item: ', item);
           return {
             startTime: new Date(item.startTime).toLocaleString(),
             endTime: new Date(item.endTime).toLocaleString(),

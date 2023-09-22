@@ -52,10 +52,8 @@ export class RentFormService {
         urlParams.set(key, sendingParams[key]);
       }
     }
-    console.log('sendingParams: ', sendingParams);
 
     url = `${url}?${urlParams.toString()}`;
-    console.log('url: ', url);
 
     return this.http
       .get(url, {
@@ -86,8 +84,6 @@ export class RentFormService {
       startTime: convertDate(data.startTime),
       endTime: convertDate(data.endTime),
     };
-
-    console.log('sendingParams: ', sendingParams);
 
     return this.http
       .post(url, sendingParams, {

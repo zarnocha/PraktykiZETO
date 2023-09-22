@@ -35,15 +35,6 @@ export class AuthService {
           this.loggedInSubject.next(true);
         })
       );
-    // this.loggedIn = true;
-    // this.loggedInSubject.next(true);
-    // .pipe(
-    //   tap((response: any) => {
-    //     console.log('login response: ', response);
-    //     this.setSession(response);
-    //     this.router.navigate(['/']);
-    //   })
-    // );
   }
 
   register(userData: api.UserRegisterDTO) {
@@ -51,7 +42,6 @@ export class AuthService {
   }
 
   public setSession(response: any) {
-    // console.log('zalogowany: ', response);
     localStorage.setItem('JWT_TOKEN', response.token);
     localStorage.setItem('expires_at', response.expires_at);
   }
@@ -65,14 +55,11 @@ export class AuthService {
   }
 
   public isLoggedIn() {
-    // console.log('is logged?');
     const JWT_TOKEN = localStorage.getItem('JWT_TOKEN');
     const expires_at = localStorage.getItem('expires_at');
     if (JWT_TOKEN && expires_at) {
-      // console.log('zalogowany');
       return moment().isBefore(this.getExpiration());
     }
-    // console.log('wylogowany');
     return false;
   }
 
